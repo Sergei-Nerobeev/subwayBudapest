@@ -107,7 +107,7 @@ public class Subway {
      * Проверка на существование предыдущей станции
      */
     public void checkPreviousStationOnLine(Line line) {
-        if (line.getStations() != null &&
+        if (line.getStations() != null && // todo
     }
 
     public String getCityName() {
