@@ -4,6 +4,7 @@ import hu.nero.exception.ColorLineException;
 import hu.nero.exception.LineNotEmptyException;
 import hu.nero.exception.StationNameException;
 
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,9 @@ public class Subway {
         return false;
     }
 
+    /**
+     * Создание первой станции на линии
+     */
     public Station createFirstStation(String lineColor,
                                       String stationName,
                                       List<Station> transferStations) {
@@ -83,6 +87,27 @@ public class Subway {
             }
         }
         return line;
+    }
+
+    /**
+     * Создание последней станции на линии
+     */
+    public Station createTerminalStation(String lineColor,
+                                         String newNameOfStation,
+                                         Duration travelTimeToPrevious,
+                                         List<Station> transferStations) {
+        checkStationNameNotExists(newNameOfStation);
+        checkPreviousStationOnLine();
+        var terminalStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
+        terminalStation.setPrevious(); //todo
+        return terminalStation;
+    }
+
+    /**
+     * Проверка на существование предыдущей станции
+     */
+    public void checkPreviousStationOnLine(Line line) {
+        if (line.getStations() != null &&
     }
 
     public String getCityName() {
