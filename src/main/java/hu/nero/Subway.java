@@ -2,6 +2,7 @@ package hu.nero;
 
 import hu.nero.exception.ColorLineException;
 import hu.nero.exception.LineNotEmptyException;
+import hu.nero.exception.PreviousAndNextStationException;
 import hu.nero.exception.StationNameException;
 
 import java.time.Duration;
@@ -91,23 +92,28 @@ public class Subway {
 
     /**
      * Создание последней станции на линии
+     *
+     * @param newNameOfStation terminal station
      */
     public Station createTerminalStation(String lineColor,
                                          String newNameOfStation,
-                                         Duration travelTimeToPrevious,
+                                         String timeToStationNext,
                                          List<Station> transferStations) {
-        checkStationNameNotExists(newNameOfStation);
+        checkStationNameNotExists(newNameOfStation); // проверка линия с таким именем существует
         var previousTerminalStation = getTerminalStation(lineColor);
-        checkPreviousStationOnLine(previousTerminalStation);
+        checkPreviousStationOnLine(previousTerminalStation); // проверка на сущ предыдущей станции
+        travelTimeToNextStation(timeToStationNext);// Проверка, что время перегона > 0
         var terminalStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
-        terminalStation.setPrevious(); //todo
+        terminalStation.setPrevious(previousTerminalStation); //todo
         return terminalStation;
     }
 
+    /**
+     * Получение последней станции в линии
+     */
     private Station getTerminalStation(String lineColor) {
         var line = getLine(lineColor);
-        // todo checkthatLineIsNotEmpty
-
+        checkLineIsEmpty(line);
         return line.getTerminalStation();
     }
 
@@ -117,9 +123,21 @@ public class Subway {
      * @param station last station
      */
     public void checkPreviousStationOnLine(Station station) {
-        if ( // check for Station, nextStation is null
+        if (station.getPrevious() == null) {
+            throw new PreviousAndNextStationException("The previous station does not exist!");
+        }
+        if (station.getNext() != null) {
+            throw new PreviousAndNextStationException("The next station exist!");
+        }
+
     }
-    // create method for Duration travelTimeToPrevius
+    /**
+     * Проверка, что время перегона > 0
+     */
+    public void travelTimeToNextStation(String timeToStationNext) {
+        Duration timeToNextStation = Duration.parse(timeToStationNext);
+        timeToNextStation.toString() > 0 // todo
+    }
 
     public String getCityName() {
         return cityName;
