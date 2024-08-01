@@ -97,18 +97,29 @@ public class Subway {
                                          Duration travelTimeToPrevious,
                                          List<Station> transferStations) {
         checkStationNameNotExists(newNameOfStation);
-        checkPreviousStationOnLine();
+        var previousTerminalStation = getTerminalStation(lineColor);
+        checkPreviousStationOnLine(previousTerminalStation);
         var terminalStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
         terminalStation.setPrevious(); //todo
         return terminalStation;
     }
 
+    private Station getTerminalStation(String lineColor) {
+        var line = getLine(lineColor);
+        // todo checkthatLineIsNotEmpty
+
+        return line.getTerminalStation();
+    }
+
     /**
      * Проверка на существование предыдущей станции
+     *
+     * @param station last station
      */
-    public void checkPreviousStationOnLine(Line line) {
-        if (line.getStations() != null && // todo
+    public void checkPreviousStationOnLine(Station station) {
+        if ( // check for Station, nextStation is null
     }
+    // create method for Duration travelTimeToPrevius
 
     public String getCityName() {
         return cityName;

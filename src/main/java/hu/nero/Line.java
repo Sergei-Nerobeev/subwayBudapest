@@ -38,6 +38,10 @@ public class Line {
         return stations;
     }
 
+    public Station getTerminalStation() {
+        return stations.get(stations.size() - 1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,4 +63,6 @@ public class Line {
                 ", subway name=" + subway.getCityName() +
                 '}';
     }
+
+
 }
