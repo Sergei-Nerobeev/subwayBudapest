@@ -1,6 +1,5 @@
 package hu.nero;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,15 +8,16 @@ public class Station {
     private final String name;
     private Station previous;
     private Station next;
-    private Duration transitTimeInMinutesAndSeconds;
+    private double transitTimeInMinutesAndSeconds;
     private final Line line;
     private final List<Station> transferStations;
+    private final List<Double> intervals;
     private final Subway subway;
 
     public Station(String name,
                    Station previous,
                    Station next,
-                   Duration transitTimeInMinutesAndSeconds,
+                   double transitTimeInMinutesAndSeconds,
                    Line line,
                    Subway subway) {
         this.name = name;
@@ -26,6 +26,7 @@ public class Station {
         this.transitTimeInMinutesAndSeconds = transitTimeInMinutesAndSeconds;
         this.line = line;
         this.transferStations = new ArrayList<>();
+        this.intervals = new ArrayList<>();
         this.subway = subway;
     }
 
@@ -36,7 +37,7 @@ public class Station {
         this(name,
                 null,
                 null,
-                null,
+                0,
                 line,
                 subway);
     }
@@ -61,11 +62,11 @@ public class Station {
         this.next = next;
     }
 
-    public Duration getTransitTimeInMinutesAndSeconds() {
+    public double getTransitTimeInMinutesAndSeconds() {
         return transitTimeInMinutesAndSeconds;
     }
 
-    public void setTransitTimeInMinutesAndSeconds(Duration transitTimeInMinutesAndSeconds) {
+    public void setTransitTimeInMinutesAndSeconds(double transitTimeInMinutesAndSeconds) {
         this.transitTimeInMinutesAndSeconds = transitTimeInMinutesAndSeconds;
     }
 
@@ -75,6 +76,10 @@ public class Station {
 
     public Line getLine() {
         return line;
+    }
+
+    public List<Double> getIntervals() {
+        return intervals;
     }
 
     public Subway getSubway() {

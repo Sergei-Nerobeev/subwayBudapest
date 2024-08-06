@@ -62,8 +62,14 @@ public class Subway {
     }
 
     static void checkLineIsEmpty(Line line) {
+        if (line.getStations() == null && line.getStations().isEmpty()) {
+            throw new LineNotEmptyException(line.getColor() + " is empty!");
+        }
+    }
+
+    static void checkLineIsNotEmpty(Line line) {
         if (line.getStations() != null && !line.getStations().isEmpty()) {
-            throw new LineNotEmptyException(line + " is not empty");
+            System.out.println(line.getColor() + " is not empty!");
         }
     }
 
@@ -97,14 +103,14 @@ public class Subway {
      */
     public Station createTerminalStation(String lineColor,
                                          String newNameOfStation,
-                                         String timeToStationNext,
+                                         double timeToTheNextStation,
                                          List<Station> transferStations) {
-        checkStationNameNotExists(newNameOfStation); // проверка линия с таким именем существует
-        var previousTerminalStation = getTerminalStation(lineColor);
-        checkPreviousStationOnLine(previousTerminalStation); // проверка на сущ предыдущей станции
-        travelTimeToNextStation(timeToStationNext);// Проверка, что время перегона > 0
+        checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем существует
+        var previousBeforeTerminalStation = getTerminalStation(lineColor);
+        checkPreviousStationOnLine(previousBeforeTerminalStation); // проверка на сущ предыдущей станции
+        checkTimeToTheNextStation(timeToTheNextStation);// Проверка, что время перегона > 0
         var terminalStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
-        terminalStation.setPrevious(previousTerminalStation); //todo
+        terminalStation.setPrevious(previousBeforeTerminalStation);
         return terminalStation;
     }
 
@@ -113,7 +119,7 @@ public class Subway {
      */
     private Station getTerminalStation(String lineColor) {
         var line = getLine(lineColor);
-        checkLineIsEmpty(line);
+        checkLineIsNotEmpty(line);
         return line.getTerminalStation();
     }
 
@@ -126,17 +132,15 @@ public class Subway {
         if (station.getPrevious() == null) {
             throw new PreviousAndNextStationException("The previous station does not exist!");
         }
-        if (station.getNext() != null) {
-            throw new PreviousAndNextStationException("The next station exist!");
-        }
-
     }
+
     /**
      * Проверка, что время перегона > 0
      */
-    public void travelTimeToNextStation(String timeToStationNext) {
-        Duration timeToNextStation = Duration.parse(timeToStationNext);
-        timeToNextStation.toString() > 0 // todo
+    public void checkTimeToTheNextStation(double timeToNextStation) {
+        if (timeToNextStation < 0) {
+            throw new PreviousAndNextStationException("Time to the next Station < 0!");
+        }
     }
 
     public String getCityName() {

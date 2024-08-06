@@ -46,7 +46,7 @@ class SubwayTest {
         blueLine.addStation(klinikak);
         blueLine.addStation(nepLiget);
         blueLine.addStation(lehelTer);
-        Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, Duration.ofMinutes(2), yellowLine, subway);
+        Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, 2, yellowLine, subway);
         transferStations.add(transDeakFerencTer);
         subway.setLines(lines);
         return subway;
