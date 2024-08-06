@@ -5,7 +5,6 @@ import hu.nero.exception.LineNotEmptyException;
 import hu.nero.exception.PreviousAndNextStationException;
 import hu.nero.exception.StationNameException;
 
-import java.time.Duration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -103,14 +102,14 @@ public class Subway {
      */
     public Station createTerminalStation(String lineColor,
                                          String newNameOfStation,
-                                         double timeToTheNextStation,
+                                         int timeToThePreviousStation,
                                          List<Station> transferStations) {
         checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем существует
-        var previousBeforeTerminalStation = getTerminalStation(lineColor);
-        checkPreviousStationOnLine(previousBeforeTerminalStation); // проверка на сущ предыдущей станции
-        checkTimeToTheNextStation(timeToTheNextStation);// Проверка, что время перегона > 0
+        var currentLastStation = getTerminalStation(lineColor);
+        checkLastStationInLine(currentLastStation); // проверка на сущ предыдущей станции
+        checkTimeToTheNextStation(timeToThePreviousStation);// Проверка, что время перегона > 0
         var terminalStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
-        terminalStation.setPrevious(previousBeforeTerminalStation);
+        terminalStation.setPrevious(currentLastStation);
         return terminalStation;
     }
 
@@ -126,19 +125,19 @@ public class Subway {
     /**
      * Проверка на существование предыдущей станции
      *
-     * @param station last station
+     * @param lastStation last lastStation
      */
-    public void checkPreviousStationOnLine(Station station) {
-        if (station.getPrevious() == null) {
-            throw new PreviousAndNextStationException("The previous station does not exist!");
+    public void checkLastStationInLine(Station lastStation) {
+        if (lastStation == null) {
+            throw new PreviousAndNextStationException("The previous lastStation does not exist!");
         }
     }
 
     /**
      * Проверка, что время перегона > 0
      */
-    public void checkTimeToTheNextStation(double timeToNextStation) {
-        if (timeToNextStation < 0) {
+    public void checkTimeToTheNextStation(int timeToNextStation) {
+        if (timeToNextStation <= 0) {
             throw new PreviousAndNextStationException("Time to the next Station < 0!");
         }
     }

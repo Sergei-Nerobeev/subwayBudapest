@@ -8,7 +8,7 @@ public class Station {
     private final String name;
     private Station previous;
     private Station next;
-    private double transitTimeInMinutesAndSeconds;
+    private int transitTimeInSeconds;
     private final Line line;
     private final List<Station> transferStations;
     private final List<Double> intervals;
@@ -17,13 +17,13 @@ public class Station {
     public Station(String name,
                    Station previous,
                    Station next,
-                   double transitTimeInMinutesAndSeconds,
+                   int transitTimeInSeconds,
                    Line line,
                    Subway subway) {
         this.name = name;
         this.previous = previous;
         this.next = next;
-        this.transitTimeInMinutesAndSeconds = transitTimeInMinutesAndSeconds;
+        this.transitTimeInSeconds = transitTimeInSeconds;
         this.line = line;
         this.transferStations = new ArrayList<>();
         this.intervals = new ArrayList<>();
@@ -62,12 +62,12 @@ public class Station {
         this.next = next;
     }
 
-    public double getTransitTimeInMinutesAndSeconds() {
-        return transitTimeInMinutesAndSeconds;
+    public int getTransitTimeInSeconds() {
+        return transitTimeInSeconds;
     }
 
-    public void setTransitTimeInMinutesAndSeconds(double transitTimeInMinutesAndSeconds) {
-        this.transitTimeInMinutesAndSeconds = transitTimeInMinutesAndSeconds;
+    public void setTransitTimeInSeconds(int transitTimeInSeconds) {
+        this.transitTimeInSeconds = transitTimeInSeconds;
     }
 
     public List<Station> getTransferStations() {
@@ -94,14 +94,14 @@ public class Station {
         return Objects.equals(name, station.name)
                 && Objects.equals(previous, station.previous)
                 && Objects.equals(next, station.next)
-                && Objects.equals(transitTimeInMinutesAndSeconds, station.transitTimeInMinutesAndSeconds)
+                && Objects.equals(transitTimeInSeconds, station.transitTimeInSeconds)
                 && Objects.equals(line, station.line)
                 && Objects.equals(transferStations, station.transferStations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, previous, next, transitTimeInMinutesAndSeconds, line, transferStations);
+        return Objects.hash(name, previous, next, transitTimeInSeconds, line, transferStations);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Station {
                 "name='" + name + '\'' +
                 ", previous=" + previous +
                 ", next=" + next +
-                ", transitTimeInMinutesAndSeconds=" + transitTimeInMinutesAndSeconds +
+                ", transitTimeInMinutesAndSeconds=" + transitTimeInSeconds +
                 ", line=" + line.getColor() +
                 ", transferStations=" + transferStations +
                 ", subway=" + subway.getCityName() +

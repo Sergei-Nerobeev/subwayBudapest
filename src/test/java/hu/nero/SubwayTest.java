@@ -1,12 +1,10 @@
-import hu.nero.Line;
-import hu.nero.Station;
-import hu.nero.Subway;
+package hu.nero;
+
 import hu.nero.exception.LineNotEmptyException;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -132,5 +130,18 @@ class SubwayTest {
         Assertions.assertNotNull(newStation);
         Assertions.assertEquals(newStation.getLine().getColor(), greenLine.getColor());
         Assertions.assertEquals(transferStations, newStation.getTransferStations());
+    }
+    @Test
+    void createTerminalStationTest() {
+        Subway subway = new Subway("Budapest");
+        subway.createNewLine("Red");
+        subway.createNewLine("Blue");
+        subway.createNewLine("Yellow");
+        Station firstStaTION = subway.createFirstStation("Red", "Astoria", null);
+        Station lastStation = subway.createTerminalStation("Red"," Blah Luisa Ter",120 ,null);
+        Assertions.assertEquals(firstStaTION.getNext(), lastStation);
+        Assertions.assertEquals(lastStation.getPrevious(), firstStaTION);
+        Assertions.assertNull(firstStaTION.getPrevious());
+        Assertions.assertNull(lastStation.getNext());
     }
 }
