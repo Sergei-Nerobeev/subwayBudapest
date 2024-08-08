@@ -137,11 +137,12 @@ class SubwayTest {
         subway.createNewLine("Red");
         subway.createNewLine("Blue");
         subway.createNewLine("Yellow");
-        Station firstStaTION = subway.createFirstStation("Red", "Astoria", null);
+        Station firstStation = subway.createFirstStation("Red", "Astoria", null);
         Station lastStation = subway.createTerminalStation("Red"," Blah Luisa Ter",120 ,null);
-        Assertions.assertEquals(firstStaTION.getNext(), lastStation);
-        Assertions.assertEquals(lastStation.getPrevious(), firstStaTION);
-        Assertions.assertNull(firstStaTION.getPrevious());
+        Assertions.assertEquals(firstStation.getNext(), lastStation);
+        Assertions.assertEquals(lastStation.getPrevious(), firstStation);
+        Assertions.assertNull(firstStation.getPrevious());
         Assertions.assertNull(lastStation.getNext());
+
     }
 }

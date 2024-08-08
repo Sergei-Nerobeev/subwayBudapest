@@ -14,8 +14,13 @@ public class Line {
         this.subway = subway;
         this.stations = new ArrayList<>();
     }
+
     public void addStation(Station station) {
         stations.add(station);
+        var previous = station.getPrevious();
+        var index = stations.get(0);
+        index.setPrevious(previous);
+//        station.setPrevious(previous);
     }
 
     public String getColor() {
