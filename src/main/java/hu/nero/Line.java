@@ -1,5 +1,7 @@
 package hu.nero;
 
+import hu.nero.exception.StationNameException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,11 +18,14 @@ public class Line {
     }
 
     public void addStation(Station station) {
+        if (stations.contains(station)) {
+            throw new StationNameException("The station already exists on the list");
+        }
         stations.add(station);
-        var previous = station.getPrevious();
-        var index = stations.get(0);
-        index.setPrevious(previous);
-//        station.setPrevious(previous);
+        var previous = station.getPrevious(); // установка предыдущей станции
+        if (previous != null) {
+            station.setPrevious(previous);
+        }
     }
 
     public String getColor() {
@@ -43,7 +48,7 @@ public class Line {
         return stations;
     }
 
-    public Station getTerminalStation() {
+    public Station getLastStation() {
         return stations.get(stations.size() - 1);
     }
 

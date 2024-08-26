@@ -105,7 +105,7 @@ public class Subway {
                                          int timeToThePreviousStation,
                                          List<Station> transferStations) {
         checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем существует
-        var currentLastStation = getTerminalStation(lineColor);
+        var currentLastStation = getLastStationInLine(lineColor);
         checkLastStationInLine(currentLastStation); // проверка на сущ предыдущей станции
         checkTimeToTheNextStation(timeToThePreviousStation);// Проверка, что время перегона > 0
         var terminalStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
@@ -116,10 +116,10 @@ public class Subway {
     /**
      * Получение последней станции в линии
      */
-    private Station getTerminalStation(String lineColor) {
+    private Station getLastStationInLine(String lineColor) {
         var line = getLine(lineColor);
         checkLineIsNotEmpty(line);
-        return line.getTerminalStation();
+        return line.getLastStation();
     }
 
     /**
