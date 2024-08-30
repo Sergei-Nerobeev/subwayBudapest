@@ -11,7 +11,6 @@ public class Station {
     private int transitTimeInSeconds; //время перегона только до следующей станции
     private final Line line;
     private final List<Station> transferStations;
-    private final List<Double> intervals;
     private final Subway subway;
 
     public Station(String name,
@@ -26,7 +25,6 @@ public class Station {
         this.transitTimeInSeconds = transitTimeInSeconds;
         this.line = line;
         this.transferStations = new ArrayList<>();
-        this.intervals = new ArrayList<>();
         this.subway = subway;
     }
 
@@ -78,9 +76,6 @@ public class Station {
         return line;
     }
 
-    public List<Double> getIntervals() {
-        return intervals;
-    }
 
     public Subway getSubway() {
         return subway;

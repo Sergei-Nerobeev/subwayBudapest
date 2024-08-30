@@ -59,7 +59,7 @@ public class Subway {
 
     private static void checkLineIsEmpty(Line line) {
         if (line.getStations() != null && !line.getStations().isEmpty()) {
-            throw new LineEmptyException("Line " + line.getColor() + " is not empty!");
+            throw new LineNotEmptyException("Line " + line.getColor() + " is not empty!");
         }
     }
 
@@ -97,7 +97,7 @@ public class Subway {
                                      List<Station> transferStations) {
         checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем не существует
         var currentLastStation = getLastStationInLine(lineColor); // текущая последняя станция Астория
-        checkLastStationInLine(currentLastStation);
+        isStationLastInLine(currentLastStation);
         checkTimeToTheNextStation(timeToThePreviousStation);// Проверка, что время перегона > 0
         var newLastStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
         Line line = getLine(lineColor);
@@ -121,7 +121,7 @@ public class Subway {
      *
      * @param currentLastStation lastStation
      */
-    public void checkLastStationInLine(Station currentLastStation) {
+    public void isStationLastInLine(Station currentLastStation) {
         if (currentLastStation.getPrevious() != null) {
             throw new PreviousAndNextStationException("The previous lastStation does not exist!");
         }

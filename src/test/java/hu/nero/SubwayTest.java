@@ -1,6 +1,7 @@
 package hu.nero;
 
 import hu.nero.exception.LineEmptyException;
+import hu.nero.exception.LineNotEmptyException;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -103,7 +104,7 @@ class SubwayTest {
         }, "Ожидалось исключение LineEmptyException");
 
         Throwable cause = exception.getCause();
-        assertInstanceOf(LineEmptyException.class, cause, "Expected LineEmptyException but: " + cause.getClass().getName());
+        assertInstanceOf(LineNotEmptyException.class, cause, "Expected LineNotEmptyException but: " + cause.getClass().getName());
 
         Assertions.assertEquals("Line " + line.getColor() + " is not empty!", cause.getMessage());
     }
