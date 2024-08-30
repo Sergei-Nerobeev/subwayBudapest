@@ -14,8 +14,10 @@ public class Line {
         this.subway = subway;
         this.stations = new ArrayList<>();
     }
+
     public void addStation(Station station) {
         stations.add(station);
+
     }
 
     public String getColor() {
@@ -36,6 +38,13 @@ public class Line {
 
     public List<Station> getStations() {
         return stations;
+    }
+
+    public Station getLastStation() {
+        if (stations.isEmpty()) {
+            return null;
+        }
+        return stations.get(stations.size() - 1);
     }
 
     @Override
@@ -59,4 +68,6 @@ public class Line {
                 ", subway name=" + subway.getCityName() +
                 '}';
     }
+
+
 }

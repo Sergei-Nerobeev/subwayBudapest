@@ -1,6 +1,5 @@
 package hu.nero;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +8,7 @@ public class Station {
     private final String name;
     private Station previous;
     private Station next;
-    private Duration transitTimeInMinutesAndSeconds;
+    private int transitTimeInSeconds; //время перегона только до следующей станции
     private final Line line;
     private final List<Station> transferStations;
     private final Subway subway;
@@ -17,13 +16,13 @@ public class Station {
     public Station(String name,
                    Station previous,
                    Station next,
-                   Duration transitTimeInMinutesAndSeconds,
+                   int transitTimeInSeconds,
                    Line line,
                    Subway subway) {
         this.name = name;
         this.previous = previous;
         this.next = next;
-        this.transitTimeInMinutesAndSeconds = transitTimeInMinutesAndSeconds;
+        this.transitTimeInSeconds = transitTimeInSeconds;
         this.line = line;
         this.transferStations = new ArrayList<>();
         this.subway = subway;
@@ -36,7 +35,7 @@ public class Station {
         this(name,
                 null,
                 null,
-                null,
+                0,
                 line,
                 subway);
     }
@@ -61,12 +60,12 @@ public class Station {
         this.next = next;
     }
 
-    public Duration getTransitTimeInMinutesAndSeconds() {
-        return transitTimeInMinutesAndSeconds;
+    public int getTransitTimeInSeconds() { //получение время перегона только до следующей станции
+        return transitTimeInSeconds;
     }
 
-    public void setTransitTimeInMinutesAndSeconds(Duration transitTimeInMinutesAndSeconds) {
-        this.transitTimeInMinutesAndSeconds = transitTimeInMinutesAndSeconds;
+    public void setTransitTimeInSeconds(int transitTimeInSeconds) { //замена время перегона только до следующей станции
+        this.transitTimeInSeconds = transitTimeInSeconds;
     }
 
     public List<Station> getTransferStations() {
@@ -76,6 +75,7 @@ public class Station {
     public Line getLine() {
         return line;
     }
+
 
     public Subway getSubway() {
         return subway;
@@ -89,23 +89,23 @@ public class Station {
         return Objects.equals(name, station.name)
                 && Objects.equals(previous, station.previous)
                 && Objects.equals(next, station.next)
-                && Objects.equals(transitTimeInMinutesAndSeconds, station.transitTimeInMinutesAndSeconds)
+                && Objects.equals(transitTimeInSeconds, station.transitTimeInSeconds)
                 && Objects.equals(line, station.line)
                 && Objects.equals(transferStations, station.transferStations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, previous, next, transitTimeInMinutesAndSeconds, line, transferStations);
+        return Objects.hash(name, previous, next, transitTimeInSeconds, line, transferStations);
     }
 
     @Override
     public String toString() {
         return "Station{" +
                 "name='" + name + '\'' +
-                ", previous=" + previous +
-                ", next=" + next +
-                ", transitTimeInMinutesAndSeconds=" + transitTimeInMinutesAndSeconds +
+                ", previous=" + previous.getName() +
+                ", next=" + next.getName() +
+                ", transitTimeInMinutesAndSeconds=" + transitTimeInSeconds +
                 ", line=" + line.getColor() +
                 ", transferStations=" + transferStations +
                 ", subway=" + subway.getCityName() +

@@ -1,16 +1,17 @@
-import hu.nero.Line;
-import hu.nero.Station;
-import hu.nero.Subway;
+package hu.nero;
+
+import hu.nero.exception.LineEmptyException;
 import hu.nero.exception.LineNotEmptyException;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @DisplayName("Тестирование методов класса Subway")
 class SubwayTest {
@@ -46,7 +47,7 @@ class SubwayTest {
         blueLine.addStation(klinikak);
         blueLine.addStation(nepLiget);
         blueLine.addStation(lehelTer);
-        Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, Duration.ofMinutes(2), yellowLine, subway);
+        Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, 2, yellowLine, subway);
         transferStations.add(transDeakFerencTer);
         subway.setLines(lines);
         return subway;
@@ -54,7 +55,7 @@ class SubwayTest {
 
     @DisplayName("isLineWithThisColorExists - correct data - Line color exist!")
     @Test
-    void isColorExistsInlines_True() {
+    void isColorExistsInlines_TrueTest() {
         var budapest = createTestSubway("Budapest");
         var colorLine = "Green";
         budapest.createNewLine(colorLine);
@@ -66,7 +67,7 @@ class SubwayTest {
 
     @DisplayName("isStationNameExistsInAnyLine - correct data - station already exists!")
     @Test
-    void isStationNameInlines() {
+    void isStationNameInlinesTest() {
         var stationName = "Astoria";
         var budapest = createTestSubway("Budapest");
         var greenLine = budapest.createNewLine("Green");
@@ -80,7 +81,7 @@ class SubwayTest {
 
     @DisplayName("createNewLine - correct data - new line created")
     @Test
-    void newLineIsCreated() {
+    void newLineIsCreatedTest() {
         var budapest = createTestSubway("Budapest");
 
         var line = budapest.createNewLine("Green");
@@ -90,24 +91,25 @@ class SubwayTest {
 
     @DisplayName("checkLineIsEmpty - not correct data - LineNotEmptyException")
     @Test
-    void checkLineIsEmptyTest_notCorrect() throws NoSuchMethodException {
+    void checkLineIsEmptyTest() throws NoSuchMethodException {
         Subway budapest = createTestSubway("Budapest");
         Line line = budapest.createNewLine("Green");
-        List<Station> transferStations = new ArrayList<>();
-        var station = new Station("Rome", line, transferStations, budapest);
+        var station = new Station("Roma", null, null, 120, line, budapest);
         line.addStation(station);
         Method checkLineIsEmptyMethod = Subway.class.getDeclaredMethod("checkLineIsEmpty", Line.class);
         checkLineIsEmptyMethod.setAccessible(true);
 
-        Exception exception = Assertions.assertThrows(InvocationTargetException.class, () -> { // check exception type!
+        InvocationTargetException exception = Assertions.assertThrows(InvocationTargetException.class, () -> {
             checkLineIsEmptyMethod.invoke(budapest, line);
-        });
+        }, "Ожидалось исключение LineEmptyException");
+
         Throwable cause = exception.getCause();
-        Assertions.assertInstanceOf(LineNotEmptyException.class, cause,
-                "Expected LineNotEmptyException but got: " + cause);
+        assertInstanceOf(LineNotEmptyException.class, cause, "Expected LineNotEmptyException but: " + cause.getClass().getName());
+
+        Assertions.assertEquals("Line " + line.getColor() + " is not empty!", cause.getMessage());
     }
 
-    @DisplayName("createNewLine - correct data - new line created") // stackOverFlow debug
+    @DisplayName("createNewLine - correct data - new line created")
     @Test
     void createNewLineTest() {
         var colorLine = "Green";
@@ -121,7 +123,7 @@ class SubwayTest {
 
     @DisplayName("createFirstStation - correct data - first station created")
     @Test
-    void testCreateFirstStationSuccess() {
+    void createFirstStationSuccessTest() {
         Subway subway = createTestSubway("Rome");
         var greenLine = new Line("Green", subway);
         List<Station> transferStations = new ArrayList<>();
@@ -132,5 +134,21 @@ class SubwayTest {
         Assertions.assertNotNull(newStation);
         Assertions.assertEquals(newStation.getLine().getColor(), greenLine.getColor());
         Assertions.assertEquals(transferStations, newStation.getTransferStations());
+    }
+
+    @Test
+    void createLastStationTest() {
+        Subway subway = new Subway("Budapest");
+        subway.createNewLine("Red");
+        Station firstStation = subway.createFirstStation("Red", "Astoria", null);
+
+        Station lastStation = subway.createLastStation("Red", " Blah Luisa Ter", 120, null);
+
+        Assertions.assertEquals(lastStation.getPrevious(), firstStation);
+        Assertions.assertNull(firstStation.getPrevious());
+        Assertions.assertNull(lastStation.getNext());
+        Assertions.assertEquals(firstStation.getNext(), lastStation);
+        Assertions.assertEquals(firstStation.getTransitTimeInSeconds(), 120);
+        Assertions.assertTrue(subway.isStationNameExistsInAnyLine(" Blah Luisa Ter"));
     }
 }
