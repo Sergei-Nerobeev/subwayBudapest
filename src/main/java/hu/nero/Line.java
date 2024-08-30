@@ -49,6 +49,9 @@ public class Line {
     }
 
     public Station getLastStation() {
+        if (stations.isEmpty()) {
+            return null;
+        }
         return stations.get(stations.size() - 1);
     }
 

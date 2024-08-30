@@ -8,7 +8,7 @@ public class Station {
     private final String name;
     private Station previous;
     private Station next;
-    private int transitTimeInSeconds;
+    private int transitTimeInSeconds; //время перегона только до следующей станции
     private final Line line;
     private final List<Station> transferStations;
     private final List<Double> intervals;
@@ -62,11 +62,11 @@ public class Station {
         this.next = next;
     }
 
-    public int getTransitTimeInSeconds() {
+    public int getTransitTimeInSeconds() { //получение время перегона только до следующей станции
         return transitTimeInSeconds;
     }
 
-    public void setTransitTimeInSeconds(int transitTimeInSeconds) {
+    public void setTransitTimeInSeconds(int transitTimeInSeconds) { //замена время перегона только до следующей станции
         this.transitTimeInSeconds = transitTimeInSeconds;
     }
 
@@ -108,8 +108,8 @@ public class Station {
     public String toString() {
         return "Station{" +
                 "name='" + name + '\'' +
-                ", previous=" + previous +
-                ", next=" + next +
+                ", previous=" + previous.getName() +
+                ", next=" + next.getName() +
                 ", transitTimeInMinutesAndSeconds=" + transitTimeInSeconds +
                 ", line=" + line.getColor() +
                 ", transferStations=" + transferStations +

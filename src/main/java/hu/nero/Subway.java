@@ -1,9 +1,6 @@
 package hu.nero;
 
-import hu.nero.exception.ColorLineException;
-import hu.nero.exception.LineNotEmptyException;
-import hu.nero.exception.PreviousAndNextStationException;
-import hu.nero.exception.StationNameException;
+import hu.nero.exception.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -60,15 +57,9 @@ public class Subway {
         return station;
     }
 
-    static void checkLineIsEmpty(Line line) {
-        if (line.getStations() == null && line.getStations().isEmpty()) {
-            throw new LineNotEmptyException(line.getColor() + " is empty!");
-        }
-    }
-
-    static void checkLineIsNotEmpty(Line line) {
+    private static void checkLineIsEmpty(Line line) {
         if (line.getStations() != null && !line.getStations().isEmpty()) {
-            System.out.println(line.getColor() + " is not empty!");
+            throw new LineEmptyException("Line " + line.getColor() + " is not empty!");
         }
     }
 
@@ -100,17 +91,21 @@ public class Subway {
      *
      * @param newNameOfStation terminal station
      */
-    public Station createTerminalStation(String lineColor,
-                                         String newNameOfStation,
-                                         int timeToThePreviousStation,
-                                         List<Station> transferStations) {
-        checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем существует
-        var currentLastStation = getLastStationInLine(lineColor);
-        checkLastStationInLine(currentLastStation); // проверка на сущ предыдущей станции
+    public Station createLastStation(String lineColor,
+                                     String newNameOfStation,
+                                     int timeToThePreviousStation,
+                                     List<Station> transferStations) {
+        checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем не существует
+        var currentLastStation = getLastStationInLine(lineColor); // текущая последняя станция Астория
+        checkLastStationInLine(currentLastStation);
         checkTimeToTheNextStation(timeToThePreviousStation);// Проверка, что время перегона > 0
-        var terminalStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
-        terminalStation.setPrevious(currentLastStation);
-        return terminalStation;
+        var newLastStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
+        Line line = getLine(lineColor);
+        line.addStation(newLastStation);
+        currentLastStation.setNext(newLastStation);
+        currentLastStation.setTransitTimeInSeconds(timeToThePreviousStation);
+        newLastStation.setPrevious(currentLastStation);
+        return newLastStation;
     }
 
     /**
@@ -118,17 +113,16 @@ public class Subway {
      */
     private Station getLastStationInLine(String lineColor) {
         var line = getLine(lineColor);
-        checkLineIsNotEmpty(line);
         return line.getLastStation();
     }
 
     /**
      * Проверка на существование предыдущей станции
      *
-     * @param lastStation last lastStation
+     * @param currentLastStation lastStation
      */
-    public void checkLastStationInLine(Station lastStation) {
-        if (lastStation == null) {
+    public void checkLastStationInLine(Station currentLastStation) {
+        if (currentLastStation.getPrevious() != null) {
             throw new PreviousAndNextStationException("The previous lastStation does not exist!");
         }
     }
