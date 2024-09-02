@@ -25,11 +25,12 @@ class SubwayTest {
         Line blueLine = new Line(blueLineColor, subway);
         Line yellowLine = new Line(yellowLineColor, subway);
         List<Station> transferStations = new ArrayList<>();
+        transferStations.add(null);
         Set<Line> lines = new HashSet<>();
         lines.add(redLine);
         lines.add(blueLine);
         lines.add(yellowLine);
-        Station oktogon = new Station("Oktogon", yellowLine, transferStations, subway);
+        Station oktogon = new Station("Oktogon", yellowLine, transferStations, subway);// todo transferStation!
         Station opera = new Station("Opera", yellowLine, transferStations, subway);
         Station bajzaUtca = new Station("Bajza Utca", yellowLine, transferStations, subway);
         yellowLine.addStation(oktogon);
@@ -49,6 +50,9 @@ class SubwayTest {
         blueLine.addStation(lehelTer);
         Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, 2, yellowLine, subway);
         transferStations.add(transDeakFerencTer);
+        yellowLine.addStation(transDeakFerencTer);
+
+
         subway.setLines(lines);
         return subway;
     }
@@ -150,5 +154,19 @@ class SubwayTest {
         Assertions.assertEquals(firstStation.getNext(), lastStation);
         Assertions.assertEquals(firstStation.getTransitTimeInSeconds(), 120);
         Assertions.assertTrue(subway.isStationNameExistsInAnyLine(" Blah Luisa Ter"));
+    }
+
+    @Test
+    void getTransferStationIdentifyTest_Success() {
+        var budapest = createTestSubway("Budapest");
+        var red = "Red";
+        var yellow = "Yellow";
+        String stationExpected = "Deak Ferenc Ter";
+
+        Station stationActual = budapest.getTransferStationIdentify(yellow,red);
+
+        Assertions.assertEquals(stationExpected,stationActual.getName());
+
+
     }
 }

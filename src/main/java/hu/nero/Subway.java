@@ -136,19 +136,26 @@ public class Subway {
     /**
      * Метод определения станции на пересадку
      */
-    public Station getTransferStationIdentify(Line tripStart, Line transfer) {
-     if(lines.contains(tripStart) && lines.contains(transfer)) {
-
-     }
-        return null;
-    }
-
+    public Station getTransferStationIdentify(String startColor, String endColor) {
+        Line startLine = getLine(startColor);
+        for (Station station : startLine.getStations()) {
+            List<Station> transferStations = station.getTransferStations();
+            for(Station transferStation : transferStations) {
+                String color = transferStation.getLine().getColor();
+                if(color.equals(endColor)){
+                    return transferStation;
+                }
+            }
+        }
+        throw new StationNameException("No transfer station");
+}
 
     public String getCityName() {
         return cityName;
     }
 
     public void setCityName(String cityName) {
+
         this.cityName = cityName;
     }
 

@@ -107,7 +107,7 @@ public class Station {
                 ", next=" + next.getName() +
                 ", transitTimeInMinutesAndSeconds=" + transitTimeInSeconds +
                 ", line=" + line.getColor() +
-                ", transferStations=" + transferStations +
+//                ", transferStations=" + transferStations.toString() +
                 ", subway=" + subway.getCityName() +
                 '}';
     }
