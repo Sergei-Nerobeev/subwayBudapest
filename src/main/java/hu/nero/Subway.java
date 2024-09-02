@@ -137,8 +137,9 @@ public class Subway {
      * Метод определения станции на пересадку
      */
     public Station getTransferStationIdentify(Line tripStart, Line transfer) {
-       List <Station> stations = tripStart.getStations();
-       if(stations.contains())
+     if(lines.contains(tripStart) && lines.contains(transfer)) {
+
+     }
         return null;
     }
 
