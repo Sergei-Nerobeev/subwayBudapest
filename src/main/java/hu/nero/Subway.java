@@ -2,10 +2,7 @@ package hu.nero;
 
 import hu.nero.exception.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Subway {
     private String cityName;
@@ -135,6 +132,16 @@ public class Subway {
             throw new PreviousAndNextStationException("Time to the next Station < 0!");
         }
     }
+
+    /**
+     * Метод определения станции на пересадку
+     */
+    public Station getTransferStationIdentify(Line tripStart, Line transfer) {
+       List <Station> stations = tripStart.getStations();
+       if(stations.contains())
+        return null;
+    }
+
 
     public String getCityName() {
         return cityName;
