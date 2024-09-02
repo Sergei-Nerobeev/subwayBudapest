@@ -30,6 +30,7 @@ class SubwayTest {
         lines.add(redLine);
         lines.add(blueLine);
         lines.add(yellowLine);
+
         Station oktogon = new Station("Oktogon", yellowLine, transferStations, subway);// todo transferStation!
         Station opera = new Station("Opera", yellowLine, transferStations, subway);
         Station bajzaUtca = new Station("Bajza Utca", yellowLine, transferStations, subway);
