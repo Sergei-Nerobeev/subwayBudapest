@@ -52,8 +52,6 @@ class SubwayTest {
         Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, 2, yellowLine, subway);
         transferStations.add(transDeakFerencTer);
         yellowLine.addStation(transDeakFerencTer);
-
-
         subway.setLines(lines);
         return subway;
     }
