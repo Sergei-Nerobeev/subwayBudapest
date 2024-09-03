@@ -65,7 +65,7 @@ public class Line {
         return "Line{" +
                 "color='" + color + '\'' +
                 ", stations=" + stations +
-                ", subway name=" + subway.getCityName() +
+                ", subway name=" + subway+
                 '}';
     }
 

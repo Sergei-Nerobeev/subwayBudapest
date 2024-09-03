@@ -47,15 +47,13 @@ public class Subway {
         checkStationNameNotExists(stationName);
         Line line = getLine(lineColor);
         checkLineIsEmpty(line);
-
         Station station = new Station(stationName, line, transferStations, this);
         line.addStation(station);
-
         return station;
     }
 
     private static void checkLineIsEmpty(Line line) {
-        if (line.getStations() != null && !line.getStations().isEmpty()) {
+        if (!line.getStations().isEmpty()) {
             throw new LineNotEmptyException("Line " + line.getColor() + " is not empty!");
         }
     }
@@ -68,7 +66,7 @@ public class Subway {
 
     private void checkLineExists(String lineColor) {
         if (!isLineWithThisColorExists(lineColor)) {
-            throw new ColorLineException(lineColor + " Line color doesn't exist!");
+            throw new ColorLineException(lineColor + " Line color exist!");
         }
     }
 
@@ -140,15 +138,15 @@ public class Subway {
         Line startLine = getLine(startColor);
         for (Station station : startLine.getStations()) {
             List<Station> transferStations = station.getTransferStations();
-            for(Station transferStation : transferStations) {
+            for (Station transferStation : transferStations) {
                 String color = transferStation.getLine().getColor();
-                if(color.equals(endColor)){
+                if (color.equals(endColor)) {
                     return transferStation;
                 }
             }
         }
         throw new StationNameException("No transfer station");
-}
+    }
 
     public String getCityName() {
         return cityName;

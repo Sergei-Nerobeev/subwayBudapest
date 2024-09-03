@@ -103,11 +103,11 @@ public class Station {
     public String toString() {
         return "Station{" +
                 "name='" + name + '\'' +
-                ", previous=" + previous.getName() +
-                ", next=" + next.getName() +
+                ", previous=" + previous+
+                ", next=" + next +
                 ", transitTimeInMinutesAndSeconds=" + transitTimeInSeconds +
                 ", line=" + line.getColor() +
-//                ", transferStations=" + transferStations.toString() +
+                ", transferStations=" + transferStations +
                 ", subway=" + subway.getCityName() +
                 '}';
     }
