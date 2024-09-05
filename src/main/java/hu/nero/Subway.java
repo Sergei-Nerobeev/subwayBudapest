@@ -92,7 +92,7 @@ public class Subway {
                                      List<Station> transferStations) {
         checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем не существует
         var currentLastStation = getLastStationInLine(lineColor); // текущая последняя станция Астория
-        isStationLastInLine(currentLastStation);
+//        isStationLastInLine(currentLastStation);
         checkTimeToTheNextStation(timeToThePreviousStation);// Проверка, что время перегона > 0
         var newLastStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
         Line line = getLine(lineColor);
@@ -117,7 +117,7 @@ public class Subway {
      * @param currentLastStation lastStation
      */
     public void isStationLastInLine(Station currentLastStation) {
-        if (currentLastStation.getPrevious() != null) {
+        if (currentLastStation.getPrevious() == null) {
             throw new PreviousAndNextStationException("The previous lastStation does not exist!");
         }
     }

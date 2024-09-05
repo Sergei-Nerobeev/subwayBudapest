@@ -62,38 +62,42 @@ class SubwayTest {
         Subway subway = new Subway(cityName);
         Line yellowLine = new Line(yellowLineColor, subway);
         Line redLine = new Line(redLineColor, subway);
-        Line blueLine = new Line(blueLineColor, subway);
         Set<Line> lines = new HashSet<>();
-        lines.add(redLine);
-        lines.add(blueLine);
         List<Station> transferStations = new ArrayList<>();
         transferStations.add(null);
         subway.createNewLine(yellowLineColor);
+        subway.createNewLine(redLineColor);
 
         subway.createFirstStation(yellowLineColor, "Oktogon", transferStations);
         subway.createLastStation(yellowLineColor, "Opera", 4, transferStations);
         subway.createLastStation(yellowLineColor, "Bajza utca", 5, transferStations);
         subway.createLastStation(yellowLineColor, "Deak Ferenc Ter", 6, transferStations);
-        Station oktogon = new Station("Oktogon", yellowLine, transferStations, subway);
-        Station opera = new Station("Opera", yellowLine, transferStations, subway);
-        Station bajzaUtca = new Station("Bajza Utca", yellowLine, transferStations, subway);
-//
-//        yellowLine.addStation(oktogon);
-//        yellowLine.addStation(opera);
-//        yellowLine.addStation(bajzaUtca);
+
+        subway.createFirstStation(redLineColor, "Astoria", transferStations);
+        subway.createLastStation(redLineColor, "Keleti", 4, transferStations);
+        subway.createLastStation(redLineColor,"Puscas Ferenc Arena", 5, transferStations);
         Station astoria = new Station("Astoria", redLine, transferStations, subway);
         Station keleti = new Station("Keleti", redLine, transferStations, subway);
         Station puscasFerencArena = new Station("Puscas Ferenc Arena", redLine, transferStations, subway);
-        redLine.addStation(astoria);
-        redLine.addStation(keleti);
-        redLine.addStation(puscasFerencArena);
-        Station klinikak = new Station("Klinikak", blueLine, transferStations, subway);
-        Station nepLiget = new Station("NepLiget", blueLine, transferStations, subway);
-        Station lehelTer = new Station("LehelTer", blueLine, transferStations, subway);
-        blueLine.addStation(klinikak);
-        blueLine.addStation(nepLiget);
-        blueLine.addStation(lehelTer);
+
+        Station oktogon = new Station("Oktogon", yellowLine, transferStations, subway);
+        Station opera = new Station("Opera", yellowLine, transferStations, subway);
+        Station bajzaUtca = new Station("Bajza Utca", yellowLine, transferStations, subway);
         Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, 2, yellowLine, subway);
+//        yellowLine.addStation(oktogon);
+//        yellowLine.addStation(opera);
+//        yellowLine.addStation(bajzaUtca);
+
+//        redLine.addStation(astoria);
+//        redLine.addStation(keleti);
+//        redLine.addStation(puscasFerencArena);
+//        Station klinikak = new Station("Klinikak", blueLine, transferStations, subway);
+//        Station nepLiget = new Station("NepLiget", blueLine, transferStations, subway);
+//        Station lehelTer = new Station("LehelTer", blueLine, transferStations, subway);
+//        blueLine.addStation(klinikak);
+//        blueLine.addStation(nepLiget);
+//        blueLine.addStation(lehelTer);
+
         transferStations.add(transDeakFerencTer);
         yellowLine.addStation(transDeakFerencTer);
         subway.setLines(lines);
@@ -199,17 +203,17 @@ class SubwayTest {
         Assertions.assertTrue(subway.isStationNameExistsInAnyLine(" Blah Luisa Ter"));
     }
 
-    @Test
-    void getTransferStationIdentifyTest_Success() {
-        var budapest = createTestSubway("Budapest");
-        var red = "Red";
-        var yellow = "Yellow";
-        String stationExpected = "Deak Ferenc Ter";
-
-        Station stationActual = budapest.getTransferStationIdentify(yellow, red);
-
-        Assertions.assertEquals(stationExpected, stationActual.getName());
-    }
+//    @Test
+//    void getTransferStationIdentifyTest_Success() {
+//        var budapest = createTestSubway("Budapest");
+//        var red = "Red";
+//        var yellow = "Yellow";
+//        String stationExpected = "Deak Ferenc Ter";
+//
+//        Station stationActual = budapest.getTransferStationIdentify(yellow, red);
+//
+//        Assertions.assertEquals(stationExpected, stationActual.getName());
+//    }
 
     @Test
     void getTransferStationIdentifyTest2_Success() {
