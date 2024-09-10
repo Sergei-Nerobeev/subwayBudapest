@@ -110,8 +110,8 @@ public class Station {
     public String toString() {
         return "Station{" +
                 "name='" + name + '\'' +
-                ", previous=" + previous +
-                ", next=" + next +
+                ", previous=" + previous.getName() +
+                ", next=" + next.getName() +
                 ", transitTimeInMinutesAndSeconds=" + transitTimeInSeconds +
                 ", line=" + line.getColor() +
                 ", transferStations=" + transferStations +

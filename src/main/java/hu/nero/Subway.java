@@ -66,7 +66,7 @@ public class Subway {
 
     private void checkLineExists(String lineColor) {
         if (!isLineWithThisColorExists(lineColor)) {
-            throw new ColorLineException(lineColor + " Line color exist!");
+            throw new ColorLineException(lineColor + " Line color doesn't exist!");
         }
     }
 
@@ -104,7 +104,7 @@ public class Subway {
     }
 
     /**
-     * Получение последней станции в линии
+     * Получение последней станции в линии.
      */
     private Station getLastStationInLine(String lineColor) {
         var line = getLine(lineColor);
@@ -112,12 +112,13 @@ public class Subway {
     }
 
     /**
-     * Проверка на существование предыдущей станции
+     * Метод проверяет, что переданная в него станция является последней на линии.
      *
-     * @param currentLastStation lastStation
+     * @param station lastStation
      */
-    public void isStationLastInLine(Station currentLastStation) {
-        if (currentLastStation.getPrevious() == null) {
+    public void isStationLastInLine(Station station) {
+        if (station.getNext() != null) {
+            throw new PreviousAndNextStationException("The next Station does not last!");
         }
     }
 
