@@ -118,7 +118,7 @@ public class Subway {
      */
     public void isStationLastInLine(Station station) {
         if (station.getNext() != null) {
-            throw new PreviousAndNextStationException("The next Station does not last!");
+            throw new PreviousAndNextStationException("The Station is not last!");
         }
     }
 
