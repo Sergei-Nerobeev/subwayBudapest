@@ -1,6 +1,5 @@
 package hu.nero;
 
-import hu.nero.exception.LineEmptyException;
 import hu.nero.exception.LineNotEmptyException;
 import org.junit.jupiter.api.*;
 
@@ -25,6 +24,7 @@ class SubwayTest {
         Line blueLine = new Line(blueLineColor, subway);
         Line yellowLine = new Line(yellowLineColor, subway);
         List<Station> transferStations = new ArrayList<>();
+        transferStations.add(null);
         Set<Line> lines = new HashSet<>();
         lines.add(redLine);
         lines.add(blueLine);
@@ -49,7 +49,28 @@ class SubwayTest {
         blueLine.addStation(lehelTer);
         Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, 2, yellowLine, subway);
         transferStations.add(transDeakFerencTer);
+        yellowLine.addStation(transDeakFerencTer);
         subway.setLines(lines);
+        return subway;
+    }
+
+    public Subway createDataForTestSubway(String cityName) {
+        var yellowLineColor = "Yellow";
+        var redLineColor = "Red";
+        Subway subway = new Subway(cityName);
+        subway.createNewLine(yellowLineColor);
+        subway.createNewLine(redLineColor);
+
+        subway.createFirstStation(yellowLineColor, "Oktogon", null);
+        subway.createLastStation(yellowLineColor, "Opera", 4, null);
+        subway.createLastStation(yellowLineColor, "Bajza utca", 5, null);
+        Station deakFerencTer = subway.createLastStation(yellowLineColor, "Deak Ferenc Ter", 6, null);
+
+        subway.createFirstStation(redLineColor, "Astoria", null);
+        subway.createLastStation(redLineColor, "Keleti", 4, null);
+        Station pfa = subway.createLastStation(redLineColor,"Puscas Ferenc Arena", 5, null);
+        pfa.addTransferStation(deakFerencTer);
+        deakFerencTer.addTransferStation(pfa);
         return subway;
     }
 
@@ -150,5 +171,17 @@ class SubwayTest {
         Assertions.assertEquals(firstStation.getNext(), lastStation);
         Assertions.assertEquals(firstStation.getTransitTimeInSeconds(), 120);
         Assertions.assertTrue(subway.isStationNameExistsInAnyLine(" Blah Luisa Ter"));
+    }
+
+    @Test
+    void getTransferStationIdentifyTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var red = "Red";
+        var yellow = "Yellow";
+        String stationExpected = "Deak Ferenc Ter";
+
+        Station stationActual = budapest.getTransferStationIdentify(yellow, red);
+
+        Assertions.assertEquals(stationExpected, stationActual.getName());
     }
 }

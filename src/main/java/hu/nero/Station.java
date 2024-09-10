@@ -10,7 +10,7 @@ public class Station {
     private Station next;
     private int transitTimeInSeconds; //время перегона только до следующей станции
     private final Line line;
-    private final List<Station> transferStations;
+    private List<Station> transferStations;
     private final Subway subway;
 
     public Station(String name,
@@ -79,6 +79,13 @@ public class Station {
 
     public Subway getSubway() {
         return subway;
+    }
+
+    public void addTransferStation(Station station) {
+        if (transferStations == null) {
+            transferStations = new ArrayList<>();
+        }
+        transferStations.add(station);
     }
 
     @Override

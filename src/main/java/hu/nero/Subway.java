@@ -2,10 +2,7 @@ package hu.nero;
 
 import hu.nero.exception.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Subway {
     private String cityName;
@@ -50,15 +47,13 @@ public class Subway {
         checkStationNameNotExists(stationName);
         Line line = getLine(lineColor);
         checkLineIsEmpty(line);
-
         Station station = new Station(stationName, line, transferStations, this);
         line.addStation(station);
-
         return station;
     }
 
     private static void checkLineIsEmpty(Line line) {
-        if (line.getStations() != null && !line.getStations().isEmpty()) {
+        if (!line.getStations().isEmpty()) {
             throw new LineNotEmptyException("Line " + line.getColor() + " is not empty!");
         }
     }
@@ -109,7 +104,7 @@ public class Subway {
     }
 
     /**
-     * Получение последней станции в линии
+     * Получение последней станции в линии.
      */
     private Station getLastStationInLine(String lineColor) {
         var line = getLine(lineColor);
@@ -117,13 +112,13 @@ public class Subway {
     }
 
     /**
-     * Проверка на существование предыдущей станции
+     * Метод проверяет, что переданная в него станция является последней на линии.
      *
-     * @param currentLastStation lastStation
+     * @param station lastStation
      */
-    public void isStationLastInLine(Station currentLastStation) {
-        if (currentLastStation.getPrevious() != null) {
-            throw new PreviousAndNextStationException("The previous lastStation does not exist!");
+    public void isStationLastInLine(Station station) {
+        if (station.getNext() != null) {
+            throw new PreviousAndNextStationException("The Station is not last!");
         }
     }
 
@@ -136,11 +131,29 @@ public class Subway {
         }
     }
 
+    /**
+     * Метод определения станции на пересадку
+     */
+    public Station getTransferStationIdentify(String startColor, String endColor) {
+        Line startLine = getLine(startColor);
+        for (Station station : startLine.getStations()) {
+            List<Station> transferStations = station.getTransferStations();
+            for (Station transferStation : transferStations) {
+                String color = transferStation.getLine().getColor();
+                if (color.equals(endColor)) {
+                    return station;
+                }
+            }
+        }
+        throw new StationNameException("No transfer station");
+    }
+
     public String getCityName() {
         return cityName;
     }
 
     public void setCityName(String cityName) {
+
         this.cityName = cityName;
     }
 
