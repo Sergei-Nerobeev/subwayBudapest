@@ -118,7 +118,6 @@ public class Subway {
      */
     public void isStationLastInLine(Station currentLastStation) {
         if (currentLastStation.getPrevious() == null) {
-            System.out.println("The previous lastStation does not exist!");
         }
     }
 
@@ -141,7 +140,7 @@ public class Subway {
             for (Station transferStation : transferStations) {
                 String color = transferStation.getLine().getColor();
                 if (color.equals(endColor)) {
-                    return transferStation;
+                    return station;
                 }
             }
         }
