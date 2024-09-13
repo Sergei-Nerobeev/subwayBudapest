@@ -148,6 +148,18 @@ public class Subway {
         throw new StationNameException("No transfer station");
     }
 
+    /**
+     * Метод считает количество перегонов между двумя станциями
+     */
+    public int getIntervalBetweenStations(Station stationOne, Station stationTwo, String lineColor) {
+        Line line = getLine(lineColor);
+        for (Station station: line.getStations()){
+            
+        }
+        return 0;
+    }
+
+
     public String getCityName() {
         return cityName;
     }
