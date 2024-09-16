@@ -158,10 +158,8 @@ public class Subway {
             for (Station station : line.getStations()) {
                 if (station.getName().equals(stationOne.getName()) && station.getNext().equals(stationTwo)) {
                     return 1;
-
                 }
             }
-
         }
 
         return 0;
