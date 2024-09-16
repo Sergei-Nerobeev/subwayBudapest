@@ -151,11 +151,19 @@ public class Subway {
     /**
      * Метод считает количество перегонов между двумя станциями
      */
-    public int getIntervalBetweenStations(Station stationOne, Station stationTwo, String lineColor) {
-        Line line = getLine(lineColor);
-        for (Station station: line.getStations()){
-            
+    public int getIntervalBetweenStations(Station stationOne, Station stationTwo) {
+        var line = stationOne.getLine();
+        var sameLine = stationTwo.getLine();
+        if (line.getColor().equals(sameLine.getColor())) {
+            for (Station station : line.getStations()) {
+                if (station.getName().equals(stationOne.getName()) && station.getNext().equals(stationTwo)) {
+                    return 1;
+
+                }
+            }
+
         }
+
         return 0;
     }
 

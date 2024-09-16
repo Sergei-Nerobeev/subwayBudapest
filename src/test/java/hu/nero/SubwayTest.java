@@ -68,7 +68,7 @@ class SubwayTest {
 
         subway.createFirstStation(redLineColor, "Astoria", null);
         subway.createLastStation(redLineColor, "Keleti", 4, null);
-        Station pfa = subway.createLastStation(redLineColor,"Puscas Ferenc Arena", 5, null);
+        Station pfa = subway.createLastStation(redLineColor, "Puscas Ferenc Arena", 5, null);
         pfa.addTransferStation(deakFerencTer);
         deakFerencTer.addTransferStation(pfa);
         return subway;
@@ -183,5 +183,23 @@ class SubwayTest {
         Station stationActual = budapest.getTransferStationIdentify(yellow, red);
 
         Assertions.assertEquals(stationExpected, stationActual.getName());
+    }
+
+    @Test
+    void getIntervalBetweenStationsTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var stationsYellowLine = budapest.getLine("Yellow").getStations();
+        var stationsRedLine = budapest.getLine("Red").getStations();
+        Station oktogon = stationsYellowLine.get(0);
+        Station opera = stationsYellowLine.get(1);
+        Station astoria = stationsRedLine.get(0);
+        Station keleti = stationsRedLine.get(1);
+
+        int expected = 1;
+        int actual = budapest.getIntervalBetweenStations(oktogon, opera);
+        int actual2 = budapest.getIntervalBetweenStations(astoria, keleti);
+
+        Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual2);
     }
 }
