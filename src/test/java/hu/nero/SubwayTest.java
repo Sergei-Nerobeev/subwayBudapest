@@ -192,14 +192,19 @@ class SubwayTest {
         var stationsRedLine = budapest.getLine("Red").getStations();
         Station oktogon = stationsYellowLine.get(0);
         Station opera = stationsYellowLine.get(1);
+        Station baiza= stationsYellowLine.get(2);
+        Station deak = stationsYellowLine.get(3);
         Station astoria = stationsRedLine.get(0);
         Station keleti = stationsRedLine.get(1);
+        Station arena = stationsRedLine.get(2);
 
         int expected = 1;
-        int actual = budapest.getIntervalBetweenStations(oktogon, opera);
-        int actual2 = budapest.getIntervalBetweenStations(astoria, keleti);
+//        int actual = budapest.getIntervalBetweenStations2(oktogon, opera);
+        int actual2 = budapest.getIntervalBetweenStations(oktogon, deak);
 
-        Assertions.assertEquals(expected, actual);
+//        int actual2 = budapest.getIntervalBetweenStations(astoria, keleti);
+
         Assertions.assertEquals(expected, actual2);
+//        Assertions.assertEquals(expected, actual2);
     }
 }

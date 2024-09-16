@@ -62,9 +62,11 @@ public class Line {
 
     @Override
     public String toString() {
+        assert color != null;
+        assert subway != null;
         return "Line{" +
                 "color='" + color + '\'' +
-                ", stations=" + stations +
+                ", stations=" + stations.size() +
                 ", subway name=" + subway.getCityName() +
                 '}';
     }

@@ -108,6 +108,9 @@ public class Station {
 
     @Override
     public String toString() {
+        assert previous != null;
+        assert line != null;
+        assert subway != null;
         return "Station{" +
                 "name='" + name + '\'' +
                 ", previous=" + previous.getName() +
