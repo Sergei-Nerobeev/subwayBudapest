@@ -148,6 +148,34 @@ public class Subway {
         throw new StationNameException("No transfer station");
     }
 
+    /**
+     * Метод считает количество перегонов между двумя станциями
+     */
+
+    public int getInterval(Station stationOne, Station stationTwo) {
+        if (stationOne == null || stationTwo == null)
+            return -1;
+        var line = stationOne.getLine();
+        var sameLine = stationTwo.getLine();
+        if (!line.getColor().equals(sameLine.getColor()))
+            return -1;
+        int interval = 0;
+        boolean foundStart = false;
+        for (Station station : line.getStations()) {
+            if (station.equals(stationOne)) {
+                foundStart = true;
+            }
+            if (foundStart) {
+                if (station.equals(stationTwo)) {
+                    return interval;
+                }
+                interval++;
+            }
+        }
+        return -1;
+    }
+
+
     public String getCityName() {
         return cityName;
     }
@@ -163,7 +191,10 @@ public class Subway {
 
     @Override
     public String toString() {
-        return cityName;
+        return "Subway{" +
+                "cityName='" + cityName + '\'' +
+                ", lines=" + lines.toString() +
+                '}';
     }
 
     public void setLines(Set<Line> lines) {
@@ -182,4 +213,5 @@ public class Subway {
     public int hashCode() {
         return Objects.hash(cityName, lines);
     }
+
 }

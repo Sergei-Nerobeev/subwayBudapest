@@ -64,7 +64,7 @@ public class Line {
     public String toString() {
         return "Line{" +
                 "color='" + color + '\'' +
-                ", stations=" + stations +
+                ", stations=" + stations.size() +
                 ", subway name=" + subway.getCityName() +
                 '}';
     }
