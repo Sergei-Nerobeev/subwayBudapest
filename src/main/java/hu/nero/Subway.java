@@ -153,7 +153,7 @@ public class Subway {
      */
 
     public int getInterval(Station stationOne, Station stationTwo) {
-        if (isStationsNull(stationOne, stationTwo))
+        if (areStationsNull(stationOne, stationTwo))
             return -1;
         var line = stationOne.getLine();
         var sameLine = stationTwo.getLine();
@@ -176,7 +176,7 @@ public class Subway {
     }
 
     public int getIntervalFromLastStation(Station stationOne, Station stationTwo) {
-        if (isStationsNull(stationOne, stationTwo))
+        if (areStationsNull(stationOne, stationTwo))
             return -1;
         var line = stationOne.getLine();
         var sameLine = stationTwo.getLine();
@@ -194,7 +194,7 @@ public class Subway {
         return -1;
     }
 
-    private static boolean isStationsNull(Station stationOne, Station stationTwo) {
+    private static boolean areStationsNull(Station stationOne, Station stationTwo) {
         return stationOne == null || stationTwo == null;
     }
 
