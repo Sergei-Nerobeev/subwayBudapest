@@ -231,4 +231,32 @@ class SubwayTest {
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
     }
+    @Test
+    void getIntervalMainTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var stationsYellowLine = budapest.getLine("Yellow").getStations();
+        var stationsRedLine = budapest.getLine("Red").getStations();
+        Station oktogon = stationsYellowLine.get(0);
+        Station opera = stationsYellowLine.get(1);
+        Station baiza = stationsYellowLine.get(2);
+        Station deak = stationsYellowLine.get(3);
+        Station astoria = stationsRedLine.get(0);
+        Station keleti = stationsRedLine.get(1);
+        Station arena = stationsRedLine.get(2);
+
+        int expected1 = 0;
+        int expected2 = 0;
+        String expectedMessage = "Neither interval found between the specified stations.";
+
+        int actualYellow = budapest.getIntervalMain(opera, opera);
+        int actualRed = budapest.getIntervalMain(arena, arena);
+
+        RuntimeException exeption = Assertions.assertThrows(RuntimeException.class, () -> {
+            budapest.getIntervalMain(opera, null);
+        });
+
+        Assertions.assertEquals(expected1, actualYellow);
+        Assertions.assertEquals(expected2, actualRed);
+        Assertions.assertEquals(expectedMessage,exeption.getMessage());
+    }
 }
