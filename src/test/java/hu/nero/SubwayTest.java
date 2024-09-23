@@ -186,7 +186,7 @@ class SubwayTest {
     }
 
     @Test
-    void getIntervalTest_Success() {
+    void getIntervalTestSuccess() {
         var budapest = createDataForTestSubway("Budapest");
         var stationsYellowLine = budapest.getLine("Yellow").getStations();
         var stationsRedLine = budapest.getLine("Red").getStations();

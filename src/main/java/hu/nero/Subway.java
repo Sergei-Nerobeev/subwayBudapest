@@ -149,7 +149,8 @@ public class Subway {
     }
 
     /**
-     * Метод считает количество перегонов между двумя станциями
+     * Метод возвращает количество перегонов между двумя станциями на одной линии, либо возвращает -1,
+     * если конечная stationTwo стоит перед stationOne
      */
     public int getInterval(Station stationOne, Station stationTwo) {
         if (areStationsNull(stationOne, stationTwo))
@@ -175,7 +176,8 @@ public class Subway {
     }
 
     /**
-     * Метод считает количество перегонов между двумя станциями на одной линии (поиск по предыдущим станциям)
+     *  Метод возвращает количество перегонов между двумя станциями на одной линии идя от конечной
+     *  к начальной по previous, либо возвращает -1, если конечная stationTwo стоит перед stationOne
      */
     public int getIntervalFromLastStation(Station stationOne, Station stationTwo) {
         if (areStationsNull(stationOne, stationTwo))
@@ -197,7 +199,8 @@ public class Subway {
     }
 
     /**
-     * Метод считает количество перегонов между двумя станциями на одной линии
+     * Метод возвращает количество перегонов между двумя станциями на одной линии, вне зависимости от того,
+     * стоит stationOne перед stationTwo или наоборот.
      */
     public int getIntervalOnOneLine(Station stationOne, Station stationTwo) {
         int intervalOne = getInterval(stationOne, stationTwo);
@@ -229,19 +232,20 @@ public class Subway {
         var line = start.getLine();
         var otherLine = finish.getLine();
         if (line.getColor().equals(otherLine.getColor())) {
-            return getInterval(start, finish);
-        } else {
+            return getIntervalOnOneLine(start, finish);
+        }
             //если линии не совпали:
             Station transferStation =
-                    getTransferStationIdentify(line.getColor(), finish.getLine().getColor()); // WTF?
-            int intervalBetweenStations = getIntervalOnOneLine(start, transferStation);
+                    getTransferStationIdentify(line.getColor(), finish.getLine().getColor());
+            int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
 
             Station transferStation2 =
-                    getTransferStationIdentify(otherLine.getColor(), start.getLine().getColor()); // WTF?
-            int intervalBetweenStations2 = getIntervalOnOneLine(finish, transferStation2);
-            return intervalBetweenStations + intervalBetweenStations2;
+                    getTransferStationIdentify(otherLine.getColor(), start.getLine().getColor());
+            int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
+            return intervalForFirstLine + intervalForSecondLine;
         }
-    }
+
+
 
     public String getCityName() {
         return cityName;
