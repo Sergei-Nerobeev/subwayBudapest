@@ -194,6 +194,19 @@ public class Subway {
         return -1;
     }
 
+    public int getIntervalMain(Station stationOne, Station stationTwo) {
+        int intervalOne = getInterval(stationOne, stationTwo);
+        if (intervalOne != -1) {
+            return intervalOne;
+        }
+        int intervalTwo = getIntervalFromLastStation(stationOne, stationTwo);
+        if (intervalTwo != -1) {
+            return intervalTwo;
+        }
+        throw new RuntimeException("Neither interval found between the specified stations.");
+    }
+
+
     private static boolean areStationsNull(Station stationOne, Station stationTwo) {
         return stationOne == null || stationTwo == null;
     }
