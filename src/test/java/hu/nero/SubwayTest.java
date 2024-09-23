@@ -68,9 +68,9 @@ class SubwayTest {
 
         subway.createFirstStation(redLineColor, "Astoria", null);
         subway.createLastStation(redLineColor, "Keleti", 4, null);
-        Station pfa = subway.createLastStation(redLineColor, "Puscas Ferenc Arena", 5, null);
-        pfa.addTransferStation(deakFerencTer);
-        deakFerencTer.addTransferStation(pfa);
+        Station arena = subway.createLastStation(redLineColor, "Arena", 5, null);
+        arena.addTransferStation(deakFerencTer);
+        deakFerencTer.addTransferStation(arena);
         return subway;
     }
 
@@ -232,7 +232,7 @@ class SubwayTest {
         Assertions.assertEquals(expected2, actualRed);
     }
     @Test
-    void getIntervalMainTest_Success() {
+    void getIntervalOnOneLineTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
         var stationsYellowLine = budapest.getLine("Yellow").getStations();
         var stationsRedLine = budapest.getLine("Red").getStations();
@@ -248,15 +248,33 @@ class SubwayTest {
         int expected2 = 0;
         String expectedMessage = "Neither interval found between the specified stations.";
 
-        int actualYellow = budapest.getIntervalMain(opera, opera);
-        int actualRed = budapest.getIntervalMain(arena, arena);
+        int actualYellow = budapest.getIntervalOnOneLine(opera, opera);
+        int actualRed = budapest.getIntervalOnOneLine(arena, arena);
 
-        RuntimeException exeption = Assertions.assertThrows(RuntimeException.class, () -> {
-            budapest.getIntervalMain(opera, null);
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            budapest.getIntervalOnOneLine(opera, null);
         });
 
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
-        Assertions.assertEquals(expectedMessage,exeption.getMessage());
+        Assertions.assertEquals(expectedMessage,exception.getMessage());
+    }
+    @Test
+    void getIntervalFromDifferentLinesTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var stationsYellowLine = budapest.getLine("Yellow").getStations();
+        var stationsRedLine = budapest.getLine("Red").getStations();
+        Station oktogon = stationsYellowLine.get(0);
+        Station astoria = stationsRedLine.get(0);
+
+        int expectedTotalIntervalNegative = -1;
+        int expectedTotalIntervalPositive = 5;
+        int actualTotalInterval = budapest.getIntervalFromDifferentLines(oktogon, astoria);
+        int actualTotalIntervalNull = budapest.getIntervalFromDifferentLines(oktogon, null);
+
+        Assertions.assertNotEquals(expectedTotalIntervalNegative,actualTotalInterval);
+        Assertions.assertEquals(expectedTotalIntervalPositive,actualTotalInterval);
+        Assertions.assertEquals(expectedTotalIntervalNegative,actualTotalIntervalNull);
+
     }
 }
