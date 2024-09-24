@@ -236,11 +236,11 @@ public class Subway {
         }
             //если линии не совпали:
             Station transferStation =
-                    getTransferStationIdentify(line.getColor(), finish.getLine().getColor());
+                    getTransferStationIdentify(line.getColor(), otherLine.getColor());
             int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
 
             Station transferStation2 =
-                    getTransferStationIdentify(otherLine.getColor(), start.getLine().getColor());
+                    getTransferStationIdentify(otherLine.getColor(), line.getColor());
             int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
             return intervalForFirstLine + intervalForSecondLine;
         }
