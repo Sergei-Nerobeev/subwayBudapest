@@ -149,9 +149,9 @@ public class Subway {
     }
 
     /**
-     * Метод считает количество перегонов между двумя станциями
+     * Метод возвращает количество перегонов между двумя станциями на одной линии, либо возвращает -1,
+     * если конечная stationTwo стоит перед stationOne
      */
-
     public int getInterval(Station stationOne, Station stationTwo) {
         if (areStationsNull(stationOne, stationTwo))
             return -1;
@@ -175,6 +175,10 @@ public class Subway {
         return -1;
     }
 
+    /**
+     *  Метод возвращает количество перегонов между двумя станциями на одной линии идя от конечной
+     *  к начальной по previous, либо возвращает -1, если конечная stationTwo стоит перед stationOne
+     */
     public int getIntervalFromLastStation(Station stationOne, Station stationTwo) {
         if (areStationsNull(stationOne, stationTwo))
             return -1;
@@ -194,7 +198,11 @@ public class Subway {
         return -1;
     }
 
-    public int getIntervalMain(Station stationOne, Station stationTwo) {
+    /**
+     * Метод возвращает количество перегонов между двумя станциями на одной линии, вне зависимости от того,
+     * стоит stationOne перед stationTwo или наоборот.
+     */
+    public int getIntervalOnOneLine(Station stationOne, Station stationTwo) {
         int intervalOne = getInterval(stationOne, stationTwo);
         if (intervalOne != -1) {
             return intervalOne;
@@ -206,10 +214,38 @@ public class Subway {
         throw new RuntimeException("Neither interval found between the specified stations.");
     }
 
-
+    /**
+     * Проверка на null
+     */
     private static boolean areStationsNull(Station stationOne, Station stationTwo) {
         return stationOne == null || stationTwo == null;
     }
+
+    /**
+     * Метод считает количество перегонов между двумя станциями на разных линиях
+     */
+    public int getIntervalFromDifferentLines(Station start, Station finish) {
+        if (areStationsNull(start, finish) || start.equals(finish)) {
+            return -1;
+        }
+        //если линии совпали:
+        var line = start.getLine();
+        var otherLine = finish.getLine();
+        if (line.getColor().equals(otherLine.getColor())) {
+            return getIntervalOnOneLine(start, finish);
+        }
+            //если линии не совпали:
+            Station transferStation =
+                    getTransferStationIdentify(line.getColor(), otherLine.getColor());
+            int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
+
+            Station transferStation2 =
+                    getTransferStationIdentify(otherLine.getColor(), line.getColor());
+            int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
+            return intervalForFirstLine + intervalForSecondLine;
+        }
+
+
 
     public String getCityName() {
         return cityName;
