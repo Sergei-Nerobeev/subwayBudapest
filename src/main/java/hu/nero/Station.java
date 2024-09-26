@@ -1,5 +1,8 @@
 package hu.nero;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +15,7 @@ public class Station {
     private final Line line;
     private List<Station> transferStations;
     private final Subway subway;
+    public TicketOffice ticketOffice;
 
     public Station(String name,
                    Station previous,
@@ -38,6 +42,13 @@ public class Station {
                 0,
                 line,
                 subway);
+    }
+
+    public Station(String name, Line line, Subway subway,TicketOffice ticketOffice) {
+        this.name = name;
+        this.line = line;
+        this.subway = subway;
+        this.ticketOffice = ticketOffice;
     }
 
     public String getName() {
@@ -86,6 +97,38 @@ public class Station {
             transferStations = new ArrayList<>();
         }
         transferStations.add(station);
+    }
+
+    public void sellTicket(String date, Station start, Station finish) { // Метод продажи билетов
+        if (start == null || finish == null) {
+            throw new IllegalArgumentException("Stations cannot be null.");
+        }
+        if (start.equals(finish)) {
+            throw new IllegalArgumentException("Start station cannot be the same as finish station.");
+        }
+        int interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
+        int ticketPrice = calculateTicketPrice(interval);  // Рассчитываем стоимость билета
+        dailyIncome(date, ticketPrice);
+    }
+
+    private void dailyIncome(String date, int ticketPrice) { // Метод добавления даты и дневной выручки в кассу
+        ticketOffice.addRevenue(convertStringToLocalDate(date), ticketPrice);
+    }
+
+    private int calculateTicketPrice(int interval) { // Метод считает стоимость билета
+        int TAX = 20; // Стоимость билета
+        int FIVE_FACTOR = 5; // Коэффициент 5
+        return (interval * FIVE_FACTOR) + TAX; // Стоимость проезда
+    }
+
+    private String convertStringToLocalDate(String date) { // Метод конвертирует Строку в формат ЛокалДата по паттерну.
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        try {
+            LocalDate localDate = LocalDate.parse(date, dateTimeFormatter);
+            return localDate.toString();
+        } catch (DateTimeException dateTimeException) {
+            return "Invalid date format. Please use dd.MM.yyyy.";
+        }
     }
 
     @Override
