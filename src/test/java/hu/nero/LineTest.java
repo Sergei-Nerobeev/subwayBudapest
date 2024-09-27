@@ -17,6 +17,7 @@ class LineTest {
         var subway = new Subway("Budapest");
         var yellowLine = new Line("Red", subway);
         List<Station> transferStations = new ArrayList<>();
+        TicketOffice ticketOffice = new TicketOffice();
         var stationExpected = new Station("Oktogon", yellowLine, transferStations, subway);
         var stationActual = new Station("Oktogon", yellowLine, transferStations, subway);
 
@@ -30,6 +31,7 @@ class LineTest {
         var subway = new Subway("Budapest");
         var yellowLine = new Line("Red", subway);
         List<Station> transferStations = new ArrayList<>();
+        TicketOffice ticketOffice = new TicketOffice();
         var stationExpected = new Station("Oktogon", yellowLine, transferStations, subway);
 
         yellowLine.addStation(stationExpected);
