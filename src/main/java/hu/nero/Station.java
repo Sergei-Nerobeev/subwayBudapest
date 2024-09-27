@@ -16,7 +16,7 @@ public class Station {
     private final Line line;
     private List<Station> transferStations;
     private final Subway subway;
-    public TicketOffice ticketOffice;
+    private final TicketOffice ticketOffice;
 
     public Station(String name,
                    Station previous,
@@ -107,7 +107,7 @@ public class Station {
         transferStations.add(station);
     }
 
-    public void sellTicket(Station start, Station finish) { // Метод продажи билетов
+    public String sellTicket(Station start, Station finish) { // Метод продажи билетов
         if (start == null || finish == null) {
             throw new IllegalArgumentException("Stations cannot be null.");
         }
@@ -116,7 +116,7 @@ public class Station {
         }
         int interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
         ticketOffice.addRevenue(interval);
-
+        return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 
     private String convertStringToLocalDate(String date) { // Метод конвертирует Строку в формат ЛокалДата по паттерну.
