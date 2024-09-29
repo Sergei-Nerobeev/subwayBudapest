@@ -16,7 +16,7 @@ public class Station {
     private final Line line;
     private List<Station> transferStations;
     private final Subway subway;
-    private final TicketOffice ticketOffice; // todo
+    private TicketOffice ticketOffice;
 
     public Station(String name,
                    Station previous,
@@ -52,7 +52,10 @@ public class Station {
      * @param subway Система метро, к которой относится станция.
      * @param ticketOffice Касса для продажи билетов на станции.
      */
-    public Station(String name, Line line, Subway subway,TicketOffice ticketOffice) { //todo
+    public Station(String name,
+                   Line line,
+                   Subway subway,
+                   TicketOffice ticketOffice) {
         this.name = name;
         this.line = line;
         this.subway = subway;
@@ -119,15 +122,7 @@ public class Station {
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 
-    private String convertStringToLocalDate(String date) { // Метод конвертирует Строку в формат ЛокалДата по паттерну.
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        try {
-            LocalDateTime localDateTime = LocalDateTime.parse(date, dateTimeFormatter);
-            return localDateTime.toString();
-        } catch (DateTimeException dateTimeException) {
-            return "Invalid date format. Please use dd.MM.yyyy.";
-        }
-    }
+
 
     @Override
     public boolean equals(Object o) {

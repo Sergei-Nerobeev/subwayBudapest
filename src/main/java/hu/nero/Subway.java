@@ -210,7 +210,7 @@ public class Subway {
         int intervalTwo = getIntervalFromLastStation(stationOne, stationTwo);
         if (intervalTwo != -1) {
             return intervalTwo;
-        }
+         }
         throw new RuntimeException("Neither interval found between the specified stations.");
     }
 
