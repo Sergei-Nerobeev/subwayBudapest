@@ -31,6 +31,8 @@ public class Station {
         this.line = line;
         this.transferStations = new ArrayList<>();
         this.subway = subway;
+        this.ticketOffice = new TicketOffice();
+
     }
 
     public Station(String name,
@@ -110,7 +112,7 @@ public class Station {
         transferStations.add(station);
     }
 
-    public String sellTicket(Station start, Station finish,TicketOffice ticketOffice) { // Метод продажи билетов
+    public String sellTicket(Station start, Station finish) { // Метод продажи билетов
         if (start == null || finish == null) {
             throw new IllegalArgumentException("Stations cannot be null.");
         }

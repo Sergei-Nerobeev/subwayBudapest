@@ -1,49 +1,57 @@
 package hu.nero;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TicketOfficeTest {
+import java.time.LocalDate;
 
-    public Subway createDataForTestSubway(String cityName) {
-        var yellowLineColor = "Yellow";
-        var redLineColor = "Red";
-        Subway subway = new Subway(cityName);
-        subway.createNewLine(yellowLineColor);
-        subway.createNewLine(redLineColor);
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class TicketOfficeTest {
 
 
-        subway.createFirstStation(yellowLineColor, "Oktogon", null);
-        subway.createLastStation(yellowLineColor, "Opera", 4, null);
-        subway.createLastStation(yellowLineColor, "Bajza utca", 5, null);
-        Station deakFerencTer = subway.createLastStation(yellowLineColor, "Deak Ferenc Ter", 6, null);
+    @Test
+    void addRevenueTest_Success() {
+        var ticketOffice = new TicketOffice();
+        var testStationsAmount = 5;
+        var testDate = LocalDate.now();
+        var expectedRevenue = 45;
 
-        Station station = subway.createFirstStation(redLineColor, "Astoria", null);
-        subway.createLastStation(redLineColor, "Keleti", 4, null);
-        Station arena = subway.createLastStation(redLineColor, "Arena", 5, null);
-        arena.addTransferStation(deakFerencTer);
-        deakFerencTer.addTransferStation(arena);
 
-        return subway;
+        ticketOffice.addRevenue(testStationsAmount);
+        var actualRevenue = ticketOffice.getDailyRevenue(testDate);
+
+        assertEquals(expectedRevenue, actualRevenue);
     }
 
     @Test
-    void sellTicketTest_Success() {
-        TicketOffice ticketOffice = new TicketOffice();
-        var budapest = createDataForTestSubway("Budapest");
-        var stationsYellowLine = budapest.getLine("Yellow").getStations();
-        var stationsRedLine = budapest.getLine("Red").getStations();
-        Station oktogon = stationsYellowLine.get(0);
-        Station astoria = stationsRedLine.get(0);
-
-        ticketOffice.addRevenue(2);
-        var expectedInfo = oktogon.sellTicket(oktogon, astoria,ticketOffice);
-        var actualInfo = "Ticket: Oktogon Astoria interval: 5";
+    void addRevenueTest_Zero() {
+        var ticketOffice = new TicketOffice();
+        var testStationsAmount = 0;
+        var testDate = LocalDate.now();
+        var expectedRevenue = 20;
 
 
-        Assertions.assertEquals(expectedInfo,actualInfo);
+        ticketOffice.addRevenue(testStationsAmount);
+        var actualRevenue = ticketOffice.getDailyRevenue(testDate);
 
+        assertEquals(expectedRevenue, actualRevenue);
     }
 
 
+    @Test
+    @DisplayName("Добавление билета к стоимости дневной выручке не Налл")
+    void addRevenueTest_NotNull() {
+        var ticketOffice = new TicketOffice();
+        ticketOffice.addRevenue(2);
+        var testStationsAmount = 2;
+        var testDate = LocalDate.now();
+        var expectedRevenue = 60;
+
+        ticketOffice.addRevenue(testStationsAmount);
+        var actualRevenue = ticketOffice.getDailyRevenue(testDate);
+
+        assertEquals(expectedRevenue, actualRevenue);
+    }
 }
