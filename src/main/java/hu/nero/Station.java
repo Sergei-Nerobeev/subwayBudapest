@@ -110,7 +110,7 @@ public class Station {
         transferStations.add(station);
     }
 
-    public String sellTicket(Station start, Station finish) { // Метод продажи билетов
+    public String sellTicket(Station start, Station finish,TicketOffice ticketOffice) { // Метод продажи билетов
         if (start == null || finish == null) {
             throw new IllegalArgumentException("Stations cannot be null.");
         }
@@ -118,7 +118,7 @@ public class Station {
             throw new IllegalArgumentException("Start station cannot be the same as finish station.");
         }
         int interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
-        ticketOffice.addRevenue(interval);
+        ticketOffice.addRevenue(interval); // ЗДЕСЬ НУЛЛ ПОИНТЕР ВОЗНИКАЕТ
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 

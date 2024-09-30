@@ -23,6 +23,7 @@ public class TicketOfficeTest {
         Station arena = subway.createLastStation(redLineColor, "Arena", 5, null);
         arena.addTransferStation(deakFerencTer);
         deakFerencTer.addTransferStation(arena);
+
         return subway;
     }
 
@@ -34,13 +35,13 @@ public class TicketOfficeTest {
         var stationsRedLine = budapest.getLine("Red").getStations();
         Station oktogon = stationsYellowLine.get(0);
         Station astoria = stationsRedLine.get(0);
-        // Coздать обьект Станция с Кассой надо!
+
         ticketOffice.addRevenue(2);
-        var expectedInfo = oktogon.sellTicket(oktogon, astoria);
-        var actualInfo = "Ticket: Oktogon Astoria interval: ";
+        var expectedInfo = oktogon.sellTicket(oktogon, astoria,ticketOffice);
+        var actualInfo = "Ticket: Oktogon Astoria interval: 5";
 
 
-//        Assertions.assertEquals(expectedInfo,);
+        Assertions.assertEquals(expectedInfo,actualInfo);
 
     }
 
