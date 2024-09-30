@@ -10,14 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TicketOfficeTest {
 
-
     @Test
     void addRevenueTest_Success() {
         var ticketOffice = new TicketOffice();
         var testStationsAmount = 5;
         var testDate = LocalDate.now();
         var expectedRevenue = 45;
-
 
         ticketOffice.addRevenue(testStationsAmount);
         var actualRevenue = ticketOffice.getDailyRevenue(testDate);
@@ -32,13 +30,11 @@ class TicketOfficeTest {
         var testDate = LocalDate.now();
         var expectedRevenue = 20;
 
-
         ticketOffice.addRevenue(testStationsAmount);
         var actualRevenue = ticketOffice.getDailyRevenue(testDate);
 
         assertEquals(expectedRevenue, actualRevenue);
     }
-
 
     @Test
     @DisplayName("Добавление билета к стоимости дневной выручке не Налл")

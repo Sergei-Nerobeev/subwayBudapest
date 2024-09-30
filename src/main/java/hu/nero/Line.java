@@ -47,6 +47,15 @@ public class Line {
         return stations.get(stations.size() - 1);
     }
 
+    public Station getStation(String searchStation) {
+        for (Station station : stations) {
+            if (station.getName().equals(searchStation)) {
+                return station;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,6 +77,4 @@ public class Line {
                 ", subway name=" + subway.getCityName() +
                 '}';
     }
-
-
 }

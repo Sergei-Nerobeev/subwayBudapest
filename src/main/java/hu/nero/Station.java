@@ -16,7 +16,7 @@ public class Station {
     private final Line line;
     private List<Station> transferStations;
     private final Subway subway;
-    private TicketOffice ticketOffice;
+    private final TicketOffice ticketOffice;
 
     public Station(String name,
                    Station previous,
@@ -46,12 +46,13 @@ public class Station {
                 line,
                 subway);
     }
+
     /**
      * Конструктор для создания объекта станции.
      *
-     * @param name Имя станции.
-     * @param line Линия, к которой принадлежит станция.
-     * @param subway Система метро, к которой относится станция.
+     * @param name         Имя станции.
+     * @param line         Линия, к которой принадлежит станция.
+     * @param subway       Система метро, к которой относится станция.
      * @param ticketOffice Касса для продажи билетов на станции.
      */
     public Station(String name,
@@ -119,12 +120,10 @@ public class Station {
         if (start.equals(finish)) {
             throw new IllegalArgumentException("Start station cannot be the same as finish station.");
         }
-        int interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
+        var interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
         ticketOffice.addRevenue(interval); // ЗДЕСЬ НУЛЛ ПОИНТЕР ВОЗНИКАЕТ
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

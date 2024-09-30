@@ -245,8 +245,6 @@ public class Subway {
             return intervalForFirstLine + intervalForSecondLine;
         }
 
-
-
     public String getCityName() {
         return cityName;
     }
