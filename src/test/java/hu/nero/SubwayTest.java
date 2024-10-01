@@ -8,29 +8,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hu.nero.Util.createDataForTestSubway;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @DisplayName("Тестирование методов класса Subway")
 class SubwayTest {
-    public Subway createDataForTestSubway(String cityName) {
-        var yellowLineColor = "Yellow";
-        var redLineColor = "Red";
-        Subway subway = new Subway(cityName);
-        subway.createNewLine(yellowLineColor);
-        subway.createNewLine(redLineColor);
 
-        subway.createFirstStation(yellowLineColor, "Oktogon", null);
-        subway.createLastStation(yellowLineColor, "Opera", 4, null);
-        subway.createLastStation(yellowLineColor, "Bajza utca", 5, null);
-        Station deakFerencTer = subway.createLastStation(yellowLineColor, "Deak Ferenc Ter", 6, null);
-
-        subway.createFirstStation(redLineColor, "Astoria", null);
-        subway.createLastStation(redLineColor, "Keleti", 4, null);
-        Station arena = subway.createLastStation(redLineColor, "Arena", 5, null);
-        arena.addTransferStation(deakFerencTer);
-        deakFerencTer.addTransferStation(arena);
-        return subway;
-    }
 
     @DisplayName("isLineWithThisColorExists - correct data - Line color exist!")
     @Test
@@ -166,8 +149,9 @@ class SubwayTest {
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
     }
+
     @Test
-    void getIntervalFromLastStationTest_Success(){
+    void getIntervalFromLastStationTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
         var stationsYellowLine = budapest.getLine("Yellow").getStations();
         var stationsRedLine = budapest.getLine("Red").getStations();
@@ -189,6 +173,7 @@ class SubwayTest {
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
     }
+
     @Test
     void getIntervalOnOneLineTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
@@ -215,8 +200,9 @@ class SubwayTest {
 
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
-        Assertions.assertEquals(expectedMessage,exception.getMessage());
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
+
     @Test
     void getIntervalFromDifferentLinesTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
@@ -230,9 +216,9 @@ class SubwayTest {
         int actualTotalInterval = budapest.getIntervalFromDifferentLines(oktogon, astoria);
         int actualTotalIntervalNull = budapest.getIntervalFromDifferentLines(oktogon, null);
 
-        Assertions.assertNotEquals(expectedTotalIntervalNegative,actualTotalInterval);
-        Assertions.assertEquals(expectedTotalIntervalPositive,actualTotalInterval);
-        Assertions.assertEquals(expectedTotalIntervalNegative,actualTotalIntervalNull);
+        Assertions.assertNotEquals(expectedTotalIntervalNegative, actualTotalInterval);
+        Assertions.assertEquals(expectedTotalIntervalPositive, actualTotalInterval);
+        Assertions.assertEquals(expectedTotalIntervalNegative, actualTotalIntervalNull);
 
     }
 }

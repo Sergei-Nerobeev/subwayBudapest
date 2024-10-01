@@ -3,30 +3,11 @@ package hu.nero;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static hu.nero.Util.createDataForTestSubway;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Testing Station class methods")
 class StationTest {
-
-    public Subway createDataForTestSubway(String cityName) {
-        var yellowLineColor = "Yellow";
-        var redLineColor = "Red";
-        Subway subway = new Subway(cityName);
-        subway.createNewLine(yellowLineColor);
-        subway.createNewLine(redLineColor);
-
-        subway.createFirstStation(yellowLineColor, "Oktogon", null);
-        subway.createLastStation(yellowLineColor, "Opera", 4, null);
-        subway.createLastStation(yellowLineColor, "Bajza utca", 5, null);
-        Station deakFerencTer = subway.createLastStation(yellowLineColor, "Deak Ferenc Ter", 6, null);
-
-        subway.createFirstStation(redLineColor, "Astoria", null);
-        subway.createLastStation(redLineColor, "Keleti", 4, null);
-        Station arena = subway.createLastStation(redLineColor, "Arena", 5, null);
-        arena.addTransferStation(deakFerencTer);
-        deakFerencTer.addTransferStation(arena);
-        return subway;
-    }
 
     @Test
     @DisplayName("Продажа билета - позитивный сценарий - корректные тестовые данные на одной линии")
