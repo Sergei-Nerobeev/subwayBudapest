@@ -176,8 +176,8 @@ public class Subway {
     }
 
     /**
-     *  Метод возвращает количество перегонов между двумя станциями на одной линии идя от конечной
-     *  к начальной по previous, либо возвращает -1, если конечная stationTwo стоит перед stationOne
+     * Метод возвращает количество перегонов между двумя станциями на одной линии идя от конечной
+     * к начальной по previous, либо возвращает -1, если конечная stationTwo стоит перед stationOne
      */
     public int getIntervalFromLastStation(Station stationOne, Station stationTwo) {
         if (areStationsNull(stationOne, stationTwo))
@@ -210,7 +210,7 @@ public class Subway {
         int intervalTwo = getIntervalFromLastStation(stationOne, stationTwo);
         if (intervalTwo != -1) {
             return intervalTwo;
-         }
+        }
         throw new RuntimeException("Neither interval found between the specified stations.");
     }
 
@@ -234,16 +234,16 @@ public class Subway {
         if (line.getColor().equals(otherLine.getColor())) {
             return getIntervalOnOneLine(start, finish);
         }
-            //если линии не совпали:
-            Station transferStation =
-                    getTransferStationIdentify(line.getColor(), otherLine.getColor());
-            int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
+        //если линии не совпали:
+        Station transferStation =
+                getTransferStationIdentify(line.getColor(), otherLine.getColor());
+        int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
 
-            Station transferStation2 =
-                    getTransferStationIdentify(otherLine.getColor(), line.getColor());
-            int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
-            return intervalForFirstLine + intervalForSecondLine;
-        }
+        Station transferStation2 =
+                getTransferStationIdentify(otherLine.getColor(), line.getColor());
+        int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
+        return intervalForFirstLine + intervalForSecondLine;
+    }
 
     public String getCityName() {
         return cityName;

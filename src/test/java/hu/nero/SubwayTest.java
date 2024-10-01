@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import static hu.nero.Util.createDataForTestSubway;
+import static hu.nero.DataTestProviderUtil.createDataForTestSubway;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @DisplayName("Тестирование методов класса Subway")
