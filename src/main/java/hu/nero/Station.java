@@ -121,7 +121,7 @@ public class Station {
             throw new IllegalArgumentException("Start station cannot be the same as finish station.");
         }
         var interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
-        ticketOffice.addRevenue(interval); // ЗДЕСЬ НУЛЛ ПОИНТЕР ВОЗНИКАЕТ
+        ticketOffice.addRevenue(interval);
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 

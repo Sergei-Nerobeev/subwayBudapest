@@ -1,6 +1,5 @@
 package hu.nero;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +36,7 @@ class TicketOfficeTest {
     }
 
     @Test
-    @DisplayName("Добавление билета к стоимости дневной выручке не Налл")
+    @DisplayName("Добавление билета к стоимости дневной выручке не Null")
     void addRevenueTest_NotNull() {
         var ticketOffice = new TicketOffice();
         ticketOffice.addRevenue(2);

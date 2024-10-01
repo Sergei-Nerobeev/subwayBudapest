@@ -19,7 +19,7 @@ public class TicketOffice {
 /**
  * Данный метод ожидает на вход только положительные числа.
  * */
-    public void addRevenue(int stationsAmount) { // Добавить дату и дневную выручку
+    public void addRevenue(int stationsAmount) { // Добавляет дату покупки и дневную выручку
         var today = LocalDate.now();
         var ticketPrice = (stationsAmount * COST_OF_ONE_STATION_RIDE) + TAX;
         var revenue = purchaseDateToDailyRevenue.get(today);
