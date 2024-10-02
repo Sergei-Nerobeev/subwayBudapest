@@ -3,7 +3,7 @@ package hu.nero;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static hu.nero.DataTestProviderUtil.createDataForTestSubway;
+import static hu.nero.TestDataProvider.createDataForTestSubway;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Testing Station class methods")
