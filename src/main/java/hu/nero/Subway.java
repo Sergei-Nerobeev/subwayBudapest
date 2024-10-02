@@ -7,6 +7,7 @@ import java.util.*;
 public class Subway {
     private String cityName;
     private Set<Line> lines;
+    private int ticketCounter = 0;
 
     public Subway(String cityName) {
         this.cityName = cityName;
@@ -228,13 +229,13 @@ public class Subway {
         if (areStationsNull(start, finish) || start.equals(finish)) {
             return -1;
         }
-        //если линии совпали:
+        // если линии совпали:
         var line = start.getLine();
         var otherLine = finish.getLine();
         if (line.getColor().equals(otherLine.getColor())) {
             return getIntervalOnOneLine(start, finish);
         }
-        //если линии не совпали:
+        // если линии не совпали:
         Station transferStation =
                 getTransferStationIdentify(line.getColor(), otherLine.getColor());
         int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
@@ -243,6 +244,13 @@ public class Subway {
                 getTransferStationIdentify(otherLine.getColor(), line.getColor());
         int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
         return intervalForFirstLine + intervalForSecondLine;
+    }
+    // метод генерации номера проездного билета
+
+    public String generateMonthlyTicketNumber() {
+        var result = String.format("a%04d",ticketCounter );
+        ticketCounter++;
+        return result;
     }
 
     public String getCityName() {
