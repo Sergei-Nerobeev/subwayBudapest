@@ -10,6 +10,7 @@ import java.util.Map;
 public class TicketOffice {
     private static final int TAX = 20; // Налог с каждого билета
     private static final int COST_OF_ONE_STATION_RIDE = 5; // Коэффициент 5
+    private static final int COST_OF_MONTHLY_TICKET = 3000;
     private final Map<LocalDate, Integer> purchaseDateToDailyRevenue; // Хранит доходы по датам
 
 
@@ -27,6 +28,17 @@ public class TicketOffice {
             purchaseDateToDailyRevenue.put(today, ticketPrice);
         } else {
             purchaseDateToDailyRevenue.put(today, revenue + ticketPrice);
+
+        }
+    }
+    // Метод добавляет стоимость проездного в доход кассы.
+    public void addRevenueMonthlyTicket() {
+       var sellDate = LocalDate.now();
+        var revenue = purchaseDateToDailyRevenue.get(sellDate);
+        if (revenue == null) {
+            purchaseDateToDailyRevenue.put(sellDate, COST_OF_MONTHLY_TICKET);
+        } else {
+            purchaseDateToDailyRevenue.put(sellDate, revenue + COST_OF_MONTHLY_TICKET);
 
         }
     }

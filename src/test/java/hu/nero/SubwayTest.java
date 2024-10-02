@@ -240,7 +240,7 @@ class SubwayTest {
     @DisplayName("Генерация номера проездного билета - проверка количества знаков номера")
     void generateMonthlyTicketNumberTest_MultiNumbers() {
         var budapest = createDataForTestSubway("Budapest");
-        for (int i = 0; i < 9999; i++) {
+        for (int i = 0; i < 10000; i++) {
             String expected = String.format("a%04d", i);
             String actual = budapest.generateMonthlyTicketNumber();
 

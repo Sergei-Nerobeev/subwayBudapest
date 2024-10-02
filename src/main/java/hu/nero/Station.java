@@ -126,6 +126,7 @@ public class Station {
     }
 
     public String sellMonthlyTicket() {
+        ticketOffice.addRevenueMonthlyTicket();
         return null;
     }
 

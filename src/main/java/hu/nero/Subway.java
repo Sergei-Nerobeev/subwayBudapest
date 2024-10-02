@@ -2,16 +2,19 @@ package hu.nero;
 
 import hu.nero.exception.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Subway {
     private String cityName;
     private Set<Line> lines;
     private int ticketCounter = 0;
+    private Map<MonthlyTicket, LocalDate> ticketsMonthlyTicketToLocalData;
 
     public Subway(String cityName) {
         this.cityName = cityName;
         this.lines = new HashSet<>();
+        this.ticketsMonthlyTicketToLocalData = new HashMap<>();
     }
 
     public Line createNewLine(String newLineColor) {
@@ -248,9 +251,9 @@ public class Subway {
     // метод генерации номера проездного билета
 
     public String generateMonthlyTicketNumber() {
-        var result = String.format("a%04d",ticketCounter );
+        var ticketNumber = String.format("a%04d",ticketCounter );
         ticketCounter++;
-        return result;
+        return ticketNumber;
     }
 
     public String getCityName() {
