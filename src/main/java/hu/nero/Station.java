@@ -1,5 +1,9 @@
 package hu.nero;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +16,7 @@ public class Station {
     private final Line line;
     private List<Station> transferStations;
     private final Subway subway;
+    private final TicketOffice ticketOffice;
 
     public Station(String name,
                    Station previous,
@@ -26,6 +31,8 @@ public class Station {
         this.line = line;
         this.transferStations = new ArrayList<>();
         this.subway = subway;
+        this.ticketOffice = new TicketOffice();
+
     }
 
     public Station(String name,
@@ -38,6 +45,24 @@ public class Station {
                 0,
                 line,
                 subway);
+    }
+
+    /**
+     * Конструктор для создания объекта станции.
+     *
+     * @param name         Имя станции.
+     * @param line         Линия, к которой принадлежит станция.
+     * @param subway       Система метро, к которой относится станция.
+     * @param ticketOffice Касса для продажи билетов на станции.
+     */
+    public Station(String name,
+                   Line line,
+                   Subway subway,
+                   TicketOffice ticketOffice) {
+        this.name = name;
+        this.line = line;
+        this.subway = subway;
+        this.ticketOffice = ticketOffice;
     }
 
     public String getName() {
@@ -86,6 +111,18 @@ public class Station {
             transferStations = new ArrayList<>();
         }
         transferStations.add(station);
+    }
+
+    public String sellTicket(Station start, Station finish) { // Метод продажи билетов
+        if (start == null || finish == null) {
+            throw new IllegalArgumentException("Stations cannot be null.");
+        }
+        if (start.equals(finish)) {
+            throw new IllegalArgumentException("Start station cannot be the same as finish station.");
+        }
+        var interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
+        ticketOffice.addRevenue(interval);
+        return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 
     @Override

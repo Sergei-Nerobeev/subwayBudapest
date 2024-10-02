@@ -1,7 +1,5 @@
 package hu.nero;
 
-
-import hu.nero.exception.StationNameException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +49,6 @@ class LineTest {
         yellowLine.addStation(stationActual);
 
         Assertions.assertEquals(2, yellowLine.getStations().size());
-
 
     }
 }

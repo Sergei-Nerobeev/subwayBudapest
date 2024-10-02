@@ -6,78 +6,19 @@ import org.junit.jupiter.api.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import static hu.nero.TestDataProvider.createDataForTestSubway;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @DisplayName("Тестирование методов класса Subway")
 class SubwayTest {
 
-    public Subway createTestSubway(String cityName) {
-        var redLineColor = "Red";
-        var blueLineColor = "Blue";
-        var yellowLineColor = "Yellow";
-        Subway subway = new Subway(cityName);
-        Line redLine = new Line(redLineColor, subway);
-        Line blueLine = new Line(blueLineColor, subway);
-        Line yellowLine = new Line(yellowLineColor, subway);
-        List<Station> transferStations = new ArrayList<>();
-        transferStations.add(null);
-        Set<Line> lines = new HashSet<>();
-        lines.add(redLine);
-        lines.add(blueLine);
-        lines.add(yellowLine);
-        Station oktogon = new Station("Oktogon", yellowLine, transferStations, subway);
-        Station opera = new Station("Opera", yellowLine, transferStations, subway);
-        Station bajzaUtca = new Station("Bajza Utca", yellowLine, transferStations, subway);
-        yellowLine.addStation(oktogon);
-        yellowLine.addStation(opera);
-        yellowLine.addStation(bajzaUtca);
-        Station astoria = new Station("Astoria", redLine, transferStations, subway);
-        Station keleti = new Station("Keleti", redLine, transferStations, subway);
-        Station puscasFerencArena = new Station("Puscas Ferenc Arena", redLine, transferStations, subway);
-        redLine.addStation(astoria);
-        redLine.addStation(keleti);
-        redLine.addStation(puscasFerencArena);
-        Station klinikak = new Station("Klinikak", blueLine, transferStations, subway);
-        Station nepLiget = new Station("NepLiget", blueLine, transferStations, subway);
-        Station lehelTer = new Station("LehelTer", blueLine, transferStations, subway);
-        blueLine.addStation(klinikak);
-        blueLine.addStation(nepLiget);
-        blueLine.addStation(lehelTer);
-        Station transDeakFerencTer = new Station("Deak Ferenc Ter", bajzaUtca, astoria, 2, yellowLine, subway);
-        transferStations.add(transDeakFerencTer);
-        yellowLine.addStation(transDeakFerencTer);
-        subway.setLines(lines);
-        return subway;
-    }
-
-    public Subway createDataForTestSubway(String cityName) {
-        var yellowLineColor = "Yellow";
-        var redLineColor = "Red";
-        Subway subway = new Subway(cityName);
-        subway.createNewLine(yellowLineColor);
-        subway.createNewLine(redLineColor);
-
-        subway.createFirstStation(yellowLineColor, "Oktogon", null);
-        subway.createLastStation(yellowLineColor, "Opera", 4, null);
-        subway.createLastStation(yellowLineColor, "Bajza utca", 5, null);
-        Station deakFerencTer = subway.createLastStation(yellowLineColor, "Deak Ferenc Ter", 6, null);
-
-        subway.createFirstStation(redLineColor, "Astoria", null);
-        subway.createLastStation(redLineColor, "Keleti", 4, null);
-        Station arena = subway.createLastStation(redLineColor, "Arena", 5, null);
-        arena.addTransferStation(deakFerencTer);
-        deakFerencTer.addTransferStation(arena);
-        return subway;
-    }
 
     @DisplayName("isLineWithThisColorExists - correct data - Line color exist!")
     @Test
     void isColorExistsInlines_TrueTest() {
-        var budapest = createTestSubway("Budapest");
+        var budapest = createDataForTestSubway("Budapest");
         var colorLine = "Green";
         budapest.createNewLine(colorLine);
 
@@ -90,7 +31,7 @@ class SubwayTest {
     @Test
     void isStationNameInlinesTest() {
         var stationName = "Astoria";
-        var budapest = createTestSubway("Budapest");
+        var budapest = createDataForTestSubway("Budapest");
         var greenLine = budapest.createNewLine("Green");
         var station = new Station(stationName, greenLine, new ArrayList<>(), budapest);
         greenLine.addStation(station);
@@ -103,7 +44,7 @@ class SubwayTest {
     @DisplayName("createNewLine - correct data - new line created")
     @Test
     void newLineIsCreatedTest() {
-        var budapest = createTestSubway("Budapest");
+        var budapest = createDataForTestSubway("Budapest");
 
         var line = budapest.createNewLine("Green");
 
@@ -113,7 +54,7 @@ class SubwayTest {
     @DisplayName("checkLineIsEmpty - not correct data - LineNotEmptyException")
     @Test
     void checkLineIsEmptyTest() throws NoSuchMethodException {
-        Subway budapest = createTestSubway("Budapest");
+        Subway budapest = createDataForTestSubway("Budapest");
         Line line = budapest.createNewLine("Green");
         var station = new Station("Roma", null, null, 120, line, budapest);
         line.addStation(station);
@@ -135,7 +76,7 @@ class SubwayTest {
     void createNewLineTest() {
         var colorLine = "Green";
         var cityName = "Budapest";
-        Subway subway = createTestSubway(cityName);
+        Subway subway = createDataForTestSubway(cityName);
         Line line = subway.createNewLine(colorLine);
 
         Assertions.assertNotNull(line);
@@ -145,7 +86,7 @@ class SubwayTest {
     @DisplayName("createFirstStation - correct data - first station created")
     @Test
     void createFirstStationSuccessTest() {
-        Subway subway = createTestSubway("Rome");
+        Subway subway = createDataForTestSubway("Rome");
         var greenLine = new Line("Green", subway);
         List<Station> transferStations = new ArrayList<>();
         subway.createNewLine("Green");
@@ -208,8 +149,9 @@ class SubwayTest {
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
     }
+
     @Test
-    void getIntervalFromLastStationTest_Success(){
+    void getIntervalFromLastStationTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
         var stationsYellowLine = budapest.getLine("Yellow").getStations();
         var stationsRedLine = budapest.getLine("Red").getStations();
@@ -231,6 +173,7 @@ class SubwayTest {
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
     }
+
     @Test
     void getIntervalOnOneLineTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
@@ -257,8 +200,9 @@ class SubwayTest {
 
         Assertions.assertEquals(expected1, actualYellow);
         Assertions.assertEquals(expected2, actualRed);
-        Assertions.assertEquals(expectedMessage,exception.getMessage());
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
+
     @Test
     void getIntervalFromDifferentLinesTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
@@ -272,9 +216,9 @@ class SubwayTest {
         int actualTotalInterval = budapest.getIntervalFromDifferentLines(oktogon, astoria);
         int actualTotalIntervalNull = budapest.getIntervalFromDifferentLines(oktogon, null);
 
-        Assertions.assertNotEquals(expectedTotalIntervalNegative,actualTotalInterval);
-        Assertions.assertEquals(expectedTotalIntervalPositive,actualTotalInterval);
-        Assertions.assertEquals(expectedTotalIntervalNegative,actualTotalIntervalNull);
+        Assertions.assertNotEquals(expectedTotalIntervalNegative, actualTotalInterval);
+        Assertions.assertEquals(expectedTotalIntervalPositive, actualTotalInterval);
+        Assertions.assertEquals(expectedTotalIntervalNegative, actualTotalIntervalNull);
 
     }
 }
