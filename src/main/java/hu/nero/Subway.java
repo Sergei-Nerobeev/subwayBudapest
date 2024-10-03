@@ -9,12 +9,12 @@ public class Subway {
     private String cityName;
     private Set<Line> lines;
     private int ticketCounter = 0;
-    private Map<MonthlyTicket, LocalDate> ticketsMonthlyTicketToLocalData;
+    private final List<MonthlyTicket> monthlyTickets;
 
     public Subway(String cityName) {
         this.cityName = cityName;
         this.lines = new HashSet<>();
-        this.ticketsMonthlyTicketToLocalData = new HashMap<>();
+        this.monthlyTickets = new ArrayList<>();
     }
 
     public Line createNewLine(String newLineColor) {
@@ -248,12 +248,20 @@ public class Subway {
         int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
         return intervalForFirstLine + intervalForSecondLine;
     }
-    // метод генерации номера проездного билета
 
+    // метод генерации номера проездного билета
     public String generateMonthlyTicketNumber() {
-        var ticketNumber = String.format("a%04d",ticketCounter );
+        var ticketNumber = String.format("a%04d", ticketCounter);
         ticketCounter++;
         return ticketNumber;
+    }
+
+    // метод создания проездного билета
+    public MonthlyTicket createMonthlyTicket(String ticketNumber, String purchaseDate) {
+        ticketNumber = generateMonthlyTicketNumber();
+        MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, purchaseDate);
+        monthlyTickets.add(monthlyTicket);
+        return monthlyTicket;
     }
 
     public String getCityName() {

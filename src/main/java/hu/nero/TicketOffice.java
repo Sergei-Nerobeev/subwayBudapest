@@ -17,9 +17,10 @@ public class TicketOffice {
     public TicketOffice() {
         this.purchaseDateToDailyRevenue = new HashMap<>();
     }
-/**
- * Данный метод ожидает на вход только положительные числа.
- * */
+
+    /**
+     * Данный метод ожидает на вход только положительные числа.
+     */
     public void addRevenue(int stationsAmount) { // Добавляет дату покупки и дневную выручку
         var today = LocalDate.now();
         var ticketPrice = (stationsAmount * COST_OF_ONE_STATION_RIDE) + TAX;
@@ -31,14 +32,15 @@ public class TicketOffice {
 
         }
     }
+
     // Метод добавляет стоимость проездного в доход кассы.
     public void addRevenueMonthlyTicket() {
-       var sellDate = LocalDate.now();
-        var revenue = purchaseDateToDailyRevenue.get(sellDate);
+        var purchaseDate = LocalDate.now();
+        var revenue = purchaseDateToDailyRevenue.get(purchaseDate);
         if (revenue == null) {
-            purchaseDateToDailyRevenue.put(sellDate, COST_OF_MONTHLY_TICKET);
+            purchaseDateToDailyRevenue.put(purchaseDate, COST_OF_MONTHLY_TICKET);
         } else {
-            purchaseDateToDailyRevenue.put(sellDate, revenue + COST_OF_MONTHLY_TICKET);
+            purchaseDateToDailyRevenue.put(purchaseDate, revenue + COST_OF_MONTHLY_TICKET);
 
         }
     }

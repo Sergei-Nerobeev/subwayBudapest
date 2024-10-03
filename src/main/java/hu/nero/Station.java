@@ -125,9 +125,9 @@ public class Station {
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 
-    public String sellMonthlyTicket() {
+    public String sellMonthlyTicket() { // метод продажи проездных билетов
         ticketOffice.addRevenueMonthlyTicket();
-        return null;
+        return "Sold Monthly ticket";
     }
 
 
