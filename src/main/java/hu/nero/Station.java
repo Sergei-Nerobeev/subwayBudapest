@@ -125,11 +125,12 @@ public class Station {
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 
-    public String sellMonthlyTicket() { // метод продажи проездных билетов
+    public MonthlyTicket sellMonthlyTicket() { // метод продажи проездных билетов
         ticketOffice.addRevenueMonthlyTicket();
-        return "Sold Monthly ticket";
+        LocalDate today = LocalDate.now();
+        String ticketNumber = subway.generateMonthlyTicketNumber();
+        return new MonthlyTicket(ticketNumber, today);
     }
-
 
     @Override
     public boolean equals(Object o) {

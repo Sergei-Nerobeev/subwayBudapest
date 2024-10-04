@@ -1,5 +1,7 @@
 package hu.nero;
 
-public record MonthlyTicket(String ticketNumber, String purchaseDate) {
+import java.time.LocalDate;
+
+public record MonthlyTicket(String ticketNumber, LocalDate purchaseDate) {
 
 }
