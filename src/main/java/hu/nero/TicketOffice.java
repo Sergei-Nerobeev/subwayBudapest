@@ -29,7 +29,6 @@ public class TicketOffice {
             purchaseDateToDailyRevenue.put(today, ticketPrice);
         } else {
             purchaseDateToDailyRevenue.put(today, revenue + ticketPrice);
-
         }
     }
 
@@ -41,7 +40,6 @@ public class TicketOffice {
             purchaseDateToDailyRevenue.put(purchaseDate, COST_OF_MONTHLY_TICKET);
         } else {
             purchaseDateToDailyRevenue.put(purchaseDate, revenue + COST_OF_MONTHLY_TICKET);
-
         }
     }
 

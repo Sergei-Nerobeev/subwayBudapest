@@ -257,8 +257,9 @@ public class Subway {
     }
 
     // метод создания проездного билета
-    public MonthlyTicket createMonthlyTicket(String ticketNumber, LocalDate today) {
-        ticketNumber = generateMonthlyTicketNumber();
+    public MonthlyTicket createMonthlyTicket() {
+        var ticketNumber = generateMonthlyTicketNumber();
+        var today = LocalDate.now();
         MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, today);
         monthlyTickets.add(monthlyTicket);
         return monthlyTicket;

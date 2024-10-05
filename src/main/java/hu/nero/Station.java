@@ -127,9 +127,7 @@ public class Station {
 
     public MonthlyTicket sellMonthlyTicket() { // метод продажи проездных билетов
         ticketOffice.addRevenueMonthlyTicket();
-        LocalDate today = LocalDate.now();
-        String ticketNumber = subway.generateMonthlyTicketNumber();
-        return new MonthlyTicket(ticketNumber, today);
+        return subway.createMonthlyTicket();
     }
 
     @Override
