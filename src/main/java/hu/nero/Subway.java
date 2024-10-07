@@ -259,6 +259,9 @@ public class Subway {
     public String generateMonthlyTicketNumber() {
         var ticketNumber = String.format("a%04d", ticketCounter);
         ticketCounter++;
+        if(ticketNumber.equals("a9999")) {
+            throw new RuntimeException("Today, all the monthly tickets are sold out");
+        }
         return ticketNumber;
     }
 
