@@ -11,11 +11,17 @@ public class Subway {
     private int ticketCounter = 0;
     private final List<MonthlyTicket> monthlyTickets;
 
+
     public Subway(String cityName) {
         this.cityName = cityName;
         this.lines = new HashSet<>();
         this.monthlyTickets = new ArrayList<>();
     }
+
+    public List<MonthlyTicket> getMonthlyTickets() {
+        return monthlyTickets;
+    }
+
 
     public Line createNewLine(String newLineColor) {
         if (isLineWithThisColorExists(newLineColor)) {

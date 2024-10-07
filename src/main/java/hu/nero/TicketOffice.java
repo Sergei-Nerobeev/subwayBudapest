@@ -46,4 +46,11 @@ public class TicketOffice {
     public Integer getDailyRevenue(LocalDate date) { // Получить дату и стоимость
         return purchaseDateToDailyRevenue.get(date);
     }
+
+    @Override
+    public String toString() {
+        return "TicketOffice{" +
+                "purchaseDateToDailyRevenue=" + purchaseDateToDailyRevenue +
+                '}';
+    }
 }

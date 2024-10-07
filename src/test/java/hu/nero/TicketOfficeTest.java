@@ -1,5 +1,6 @@
 package hu.nero;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,8 @@ class TicketOfficeTest {
     }
 
     @Test
-    void addRevenueTest_Zero() {
+    @DisplayName("Добавление билета к стоимости дневной выручки - количество станций - ноль")
+    void addRevenueTest_WhenStationsCountIsZero() {
         var ticketOffice = new TicketOffice();
         var testStationsAmount = 0;
         var testDate = LocalDate.now();
@@ -39,7 +41,7 @@ class TicketOfficeTest {
     @DisplayName("Добавление билета к стоимости дневной выручке не Null")
     void addRevenueTest_NotNull() {
         var ticketOffice = new TicketOffice();
-        ticketOffice.addRevenue(2);
+
         var testStationsAmount = 2;
         var testDate = LocalDate.now();
         var expectedRevenue = 60;
@@ -48,5 +50,18 @@ class TicketOfficeTest {
         var actualRevenue = ticketOffice.getDailyRevenue(testDate);
 
         assertEquals(expectedRevenue, actualRevenue);
+    }
+
+    @Test
+    @DisplayName("Добавление стоимости проездного билета к стоимости дневной выручке")
+    void addRevenueMonthlyTicket_Success() {
+        var ticketOffice = new TicketOffice();
+        var testDate = LocalDate.now();
+        var expectedRevenue = 3000;
+
+        ticketOffice.addRevenueMonthlyTicket();
+        var actualRevenue2 = ticketOffice.getDailyRevenue(testDate);
+
+        assertEquals(expectedRevenue, actualRevenue2);
     }
 }

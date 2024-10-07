@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тестирование методов класса Subway")
 class SubwayTest {
-
 
     @DisplayName("isLineWithThisColorExists - correct data - Line color exist!")
     @Test
@@ -219,7 +219,6 @@ class SubwayTest {
         assertNotEquals(expectedTotalIntervalNegative, actualTotalInterval);
         assertEquals(expectedTotalIntervalPositive, actualTotalInterval);
         assertEquals(expectedTotalIntervalNegative, actualTotalIntervalNull);
-
     }
 
     @Test
@@ -246,6 +245,45 @@ class SubwayTest {
 
             assertEquals(expected, actual);
         }
-
     }
+
+    @Test
+    @DisplayName("Создание проездного билета - билет Not Null - позитивный сценарий")
+    void createMonthlyTicketTest_NotNull() {
+        var budapest = createDataForTestSubway("Budapest");
+
+        var actualMonthlyTicket = budapest.createMonthlyTicket();
+
+        assertNotNull(actualMonthlyTicket);
+    }
+
+    @Test
+    @DisplayName("Создание проездного билета - сравнение данных билета - позитивный сценарий")
+    void createMonthlyTicketTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDate = LocalDate.now();
+        var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
+
+        var actualMonthlyTicket = budapest.createMonthlyTicket();
+
+        assertEquals(expectedMonthlyTicket, actualMonthlyTicket);
+    }
+
+    @Test
+    @DisplayName("Создание проездного билета - добавление билетов в список - позитивный сценарий")
+    void createMonthlyTicketTest_AddingMonthlyTicketsToList_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDate = LocalDate.now();
+        var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
+        var expectedMonthlyTicket2 = new MonthlyTicket("a0001", testDate);
+        budapest.createMonthlyTicket();
+        budapest.createMonthlyTicket();
+        var actualMonthlyTicket = budapest.getMonthlyTickets().getFirst();
+        var actualMonthlyTicket2 = budapest.getMonthlyTickets().get(1);
+
+        assertEquals(expectedMonthlyTicket, actualMonthlyTicket);
+        assertEquals(expectedMonthlyTicket2, actualMonthlyTicket2);
+    }
+
+
 }
