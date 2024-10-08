@@ -12,7 +12,6 @@ public class Subway {
     private static final int MAX_TICKET_NUMBER = 9999;
     private final List<MonthlyTicket> monthlyTickets;
 
-
     public Subway(String cityName) {
         this.cityName = cityName;
         this.lines = new HashSet<>();
@@ -277,12 +276,7 @@ public class Subway {
 
     // метод проверки действительности проездного билета
     public boolean getTicketValidation(String ticketNumber, LocalDate checkDate) {
-        for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            if (monthlyTickets.contains(ticketNumber)) {
-                return true;
-            }
-        }
-        return false;
+            return false;
     }
 
     public String getCityName() {
