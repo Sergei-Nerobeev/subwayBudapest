@@ -240,18 +240,16 @@ class SubwayTest {
     void generateMonthlyTicketNumberTest_CheckThrowException() {
         var budapest = createDataForTestSubway("Budapest");
         for (int i = 0; i < 10000; i++) {
-            if (i < 9999) {
-                try {
-                    budapest.generateMonthlyTicketNumber();
-                } catch (RuntimeException exception) {
-                    assertEquals("Unexpected error before limit", exception.getMessage());
-                }
-            } else {
-                RuntimeException runtimeException = assertThrows(RuntimeException.class, budapest::generateMonthlyTicketNumber);
-                assertEquals("Today, all the monthly tickets are sold out", runtimeException.getMessage());
-            }
+            budapest.generateMonthlyTicketNumber();
         }
+
+        var runtimeException = assertThrows(
+                RuntimeException.class,
+                budapest::generateMonthlyTicketNumber);
+
+        assertEquals("Today, all the monthly tickets are sold out", runtimeException.getMessage());
     }
+
 
     @Test
     @DisplayName("Создание проездного билета - билет Not Null - позитивный сценарий")

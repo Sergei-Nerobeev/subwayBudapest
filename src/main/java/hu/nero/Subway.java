@@ -9,6 +9,7 @@ public class Subway {
     private String cityName;
     private Set<Line> lines;
     private int ticketCounter = 0;
+    private static final int MAX_TICKET_NUMBER = 9999;
     private final List<MonthlyTicket> monthlyTickets;
 
 
@@ -257,11 +258,11 @@ public class Subway {
 
     // метод генерации номера проездного билета
     public String generateMonthlyTicketNumber() {
-        var ticketNumber = String.format("a%04d", ticketCounter);
-        ticketCounter++;
-        if(ticketNumber.equals("a9999")) {
+        if (ticketCounter > MAX_TICKET_NUMBER) {
             throw new RuntimeException("Today, all the monthly tickets are sold out");
         }
+        var ticketNumber = String.format("a%04d", ticketCounter);
+        ticketCounter++;
         return ticketNumber;
     }
 
