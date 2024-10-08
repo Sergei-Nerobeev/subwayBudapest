@@ -275,6 +275,16 @@ public class Subway {
         return monthlyTicket;
     }
 
+    // метод проверки действительности проездного билета
+    public boolean getTicketValidation(String ticketNumber, LocalDate checkDate) {
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTickets.contains(ticketNumber)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getCityName() {
         return cityName;
     }
