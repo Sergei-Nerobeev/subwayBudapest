@@ -2,16 +2,27 @@ package hu.nero;
 
 import hu.nero.exception.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Subway {
     private String cityName;
     private Set<Line> lines;
+    private int ticketCounter = 0;
+    private static final int MAX_TICKET_NUMBER = 9999;
+    private final List<MonthlyTicket> monthlyTickets;
+
 
     public Subway(String cityName) {
         this.cityName = cityName;
         this.lines = new HashSet<>();
+        this.monthlyTickets = new ArrayList<>();
     }
+
+    public List<MonthlyTicket> getMonthlyTickets() {
+        return monthlyTickets;
+    }
+
 
     public Line createNewLine(String newLineColor) {
         if (isLineWithThisColorExists(newLineColor)) {
@@ -228,13 +239,13 @@ public class Subway {
         if (areStationsNull(start, finish) || start.equals(finish)) {
             return -1;
         }
-        //если линии совпали:
+        // если линии совпали:
         var line = start.getLine();
         var otherLine = finish.getLine();
         if (line.getColor().equals(otherLine.getColor())) {
             return getIntervalOnOneLine(start, finish);
         }
-        //если линии не совпали:
+        // если линии не совпали:
         Station transferStation =
                 getTransferStationIdentify(line.getColor(), otherLine.getColor());
         int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
@@ -243,6 +254,25 @@ public class Subway {
                 getTransferStationIdentify(otherLine.getColor(), line.getColor());
         int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
         return intervalForFirstLine + intervalForSecondLine;
+    }
+
+    // метод генерации номера проездного билета
+    public String generateMonthlyTicketNumber() {
+        if (ticketCounter > MAX_TICKET_NUMBER) {
+            throw new RuntimeException("Today, all the monthly tickets are sold out");
+        }
+        var ticketNumber = String.format("a%04d", ticketCounter);
+        ticketCounter++;
+        return ticketNumber;
+    }
+
+    // метод создания проездного билета
+    public MonthlyTicket createMonthlyTicket() {
+        var ticketNumber = generateMonthlyTicketNumber();
+        var today = LocalDate.now();
+        MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, today);
+        monthlyTickets.add(monthlyTicket);
+        return monthlyTicket;
     }
 
     public String getCityName() {

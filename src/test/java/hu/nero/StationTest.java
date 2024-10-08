@@ -3,6 +3,8 @@ package hu.nero;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static hu.nero.TestDataProvider.createDataForTestSubway;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,4 +82,26 @@ class StationTest {
         assertEquals("Start station cannot be the same as finish station.", exception.getMessage());
     }
 
+    @Test
+    @DisplayName("Продажа проездного билета - возвращает Not Null - позитивный сценарий")
+    void sellMonthlyTicketTest_NotNull() {
+        var budapest = createDataForTestSubway("Budapest");
+        var stationTest = budapest.getLine("Red").getStation("Astoria");
+
+        var actualMonthlyTicket = stationTest.sellMonthlyTicket();
+
+        assertNotNull(actualMonthlyTicket);
+    }
+    @Test
+    @DisplayName("Продажа проездного билета - возвращает билет - позитивный сценарий")
+    void sellMonthlyTicketTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDate = LocalDate.now();
+        var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
+        var stationTest = budapest.getLine("Red").getStation("Astoria");
+
+        var actualMonthlyTicket = stationTest.sellMonthlyTicket();
+
+        assertEquals(expectedMonthlyTicket, actualMonthlyTicket);
+    }
 }

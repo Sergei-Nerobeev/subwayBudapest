@@ -1,9 +1,5 @@
 package hu.nero;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -123,6 +119,11 @@ public class Station {
         var interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
         ticketOffice.addRevenue(interval);
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
+    }
+
+    public MonthlyTicket sellMonthlyTicket() { // метод продажи проездных билетов
+        ticketOffice.addRevenueMonthlyTicket();
+        return subway.createMonthlyTicket();
     }
 
     @Override

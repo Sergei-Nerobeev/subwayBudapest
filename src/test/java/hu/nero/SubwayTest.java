@@ -5,15 +5,15 @@ import org.junit.jupiter.api.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static hu.nero.TestDataProvider.createDataForTestSubway;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Тестирование методов класса Subway")
 class SubwayTest {
-
 
     @DisplayName("isLineWithThisColorExists - correct data - Line color exist!")
     @Test
@@ -68,7 +68,7 @@ class SubwayTest {
         Throwable cause = exception.getCause();
         assertInstanceOf(LineNotEmptyException.class, cause, "Expected LineNotEmptyException but: " + cause.getClass().getName());
 
-        Assertions.assertEquals("Line " + line.getColor() + " is not empty!", cause.getMessage());
+        assertEquals("Line " + line.getColor() + " is not empty!", cause.getMessage());
     }
 
     @DisplayName("createNewLine - correct data - new line created")
@@ -80,7 +80,7 @@ class SubwayTest {
         Line line = subway.createNewLine(colorLine);
 
         Assertions.assertNotNull(line);
-        Assertions.assertEquals(colorLine, line.getColor());
+        assertEquals(colorLine, line.getColor());
     }
 
     @DisplayName("createFirstStation - correct data - first station created")
@@ -94,8 +94,8 @@ class SubwayTest {
         Station newStation = subway.createFirstStation(greenLine.getColor(), "Ors Vezer Tere", transferStations);
 
         Assertions.assertNotNull(newStation);
-        Assertions.assertEquals(newStation.getLine().getColor(), greenLine.getColor());
-        Assertions.assertEquals(transferStations, newStation.getTransferStations());
+        assertEquals(newStation.getLine().getColor(), greenLine.getColor());
+        assertEquals(transferStations, newStation.getTransferStations());
     }
 
     @Test
@@ -106,11 +106,11 @@ class SubwayTest {
 
         Station lastStation = subway.createLastStation("Red", " Blah Luisa Ter", 120, null);
 
-        Assertions.assertEquals(lastStation.getPrevious(), firstStation);
+        assertEquals(lastStation.getPrevious(), firstStation);
         Assertions.assertNull(firstStation.getPrevious());
         Assertions.assertNull(lastStation.getNext());
-        Assertions.assertEquals(firstStation.getNext(), lastStation);
-        Assertions.assertEquals(firstStation.getTransitTimeInSeconds(), 120);
+        assertEquals(firstStation.getNext(), lastStation);
+        assertEquals(firstStation.getTransitTimeInSeconds(), 120);
         Assertions.assertTrue(subway.isStationNameExistsInAnyLine(" Blah Luisa Ter"));
     }
 
@@ -123,7 +123,7 @@ class SubwayTest {
 
         Station stationActual = budapest.getTransferStationIdentify(yellow, red);
 
-        Assertions.assertEquals(stationExpected, stationActual.getName());
+        assertEquals(stationExpected, stationActual.getName());
     }
 
     @Test
@@ -146,8 +146,8 @@ class SubwayTest {
         int actualYellow = budapest.getInterval(oktogon, opera);
         int actualRed = budapest.getInterval(astoria, arena);
 
-        Assertions.assertEquals(expected1, actualYellow);
-        Assertions.assertEquals(expected2, actualRed);
+        assertEquals(expected1, actualYellow);
+        assertEquals(expected2, actualRed);
     }
 
     @Test
@@ -170,8 +170,8 @@ class SubwayTest {
         int actualYellow = budapest.getIntervalFromLastStation(oktogon, opera);
         int actualRed = budapest.getIntervalFromLastStation(astoria, arena);
 
-        Assertions.assertEquals(expected1, actualYellow);
-        Assertions.assertEquals(expected2, actualRed);
+        assertEquals(expected1, actualYellow);
+        assertEquals(expected2, actualRed);
     }
 
     @Test
@@ -198,9 +198,9 @@ class SubwayTest {
             budapest.getIntervalOnOneLine(opera, null);
         });
 
-        Assertions.assertEquals(expected1, actualYellow);
-        Assertions.assertEquals(expected2, actualRed);
-        Assertions.assertEquals(expectedMessage, exception.getMessage());
+        assertEquals(expected1, actualYellow);
+        assertEquals(expected2, actualRed);
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
@@ -216,9 +216,78 @@ class SubwayTest {
         int actualTotalInterval = budapest.getIntervalFromDifferentLines(oktogon, astoria);
         int actualTotalIntervalNull = budapest.getIntervalFromDifferentLines(oktogon, null);
 
-        Assertions.assertNotEquals(expectedTotalIntervalNegative, actualTotalInterval);
-        Assertions.assertEquals(expectedTotalIntervalPositive, actualTotalInterval);
-        Assertions.assertEquals(expectedTotalIntervalNegative, actualTotalIntervalNull);
-
+        assertNotEquals(expectedTotalIntervalNegative, actualTotalInterval);
+        assertEquals(expectedTotalIntervalPositive, actualTotalInterval);
+        assertEquals(expectedTotalIntervalNegative, actualTotalIntervalNull);
     }
+
+    @Test
+    @DisplayName("Генерация номера проездного билета - позитивный сценарий")
+    void generateMonthlyTicketNumberTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+
+        String expected = "a0000";
+        String expectedTwo = "a0001";
+        String actual = budapest.generateMonthlyTicketNumber();
+        String actualTwo = budapest.generateMonthlyTicketNumber();
+
+        assertEquals(expected, actual);
+        assertEquals(expectedTwo, actualTwo);
+    }
+
+    @Test
+    @DisplayName("Генерация номера проездного билета - проверка количества знаков номера")
+    void generateMonthlyTicketNumberTest_CheckThrowException() {
+        var budapest = createDataForTestSubway("Budapest");
+        for (int i = 0; i < 10000; i++) {
+            budapest.generateMonthlyTicketNumber();
+        }
+
+        var runtimeException = assertThrows(
+                RuntimeException.class,
+                budapest::generateMonthlyTicketNumber);
+
+        assertEquals("Today, all the monthly tickets are sold out", runtimeException.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("Создание проездного билета - билет Not Null - позитивный сценарий")
+    void createMonthlyTicketTest_NotNull() {
+        var budapest = createDataForTestSubway("Budapest");
+
+        var actualMonthlyTicket = budapest.createMonthlyTicket();
+
+        assertNotNull(actualMonthlyTicket);
+    }
+
+    @Test
+    @DisplayName("Создание проездного билета - сравнение данных билета - позитивный сценарий")
+    void createMonthlyTicketTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDate = LocalDate.now();
+        var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
+
+        var actualMonthlyTicket = budapest.createMonthlyTicket();
+
+        assertEquals(expectedMonthlyTicket, actualMonthlyTicket);
+    }
+
+    @Test
+    @DisplayName("Создание проездного билета - добавление билетов в список - позитивный сценарий")
+    void createMonthlyTicketTest_AddingMonthlyTicketsToList_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDate = LocalDate.now();
+        var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
+        var expectedMonthlyTicket2 = new MonthlyTicket("a0001", testDate);
+        budapest.createMonthlyTicket();
+        budapest.createMonthlyTicket();
+        var actualMonthlyTicket = budapest.getMonthlyTickets().getFirst();
+        var actualMonthlyTicket2 = budapest.getMonthlyTickets().get(1);
+
+        assertEquals(expectedMonthlyTicket, actualMonthlyTicket);
+        assertEquals(expectedMonthlyTicket2, actualMonthlyTicket2);
+    }
+
+
 }
