@@ -3,6 +3,7 @@ package hu.nero;
 import hu.nero.exception.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Subway {
@@ -11,6 +12,7 @@ public class Subway {
     private int ticketCounter = 0;
     private static final int MAX_TICKET_NUMBER = 9999;
     private static final int CURRENT_YEAR = 2024;
+    private static final int VALIDITY_PERIOD_DAYS = 30;
     private final List<MonthlyTicket> monthlyTickets;
 
     public Subway(String cityName) {
@@ -294,11 +296,23 @@ public class Subway {
     }
 
     // метод проверки действительности проездного билета
-    public boolean isValidMonthlyTicket(String number, LocalDate checkDate) {
-        return isTicketInSystem(number) &&
-                isValidNumbersOfMonthlyTicket(number) &&
-                isValidYear(checkDate) &&
-                isValidDay(checkDate);
+    public boolean isValidMonthlyTicket(String ticketNumber, LocalDate checkDate) {
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTicket.ticketNumber().equals(ticketNumber) &&
+                    isValidDate(checkDate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidDate(LocalDate date) {
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (ChronoUnit.DAYS.between(date, monthlyTicket.purchaseDate()) > VALIDITY_PERIOD_DAYS) {
+                throw new RuntimeException("Your ticket is not valid!");
+            }
+        }
+        return true;
     }
 
     // метод проверки года
