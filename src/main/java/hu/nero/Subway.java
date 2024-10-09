@@ -10,6 +10,7 @@ public class Subway {
     private Set<Line> lines;
     private int ticketCounter = 0;
     private static final int MAX_TICKET_NUMBER = 9999;
+    private static final int CURRENT_YEAR = 2024;
     private final List<MonthlyTicket> monthlyTickets;
 
     public Subway(String cityName) {
@@ -274,10 +275,53 @@ public class Subway {
         return monthlyTicket;
     }
 
-    // метод проверки действительности проездного билета
-    public boolean getTicketValidation(String ticketNumber, LocalDate checkDate) {
-            return false;
+    // метод проверки проездного билета в базе проданных билетов
+    private boolean isTicketInSystem(String ticketNumber) {
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+                return true;
+            }
+        }
+        throw new RuntimeException("Ticket unavailable!");
     }
+
+        // метод проверки номера проездного билета
+    private boolean isValidNumbersOfMonthlyTicket(String ticketNumber) {
+        if (ticketNumber != null && ticketNumber.matches("a\\d{4}")) {
+            return true;
+        }
+        throw new RuntimeException("Number of ticket is not valid!");
+    }
+
+    // метод проверки действительности проездного билета
+    public boolean isValidMonthlyTicket(String number, LocalDate checkDate) {
+        return isTicketInSystem(number) &&
+                isValidNumbersOfMonthlyTicket(number) &&
+                isValidYear(checkDate) &&
+                isValidDay(checkDate);
+    }
+
+    // метод проверки года
+    private boolean isValidYear(LocalDate today) {
+        return today.getYear() == CURRENT_YEAR;
+    }
+
+    // метод проверки дней в месяце
+    private boolean isValidDay(LocalDate today) {
+        if (today.getDayOfMonth() == 28 && today.getMonthValue() == 2) {
+            throw new RuntimeException("Your ticket is not valid!");
+        }
+        if (today.getDayOfMonth() == 30 || today.getMonthValue() == 4 ||
+                today.getMonthValue() == 6 || today.getMonthValue() == 9 ||
+                today.getMonthValue() == 11) {
+            throw new RuntimeException("Your ticket is not valid!");
+        }
+        if (today.getDayOfMonth() == 31) {
+            throw new RuntimeException("Your ticket is not valid!");
+        }
+        return true;
+    }
+
 
     public String getCityName() {
         return cityName;

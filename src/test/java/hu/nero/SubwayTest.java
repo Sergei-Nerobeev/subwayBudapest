@@ -250,7 +250,6 @@ class SubwayTest {
         assertEquals("Today, all the monthly tickets are sold out", runtimeException.getMessage());
     }
 
-
     @Test
     @DisplayName("Создание проездного билета - билет Not Null - позитивный сценарий")
     void createMonthlyTicketTest_NotNull() {
@@ -287,6 +286,28 @@ class SubwayTest {
 
         assertEquals(expectedMonthlyTicket, actualMonthlyTicket);
         assertEquals(expectedMonthlyTicket2, actualMonthlyTicket2);
+    }
+
+    @Test
+    @DisplayName("Проверка проездного билета - позитивный сценарий - даты валидные")
+    void isValidMonthlyTicketTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDateNow = LocalDate.now();
+        var testDate = DateUtils.convertStringToLocalDate("27.02.2024");
+        var expectedMonthlyTicket = budapest.createMonthlyTicket();
+        var expectedMonthlyTicket2 = budapest.createMonthlyTicket();
+        var expectedNumberOfTicket = "a0000";
+        var expectedNumberOfTicket2 = "a0001";
+
+        var tickets = budapest.getMonthlyTickets();
+        var expectedBehavior = true;
+        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket,testDate);
+        System.out.println(testDate);
+        System.out.println(expectedMonthlyTicket2);
+        System.out.println(tickets.toString());
+        assertEquals(expectedBehavior,actualBehavior);
+
+
     }
 
 
