@@ -285,7 +285,7 @@ public class Subway {
         throw new RuntimeException("Ticket unavailable!");
     }
 
-        // метод проверки номера проездного билета
+    // метод проверки номера проездного билета
     private boolean isValidNumbersOfMonthlyTicket(String ticketNumber) {
         if (ticketNumber != null && ticketNumber.matches("a\\d{4}")) {
             return true;

@@ -301,11 +301,11 @@ class SubwayTest {
 
         var tickets = budapest.getMonthlyTickets();
         var expectedBehavior = true;
-        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket,testDate);
+        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDate);
         System.out.println(testDate);
         System.out.println(expectedMonthlyTicket2);
         System.out.println(tickets.toString());
-        assertEquals(expectedBehavior,actualBehavior);
+        assertEquals(expectedBehavior, actualBehavior);
 
 
     }
