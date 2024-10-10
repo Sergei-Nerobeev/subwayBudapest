@@ -289,26 +289,69 @@ class SubwayTest {
     }
 
     @Test
-    @DisplayName("Проверка проездного билета - позитивный сценарий - даты валидные")
-    void isValidMonthlyTicketTest_Success() {
+    @DisplayName("Есть ли проверяемый билет в базе проданных - позитивный сценарий")
+    void isTicketInSystemTest_Success() throws NoSuchMethodException, InvocationTargetException,
+            IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        var testDateNow = LocalDate.now();
-        var testDate = DateUtils.convertStringToLocalDate("27.02.2024");
-        var expectedMonthlyTicket = budapest.createMonthlyTicket();
-        var expectedMonthlyTicket2 = budapest.createMonthlyTicket();
-        var expectedNumberOfTicket = "a0000";
-        var expectedNumberOfTicket2 = "a0001";
+        budapest.createMonthlyTicket();
+        var expectedNumber = "a0000";
 
-        var tickets = budapest.getMonthlyTickets();
-        var expectedBehavior = true;
-        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDate);
-        System.out.println(testDate);
-        System.out.println(expectedMonthlyTicket2);
-        System.out.println(tickets.toString());
-        assertEquals(expectedBehavior, actualBehavior);
+        Method method = Subway.class.getDeclaredMethod("isTicketInSystem", String.class);
+        method.setAccessible(true);
 
-
+        assertTrue((Boolean) method.invoke(budapest, expectedNumber));
     }
 
+    @Test
+    @DisplayName("Есть ли проверяемый билет в базе проданных - позитивный сценарий - проверка сообщения, " +
+            "выбрасываемого исключения")
+    void isTicketInSystemTest_TrowsException() throws NoSuchMethodException {
+        var budapest = createDataForTestSubway("Budapest");
+        budapest.createMonthlyTicket();
+        var expectedNumber = "a0002";
+        var exceptedMessage = "Ticket unavailable! Because the ticket's not in the system.";
+
+        Method method = Subway.class.getDeclaredMethod("isTicketInSystem", String.class);
+        method.setAccessible(true);
+
+        InvocationTargetException exception = Assertions.assertThrows(InvocationTargetException.class, () -> {
+            method.invoke(budapest, expectedNumber);
+        }, "Ожидалось исключение Ticket unavailable! Because the ticket's not in the system.");
+
+        Throwable cause = exception.getCause();
+        assertInstanceOf(RuntimeException.class, cause, exceptedMessage + cause.getClass().getName());
+        assertEquals(exceptedMessage, cause.getMessage());
+    }
+
+    @Test
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
+    void isValidDateTest_Success() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        var budapest = createDataForTestSubway("Budapest");
+        budapest.createMonthlyTicket();
+        var expectedDate = LocalDate.now();
+        var actualDate = LocalDate.now().plusDays(30);
+
+        Method method = Subway.class.getDeclaredMethod("isValidDate", LocalDate.class);
+        method.setAccessible(true);
+        boolean isValid = (Boolean) method.invoke(budapest, actualDate);
+
+        assertTrue(isValid);
+    }
+
+    @Test
+    @DisplayName("\"Проверка проездного билета - позитивный сценарий - даты валидные")
+    void isValidMonthlyTicketTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDate = DateUtils.convertStringToLocalDate("27.02.2024");
+        budapest.createMonthlyTicket();
+        budapest.createMonthlyTicket();
+        var expectedNumberOfTicket = "a0000";
+        var expectedNumberOfTicket2 = "a0001";
+        var expectedBehavior = true;
+
+        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDate);
+
+        assertEquals(expectedBehavior, actualBehavior);
+    }
 
 }
