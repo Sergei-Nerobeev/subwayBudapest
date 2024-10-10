@@ -275,6 +275,11 @@ public class Subway {
         return monthlyTicket;
     }
 
+    // метод продления абонемента на 30 дней с момента покупки
+    public MonthlyTicket getTicketExtension(String ticketNumber, LocalDate dateOfExtension) {
+
+    }
+
     public String getCityName() {
         return cityName;
     }
