@@ -3,6 +3,7 @@ package hu.nero;
 import hu.nero.exception.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Subway {
@@ -10,8 +11,9 @@ public class Subway {
     private Set<Line> lines;
     private int ticketCounter = 0;
     private static final int MAX_TICKET_NUMBER = 9999;
+    private static final int CURRENT_YEAR = 2024;
+    private static final int VALIDITY_PERIOD_DAYS = 30;
     private final List<MonthlyTicket> monthlyTickets;
-
 
     public Subway(String cityName) {
         this.cityName = cityName;
@@ -22,7 +24,6 @@ public class Subway {
     public List<MonthlyTicket> getMonthlyTickets() {
         return monthlyTickets;
     }
-
 
     public Line createNewLine(String newLineColor) {
         if (isLineWithThisColorExists(newLineColor)) {
@@ -273,6 +274,50 @@ public class Subway {
         MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, today);
         monthlyTickets.add(monthlyTicket);
         return monthlyTicket;
+    }
+
+    // метод проверки проездного билета в базе проданных билетов
+    private boolean isTicketInSystem(String ticketNumber) {
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+                return true;
+            }
+        }
+        throw new RuntimeException("Ticket unavailable! Because the ticket's not in the system.");
+    }
+
+    // метод проверки кол-ва знаков номера проездного билета
+    private boolean isValidCountOfNumbers(String ticketNumber) {
+        if (ticketNumber != null && ticketNumber.matches("a\\d{4}")) {
+            return true;
+        }
+        throw new RuntimeException("Number of ticket is not valid! Because: " + ticketNumber + "is wrong!");
+    }
+
+    // метод проверки действительности проездного билета
+    public boolean isValidMonthlyTicket(String ticketNumber, LocalDate checkDate) {
+        if (isValidYear(checkDate)
+                && isValidCountOfNumbers(ticketNumber)
+                && isTicketInSystem(ticketNumber)
+                && isValidDate(checkDate)) {
+            return true;
+        }
+        throw new RuntimeException("Your ticket is not valid!");
+    }
+
+    private boolean isValidDate(LocalDate date) {
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            LocalDate expirationDate = monthlyTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
+            if (!date.isAfter(expirationDate)) {
+                throw new RuntimeException("Your ticket is not valid!");
+            }
+        }
+        return true;
+    }
+
+    // метод проверки года
+    private boolean isValidYear(LocalDate today) {
+        return today.getYear() == CURRENT_YEAR;
     }
 
     public String getCityName() {

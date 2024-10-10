@@ -250,7 +250,6 @@ class SubwayTest {
         assertEquals("Today, all the monthly tickets are sold out", runtimeException.getMessage());
     }
 
-
     @Test
     @DisplayName("Создание проездного билета - билет Not Null - позитивный сценарий")
     void createMonthlyTicketTest_NotNull() {
@@ -289,5 +288,84 @@ class SubwayTest {
         assertEquals(expectedMonthlyTicket2, actualMonthlyTicket2);
     }
 
+    @Test
+    @DisplayName("Есть ли проверяемый билет в базе проданных - позитивный сценарий")
+    void isTicketInSystemTest_Success() throws NoSuchMethodException, InvocationTargetException,
+            IllegalAccessException {
+        var budapest = createDataForTestSubway("Budapest");
+        budapest.createMonthlyTicket();
+        var expectedNumber = "a0000";
+
+        Method method = Subway.class.getDeclaredMethod("isTicketInSystem", String.class);
+        method.setAccessible(true);
+
+        assertTrue((Boolean) method.invoke(budapest, expectedNumber));
+    }
+
+    @Test
+    @DisplayName("Есть ли проверяемый билет в базе проданных - позитивный сценарий - проверка сообщения, " +
+            "выбрасываемого исключения")
+    void isTicketInSystemTest_TrowsException() throws NoSuchMethodException {
+        var budapest = createDataForTestSubway("Budapest");
+        budapest.createMonthlyTicket();
+        var expectedNumber = "a0002";
+        var exceptedMessage = "Ticket unavailable! Because the ticket's not in the system.";
+
+        Method method = Subway.class.getDeclaredMethod("isTicketInSystem", String.class);
+        method.setAccessible(true);
+
+        InvocationTargetException exception = Assertions.assertThrows(InvocationTargetException.class, () -> {
+            method.invoke(budapest, expectedNumber);
+        }, "Ожидалось исключение Ticket unavailable! Because the ticket's not in the system.");
+
+        Throwable cause = exception.getCause();
+        assertInstanceOf(RuntimeException.class, cause, exceptedMessage + cause.getClass().getName());
+        assertEquals(exceptedMessage, cause.getMessage());
+    }
+
+    @Test
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
+    void isValidDateTest_Success() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        var budapest = createDataForTestSubway("Budapest");
+        budapest.createMonthlyTicket();
+        var expectedDate = LocalDate.now();
+        var actualDate = LocalDate.now().plusDays(30);
+
+        Method method = Subway.class.getDeclaredMethod("isValidDate", LocalDate.class);
+        method.setAccessible(true);
+        boolean isValid = (Boolean) method.invoke(budapest, actualDate);
+
+        assertTrue(isValid);
+    }
+
+    @Test
+    @DisplayName("\"Проверка проездного билета - позитивный сценарий - даты валидные")
+    void isValidMonthlyTicketTest_Success() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDate = LocalDate.now();
+        budapest.createMonthlyTicket();
+        var expectedNumberOfTicket = "a0000";
+        var expectedBehavior = true;
+
+        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDate);
+
+        assertEquals(expectedBehavior, actualBehavior);
+    }
+
+    @Test
+    @DisplayName("Проверка проездного билета - негативный сценарий - проверка исключения")
+    void isValidMonthlyTicketTest_ThrowException() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDateNotCorrect = DateUtils.convertStringToLocalDate("27.02.2024");
+        budapest.createMonthlyTicket();
+        var expectedNumberOfTicket = "a0000";
+        var expectedExceptionMessage = "Your ticket is not valid!";
+
+        RuntimeException actualRunTimeException = assertThrows(RuntimeException.class, () -> {
+            budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDateNotCorrect);
+        });
+
+        assertEquals(expectedExceptionMessage, actualRunTimeException.getMessage());
+    }
 
 }
