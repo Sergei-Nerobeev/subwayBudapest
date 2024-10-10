@@ -342,16 +342,31 @@ class SubwayTest {
     @DisplayName("\"Проверка проездного билета - позитивный сценарий - даты валидные")
     void isValidMonthlyTicketTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
-        var testDate = DateUtils.convertStringToLocalDate("27.02.2024");
-        budapest.createMonthlyTicket();
+        var testDate = LocalDate.now();
         budapest.createMonthlyTicket();
         var expectedNumberOfTicket = "a0000";
-        var expectedNumberOfTicket2 = "a0001";
         var expectedBehavior = true;
 
         var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDate);
 
         assertEquals(expectedBehavior, actualBehavior);
+    }
+
+    @Test
+    @DisplayName("\"Проверка проездного билета - негативный сценарий - проверка исключения")
+    void isValidMonthlyTicketTest_ThrowException() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDateNotCorrect = DateUtils.convertStringToLocalDate("27.02.2024");
+        budapest.createMonthlyTicket();
+        var expectedNumberOfTicket = "a0000";
+        var expectedBehavior = true;
+        var expectedExceptionMessage = "Your ticket is not valid!";
+
+        RuntimeException actualRunTimeException = assertThrows(RuntimeException.class, () -> {
+            budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDateNotCorrect);
+        });
+
+        assertEquals(expectedExceptionMessage, actualRunTimeException.getMessage());
     }
 
 }

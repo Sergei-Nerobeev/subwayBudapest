@@ -307,7 +307,8 @@ public class Subway {
 
     private boolean isValidDate(LocalDate date) {
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            if (ChronoUnit.DAYS.between(monthlyTicket.purchaseDate(), date) > VALIDITY_PERIOD_DAYS) {
+            LocalDate expirationDate = monthlyTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
+            if (!date.isAfter(expirationDate)) {
                 throw new RuntimeException("Your ticket is not valid!");
             }
         }
