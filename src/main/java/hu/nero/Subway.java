@@ -3,7 +3,6 @@ package hu.nero;
 import hu.nero.exception.*;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Subway {
@@ -291,7 +290,7 @@ public class Subway {
         if (ticketNumber != null && ticketNumber.matches("a\\d{4}")) {
             return true;
         }
-        throw new RuntimeException("Number of ticket is not valid! Because: " + ticketNumber + "is wrong!");
+        throw new RuntimeException("Number of ticket is not valid! Because: ticketNumber is wrong!");
     }
 
     // метод проверки действительности проездного билета
@@ -306,7 +305,7 @@ public class Subway {
     }
 
     // метод проверки даты
-    private boolean isValidDate(LocalDate date) { //todo?
+    private boolean isValidDate(LocalDate date) {
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
             LocalDate purchaseDate = monthlyTicket.purchaseDate();
             LocalDate expirationDate = monthlyTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
@@ -322,17 +321,25 @@ public class Subway {
         return today.getYear() == CURRENT_YEAR;
     }
 
+    // метод печати доходов всех касс всех станций метро по дням в которые были продажи
+    public void printRevenueFromAllTicketOffices(LocalDate purchaseDate) {
+        for(Line line : lines) {
+            var station = line.getStations();
+
+        }
+        for (MonthlyTicket soldTicket : monthlyTickets) {
+            if (soldTicket != null) {
+                System.out.println(soldTicket.purchaseDate());
+            }
+        }
+    }
+
     public String getCityName() {
         return cityName;
     }
 
     public void setCityName(String cityName) {
-
         this.cityName = cityName;
-    }
-
-    public Set<Line> getLines() {
-        return lines;
     }
 
     @Override
