@@ -337,6 +337,17 @@ class SubwayTest {
 
         assertTrue(isValid);
     }
+    @Test
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
+    void isValidDateTest_Success2() throws NoSuchMethodException {
+        var budapest = createDataForTestSubway("Budapest");
+        budapest.createMonthlyTicket();
+        var expectedDate = LocalDate.now();
+        var actualDate = LocalDate.now().plusDays(30);
+
+        Method method = Subway.class.getDeclaredMethod("isValidDate", LocalDate.class);
+        method.setAccessible(true);
+    }
 
     @Test
     @DisplayName("\"Проверка проездного билета - позитивный сценарий - даты валидные")
@@ -353,7 +364,7 @@ class SubwayTest {
     }
 
     @Test
-    @DisplayName("Проверка проездного билета - негативный сценарий - проверка исключения")
+    @DisplayName("Проверка проездного билета - негативный сценарий - проверка исключения") //todo
     void isValidMonthlyTicketTest_ThrowException() {
         var budapest = createDataForTestSubway("Budapest");
         var testDateNotCorrect = DateUtils.convertStringToLocalDate("27.02.2024");
@@ -361,11 +372,11 @@ class SubwayTest {
         var expectedNumberOfTicket = "a0000";
         var expectedExceptionMessage = "Your ticket is not valid!";
 
-        RuntimeException actualRunTimeException = assertThrows(RuntimeException.class, () -> {
+        RuntimeException actualExceptionMessage = assertThrows(RuntimeException.class, () -> {
             budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDateNotCorrect);
         });
 
-        assertEquals(expectedExceptionMessage, actualRunTimeException.getMessage());
+        assertEquals("Your ticket is not valid!", actualExceptionMessage.getMessage());
     }
 
 }

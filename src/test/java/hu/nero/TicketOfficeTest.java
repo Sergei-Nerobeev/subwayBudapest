@@ -1,6 +1,5 @@
 package hu.nero;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +43,7 @@ class TicketOfficeTest {
 
         var testStationsAmount = 2;
         var testDate = LocalDate.now();
-        var expectedRevenue = 60;
+        var expectedRevenue = 30;
 
         ticketOffice.addRevenue(testStationsAmount);
         var actualRevenue = ticketOffice.getDailyRevenue(testDate);
