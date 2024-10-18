@@ -327,7 +327,7 @@ class SubwayTest {
     @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
     void isValidDateTest_Success() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        var monthlyTicket = budapest.createMonthlyTicket(); // todo
+        var monthlyTicket = budapest.createMonthlyTicket(); // todo ??
         var expectedDate = LocalDate.now();
         var actualDate = LocalDate.now().plusDays(30);
 
