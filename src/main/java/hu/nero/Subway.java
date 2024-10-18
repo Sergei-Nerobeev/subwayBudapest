@@ -10,7 +10,6 @@ public class Subway {
     private Set<Line> lines;
     private int ticketCounter = 0;
     private static final int MAX_TICKET_NUMBER = 9999;
-    private static final int CURRENT_YEAR = 2024;
     private static final int VALIDITY_PERIOD_DAYS = 30;
     private final List<MonthlyTicket> monthlyTickets;
 
@@ -282,7 +281,7 @@ public class Subway {
                 return true;
             }
         }
-        throw new RuntimeException("Ticket unavailable! Because the ticket's not in the system.");
+        return false;
     }
 
     // метод проверки кол-ва знаков номера проездного билета
@@ -295,35 +294,30 @@ public class Subway {
 
     // метод проверки действительности проездного билета
     public boolean isValidMonthlyTicket(String ticketNumber, LocalDate checkDate) {
-        if (isValidYear(checkDate)
+        return isValidYear(checkDate)
                 && isValidCountOfNumbers(ticketNumber)
                 && isTicketInSystem(ticketNumber)
-                && isValidDate(checkDate)) {
-            return true;
-        }
-        throw new RuntimeException("Your ticket is not valid!");
+                && isValidDate(ticketNumber, checkDate);
     }
 
     // метод проверки даты
-    private boolean isValidDate(LocalDate date) {
-        for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            LocalDate purchaseDate = monthlyTicket.purchaseDate();
-            LocalDate expirationDate = monthlyTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
-            if (date.isBefore(purchaseDate) || date.isAfter(expirationDate)) {
-                throw new RuntimeException("Your ticket is not valid!");
-            }
-        }
-        return true;
+    private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate expirationDate = checkDate.plusDays(VALIDITY_PERIOD_DAYS);
+        for (MonthlyTicket monthlyTicket : monthlyTickets)
+            if (monthlyTicket.ticketNumber().equals(ticketNumber) && !currentDate.isAfter(expirationDate)) return true;
+        return false;
     }
 
     // метод проверки года
-    private boolean isValidYear(LocalDate today) {
-        return today.getYear() == CURRENT_YEAR;
+    private boolean isValidYear(LocalDate inspectionDate) {
+        LocalDate localDate = LocalDate.now();
+        return localDate.equals(inspectionDate);
     }
 
     // метод печати доходов всех касс всех станций метро по дням в которые были продажи
     public void printRevenueFromAllTicketOffices(LocalDate purchaseDate) {
-        for(Line line : lines) {
+        for (Line line : lines) {
             var station = line.getStations();
 
         }

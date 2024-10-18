@@ -128,7 +128,7 @@ public class Station {
     }
 
     // метод продления действия проездного на 30 дней с момента покупки
-    public MonthlyTicket getTicketExtension(String ticketNumber, LocalDate dateOfExtension) {
+    public MonthlyTicket extendMonthlyTicket(String ticketNumber, LocalDate dateOfExtension) {
         MonthlyTicket monthlyTicket = subway.createMonthlyTicket();
         if (!dateOfExtension.isAfter(monthlyTicket.purchaseDate())) {
             throw new RuntimeException("The date must be at least as recent as today.");

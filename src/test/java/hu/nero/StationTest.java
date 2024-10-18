@@ -108,7 +108,7 @@ class StationTest {
 
     @Test
     @DisplayName("Продление проездного билета - возвращает билет плюс 30 дней - корректная дата,позитивный сценарий")
-    void getTicketExtensionTest_Success() {
+    void extendMonthlyTicketTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
         var actualTicketNumber = "a0234";
         var testDateNow = LocalDate.now();
@@ -116,7 +116,7 @@ class StationTest {
         var expectedDate = DateUtils.convertStringToLocalDate("10.11.2024");
         var stationTest = budapest.getLine("Red").getStation("Astoria");
 
-        var extendedMonthlyTicket = stationTest.getTicketExtension(actualTicketNumber, testDateTomorrow);
+        var extendedMonthlyTicket = stationTest.extendMonthlyTicket(actualTicketNumber, testDateTomorrow);
         var actualDate = extendedMonthlyTicket.purchaseDate();
 
         assertEquals(expectedDate, actualDate);
@@ -124,7 +124,7 @@ class StationTest {
 
     @Test
     @DisplayName("Продление проездного билета - возвращает исключение - некорректная дата,негативный сценарий")
-    void getTicketExtensionTest_ThrowsException() {
+    void extendMonthlyTicketTest_ThrowsException() {
         var budapest = createDataForTestSubway("Budapest");
         var actualTicketNumber = "a0234";
         var expectedTestDate = DateUtils.convertStringToLocalDate("09.11.2024");
@@ -133,7 +133,7 @@ class StationTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> {
-                    stationTest.getTicketExtension(actualTicketNumber, wrongTestDate);
+                    stationTest.extendMonthlyTicket(actualTicketNumber, wrongTestDate);
                 });
 
         assertEquals("The date must be at least as recent as today.", exception.getMessage());
