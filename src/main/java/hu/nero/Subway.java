@@ -50,9 +50,7 @@ public class Subway {
     /**
      * Создание первой станции на линии
      */
-    public Station createFirstStation(String lineColor,
-                                      String stationName,
-                                      List<Station> transferStations) {
+    public Station createFirstStation(String lineColor, String stationName, List<Station> transferStations) {
         checkLineExists(lineColor);
         checkStationNameNotExists(stationName);
         Line line = getLine(lineColor);
@@ -96,10 +94,7 @@ public class Subway {
      *
      * @param newNameOfStation terminal station
      */
-    public Station createLastStation(String lineColor,
-                                     String newNameOfStation,
-                                     int timeToThePreviousStation,
-                                     List<Station> transferStations) {
+    public Station createLastStation(String lineColor, String newNameOfStation, int timeToThePreviousStation, List<Station> transferStations) {
         checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем не существует
         var currentLastStation = getLastStationInLine(lineColor); // текущая последняя станция Астория
         isStationLastInLine(currentLastStation);
@@ -163,12 +158,10 @@ public class Subway {
      * если конечная stationTwo стоит перед stationOne
      */
     public int getInterval(Station stationOne, Station stationTwo) {
-        if (areStationsNull(stationOne, stationTwo))
-            return -1;
+        if (areStationsNull(stationOne, stationTwo)) return -1;
         var line = stationOne.getLine();
         var sameLine = stationTwo.getLine();
-        if (!line.getColor().equals(sameLine.getColor()))
-            return -1;
+        if (!line.getColor().equals(sameLine.getColor())) return -1;
         int interval = 0;
         boolean foundStart = false;
         for (Station station : line.getStations()) {
@@ -190,12 +183,10 @@ public class Subway {
      * к начальной по previous, либо возвращает -1, если конечная stationTwo стоит перед stationOne
      */
     public int getIntervalFromLastStation(Station stationOne, Station stationTwo) {
-        if (areStationsNull(stationOne, stationTwo))
-            return -1;
+        if (areStationsNull(stationOne, stationTwo)) return -1;
         var line = stationOne.getLine();
         var sameLine = stationTwo.getLine();
-        if (!line.getColor().equals(sameLine.getColor()))
-            return -1;
+        if (!line.getColor().equals(sameLine.getColor())) return -1;
         int interval = 0;
         Station currentStation = stationTwo;
         while (currentStation != null) {
@@ -245,12 +236,10 @@ public class Subway {
             return getIntervalOnOneLine(start, finish);
         }
         // если линии не совпали:
-        Station transferStation =
-                getTransferStationIdentify(line.getColor(), otherLine.getColor());
+        Station transferStation = getTransferStationIdentify(line.getColor(), otherLine.getColor());
         int intervalForFirstLine = getIntervalOnOneLine(start, transferStation);
 
-        Station transferStation2 =
-                getTransferStationIdentify(otherLine.getColor(), line.getColor());
+        Station transferStation2 = getTransferStationIdentify(otherLine.getColor(), line.getColor());
         int intervalForSecondLine = getIntervalOnOneLine(finish, transferStation2);
         return intervalForFirstLine + intervalForSecondLine;
     }
@@ -286,33 +275,30 @@ public class Subway {
 
     // метод проверки кол-ва знаков номера проездного билета
     private boolean isValidCountOfNumbers(String ticketNumber) {
-        if (ticketNumber != null && ticketNumber.matches("a\\d{4}")) {
-            return true;
-        }
-        throw new RuntimeException("Number of ticket is not valid! Because: ticketNumber is wrong!");
+        return ticketNumber != null && ticketNumber.matches("a\\d{4}");
     }
 
     // метод проверки действительности проездного билета
     public boolean isValidMonthlyTicket(String ticketNumber, LocalDate checkDate) {
-        return isValidYear(checkDate)
-                && isValidCountOfNumbers(ticketNumber)
+        return isValidCountOfNumbers(ticketNumber)
                 && isTicketInSystem(ticketNumber)
                 && isValidDate(ticketNumber, checkDate);
     }
 
     // метод проверки даты
     private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate expirationDate = checkDate.plusDays(VALIDITY_PERIOD_DAYS);
-        for (MonthlyTicket monthlyTicket : monthlyTickets)
-            if (monthlyTicket.ticketNumber().equals(ticketNumber) && !currentDate.isAfter(expirationDate)) return true;
-        return false;
-    }
-
-    // метод проверки года
-    private boolean isValidYear(LocalDate inspectionDate) {
-        LocalDate localDate = LocalDate.now();
-        return localDate.equals(inspectionDate);
+        var date = LocalDate.now();
+        var expirationDate = date.plusDays(VALIDITY_PERIOD_DAYS);
+        MonthlyTicket foundTicket = null;
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+                foundTicket = monthlyTicket;
+                break;
+            }
+        }
+        return foundTicket != null
+                && !foundTicket.purchaseDate().isAfter(expirationDate)
+                && !foundTicket.purchaseDate().isBefore(checkDate));
     }
 
     // метод печати доходов всех касс всех станций метро по дням в которые были продажи
@@ -338,10 +324,7 @@ public class Subway {
 
     @Override
     public String toString() {
-        return "Subway{" +
-                "cityName='" + cityName + '\'' +
-                ", lines=" + lines.toString() +
-                '}';
+        return "Subway{" + "cityName='" + cityName + '\'' + ", lines=" + lines.toString() + '}';
     }
 
     public void setLines(Set<Line> lines) {
