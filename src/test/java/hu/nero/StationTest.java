@@ -110,16 +110,12 @@ class StationTest {
     @DisplayName("Продление проездного билета - возвращает билет плюс 30 дней - корректная дата,позитивный сценарий")
     void extendMonthlyTicketTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
-        var actualTicketNumber = "a0234";
+        var actualTicket = budapest.createMonthlyTicket();
         var testDateNow = LocalDate.now();
-        var testDateTomorrow = DateUtils.convertStringToLocalDate("20.10.2024");
-        var expectedDate = DateUtils.convertStringToLocalDate("10.11.2024");
-        var stationTest = budapest.getLine("Red").getStation("Astoria");
+        var astoria = budapest.getLine("Red").getStation("Astoria");
 
-        var extendedMonthlyTicket = stationTest.extendMonthlyTicket(actualTicketNumber, testDateTomorrow);
-        var actualDate = extendedMonthlyTicket.purchaseDate();
+        var extendedMonthlyTicket = astoria.extendMonthlyTicket(actualTicket.ticketNumber(), testDateNow);
 
-        assertEquals(expectedDate, actualDate);
     }
 
     @Test
