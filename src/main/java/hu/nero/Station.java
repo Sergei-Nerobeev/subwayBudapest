@@ -1,5 +1,6 @@
 package hu.nero;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -124,6 +125,18 @@ public class Station {
     public MonthlyTicket sellMonthlyTicket() { // метод продажи проездных билетов
         ticketOffice.addRevenueMonthlyTicket();
         return subway.createMonthlyTicket();
+    }
+
+    // метод продления действия проездного на 30 дней с момента покупки
+    public MonthlyTicket extendMonthlyTicket(String ticketNumber, LocalDate dateOfExtension) {
+        MonthlyTicket monthlyTicket = subway.createMonthlyTicket();
+        if (!dateOfExtension.isAfter(monthlyTicket.purchaseDate())) {
+            throw new RuntimeException("The date must be at least as recent as today.");
+        }
+        dateOfExtension = monthlyTicket.purchaseDate().plusDays(30);
+        ticketOffice.addRevenueMonthlyTicket();
+
+        return new MonthlyTicket(ticketNumber, dateOfExtension);
     }
 
     @Override
