@@ -296,6 +296,7 @@ public class Subway {
                 break;
             }
         }
+
         return foundTicket != null
                 && !foundTicket.purchaseDate().isAfter(expirationDate)
                 && !foundTicket.purchaseDate().isBefore(checkDate);
