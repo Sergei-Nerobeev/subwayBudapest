@@ -298,7 +298,7 @@ public class Subway {
         }
         return foundTicket != null
                 && !foundTicket.purchaseDate().isAfter(expirationDate)
-                && !foundTicket.purchaseDate().isBefore(checkDate));
+                && !foundTicket.purchaseDate().isBefore(checkDate);
     }
 
     // метод печати доходов всех касс всех станций метро по дням в которые были продажи
