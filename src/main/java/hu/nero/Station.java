@@ -139,8 +139,7 @@ public class Station {
         return new MonthlyTicket(ticketNumber, dateOfExtension);
     }
 
-    public MonthlyTicket extendMonthlyTicket(String ticketNumber, LocalDate dateOfExtension) {
-        var date = LocalDate.now();
+    public MonthlyTicket extendMonthlyTicket(String ticketNumber) {
         MonthlyTicket foundTicket = null;
         List<MonthlyTicket> monthlyTickets = subway.getMonthlyTickets();
         for (MonthlyTicket monthlyTicket : monthlyTickets ){
@@ -149,7 +148,7 @@ public class Station {
                 break;
             }
         }
-        dateOfExtension = foundTicket.purchaseDate().plusDays(30);
+        var dateOfExtension = foundTicket.purchaseDate().plusDays(30);
         ticketOffice.addRevenueMonthlyTicket();
         return new MonthlyTicket(ticketNumber, dateOfExtension);
     }

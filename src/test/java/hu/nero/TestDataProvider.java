@@ -20,8 +20,4 @@ public final class TestDataProvider {
         deakFerencTer.addTransferStation(arena);
         return subway;
     }
-    public static MonthlyTicket createMonthlyTicket(){
-        return null; // todo
-    }
-
 }

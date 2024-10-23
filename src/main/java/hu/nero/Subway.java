@@ -262,6 +262,13 @@ public class Subway {
         monthlyTickets.add(monthlyTicket);
         return monthlyTicket;
     }
+    // метод для тестирования:
+    public MonthlyTicket createMonthlyTicket(LocalDate date) {
+        var ticketNumber = generateMonthlyTicketNumber();
+        MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, date);
+        monthlyTickets.add(monthlyTicket);
+        return monthlyTicket;
+    }
 
     // метод проверки проездного билета в базе проданных билетов
     public boolean isTicketInSystem(String ticketNumber) {
@@ -287,8 +294,6 @@ public class Subway {
 
     // метод проверки даты
     private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
-        var date = LocalDate.now();
-        var expirationDate = date.plusDays(VALIDITY_PERIOD_DAYS);
         MonthlyTicket foundTicket = null;
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
             if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
@@ -296,10 +301,13 @@ public class Subway {
                 break;
             }
         }
-
-        return foundTicket != null
-                && !foundTicket.purchaseDate().isAfter(expirationDate)
-                && !foundTicket.purchaseDate().isBefore(checkDate);
+        if (foundTicket == null) {
+            return false;
+        }
+        var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
+        return checkDate.isBefore(expirationDate)
+                && checkDate.isAfter(foundTicket.purchaseDate())
+                && foundTicket.purchaseDate().equals(checkDate);
     }
 
     // метод печати доходов всех касс всех станций метро по дням в которые были продажи
