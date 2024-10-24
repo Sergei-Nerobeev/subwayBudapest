@@ -338,7 +338,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Валидна ли дата проездного билета - позитивный сценарий - дата покупки в рамках срока действия")
-    void isValidDateTest_Success_DateEqualsCheckDate()
+    void isValidDateTest_Success_PurchaseDate_InValidityPeriod()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(15);
@@ -351,28 +351,20 @@ class SubwayTest {
 
         assertTrue(result);
     }
-
-
     @Test
-    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
-    void isValidDateTest_Success() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата покупки за рамками срока действия")
+    void isValidDateTest_NoSuccess_PurchaseDateIsNotInValidityPeriod()
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-
-        var date = LocalDate.now();
-        var datePlus = LocalDate.now().plusDays(1);
-//        var dateMinus = LocalDate.now().minusDays(1);
-        var newMonthlyTicket = budapest.createMonthlyTicketTest(datePlus);
+        var checkDate = LocalDate.now().plusDays(31);
+        var newMonthlyTicket = budapest.createMonthlyTicketTest(LocalDate.now());
         var expectedNumber = newMonthlyTicket.ticketNumber();
-        var expectedDate = newMonthlyTicket.purchaseDate();
 
         Method method = Subway.class.getDeclaredMethod("isValidDate", String.class, LocalDate.class);
         method.setAccessible(true);
-        boolean result = (Boolean) method.invoke(budapest, expectedNumber, date);
-//        boolean result2 = (Boolean) method.invoke(budapest, expectedNumber, expectedDate);
-//        boolean result3 = (Boolean) method.invoke(budapest, expectedNumber, dateMinus);
+        boolean result = (Boolean) method.invoke(budapest, expectedNumber, checkDate);
 
-        assertTrue(result);
-
+        assertFalse(result);
     }
 
 

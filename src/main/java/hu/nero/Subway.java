@@ -310,24 +310,30 @@ public class Subway {
         if (checkDate.isAfter(expirationDate)) {
             return false;
         }
-        return checkDate.isAfter(purchaseDate) || checkDate.isBefore(expirationDate);
+        if (purchaseDate.isEqual(checkDate)) {
+            return true;
+        }
+//        if (purchaseDate.isBefore(checkDate)) {
+//            return false;
+//        }
 //                checkDate.isBefore(expirationDate)
 //                && foundTicket.purchaseDate().equals(checkDate);
+        return true;
     }
 
 
     // метод печати доходов всех касс всех станций метро по дням в которые были продажи
-    public void printRevenueFromAllTicketOffices(LocalDate purchaseDate) {
-        for (Line line : lines) {
-            var station = line.getStations();
-
-        }
-        for (MonthlyTicket soldTicket : monthlyTickets) {
-            if (soldTicket != null) {
-                System.out.println(soldTicket.purchaseDate());
-            }
-        }
-    }
+//    public void printRevenueFromAllTicketOffices(LocalDate purchaseDate) {
+//        for (Line line : lines) {
+//            var station = line.getStations();
+//
+//        }
+//        for (MonthlyTicket soldTicket : monthlyTickets) {
+//            if (soldTicket != null) {
+//                System.out.println(soldTicket.purchaseDate());
+//            }
+//        }
+//    }
 
     public String getCityName() {
         return cityName;
