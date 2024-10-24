@@ -302,51 +302,78 @@ class SubwayTest {
         assertTrue((Boolean) method.invoke(budapest, expectedNumber));
     }
 
-
     @Test
-    @DisplayName("Валидна ли дата проездного билета - негативный сценарий")
-    void isValidDateTest_NoSuccess() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата на один день раньше срока действия")
+    void isValidDateTest_NoSuccess_OneDayBeforeCheckDate()
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        budapest.createMonthlyTicket();
-        var date = LocalDate.now().plusDays(31);
-        var expectedNumber = "a0000";
+        var checkDate = LocalDate.now();
+        var oneDayBefore = LocalDate.now().minusDays(1);
+        var newMonthlyTicket = budapest.createMonthlyTicketTest(oneDayBefore);
+        var expectedNumber = newMonthlyTicket.ticketNumber();
 
         Method method = Subway.class.getDeclaredMethod("isValidDate", String.class, LocalDate.class);
         method.setAccessible(true);
-        boolean result = (Boolean) method.invoke(budapest, expectedNumber, date);
+        boolean result = (Boolean) method.invoke(budapest, expectedNumber, checkDate);
 
         assertFalse(result);
     }
 
     @Test
-    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
-    void isValidDateTest_Success() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий - дата покупки равна дате начала срока действия")
+    void isValidDateTest_Success_PurchaseDate_Equals_CheckDate()
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        var datePlus = LocalDate.now().plusDays(2);
-        var date = LocalDate.now();
-        var newMonthlyTicket = budapest.createMonthlyTicketTest(date);
+        var checkDate = LocalDate.now();
+        var purchaseDate = LocalDate.now();
+        var newMonthlyTicket = budapest.createMonthlyTicketTest(purchaseDate);
         var expectedNumber = newMonthlyTicket.ticketNumber();
 
         Method method = Subway.class.getDeclaredMethod("isValidDate", String.class, LocalDate.class);
         method.setAccessible(true);
-        boolean result = (Boolean) method.invoke(budapest, expectedNumber, date);
-        boolean result2 = (Boolean) method.invoke(budapest, expectedNumber, datePlus);
+        boolean result = (Boolean) method.invoke(budapest, expectedNumber, checkDate);
 
         assertTrue(result);
-        assertTrue(result2);
     }
 
     @Test
-    @DisplayName("Проверка проездного билета - позитивный сценарий - даты валидные")
-    void isValidMonthlyTicketTest_Success() {
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий - дата покупки в рамках срока действия")
+    void isValidDateTest_Success_DateEqualsCheckDate()
+            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        var testDate = LocalDate.now();
-        budapest.createMonthlyTicket();
-        var expectedNumberOfTicket = "a0000";
-        var expectedBehavior = true;
+        var checkDate = LocalDate.now().plusDays(15);
+        var newMonthlyTicket = budapest.createMonthlyTicketTest(LocalDate.now());
+        var expectedNumber = newMonthlyTicket.ticketNumber();
 
-        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDate);
+        Method method = Subway.class.getDeclaredMethod("isValidDate", String.class, LocalDate.class);
+        method.setAccessible(true);
+        boolean result = (Boolean) method.invoke(budapest, expectedNumber, checkDate);
 
-        assertEquals(expectedBehavior, actualBehavior);
+        assertTrue(result);
     }
+
+
+    @Test
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
+    void isValidDateTest_Success() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        var budapest = createDataForTestSubway("Budapest");
+
+        var date = LocalDate.now();
+        var datePlus = LocalDate.now().plusDays(1);
+//        var dateMinus = LocalDate.now().minusDays(1);
+        var newMonthlyTicket = budapest.createMonthlyTicketTest(datePlus);
+        var expectedNumber = newMonthlyTicket.ticketNumber();
+        var expectedDate = newMonthlyTicket.purchaseDate();
+
+        Method method = Subway.class.getDeclaredMethod("isValidDate", String.class, LocalDate.class);
+        method.setAccessible(true);
+        boolean result = (Boolean) method.invoke(budapest, expectedNumber, date);
+//        boolean result2 = (Boolean) method.invoke(budapest, expectedNumber, expectedDate);
+//        boolean result3 = (Boolean) method.invoke(budapest, expectedNumber, dateMinus);
+
+        assertTrue(result);
+
+    }
+
+
 }

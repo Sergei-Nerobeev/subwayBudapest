@@ -305,10 +305,16 @@ public class Subway {
         if (foundTicket == null) {
             return false;
         }
+        var purchaseDate = foundTicket.purchaseDate();
         var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
-        return checkDate.isBefore(expirationDate)
-                && foundTicket.purchaseDate().equals(checkDate);
+        if (checkDate.isAfter(expirationDate)) {
+            return false;
+        }
+        return checkDate.isAfter(purchaseDate) || checkDate.isBefore(expirationDate);
+//                checkDate.isBefore(expirationDate)
+//                && foundTicket.purchaseDate().equals(checkDate);
     }
+
 
     // метод печати доходов всех касс всех станций метро по дням в которые были продажи
     public void printRevenueFromAllTicketOffices(LocalDate purchaseDate) {
