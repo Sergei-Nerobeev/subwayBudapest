@@ -3,6 +3,7 @@ package hu.nero;
 import hu.nero.exception.*;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Subway {
@@ -294,6 +295,28 @@ public class Subway {
     }
 
     // метод проверки даты
+    private boolean isValidDate2(String ticketNumber, LocalDate checkDate) {
+        MonthlyTicket foundTicket = null;
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+                foundTicket = monthlyTicket;
+                break;
+            }
+        }
+        if (foundTicket == null) {
+            return false;
+        }
+        var purchaseDate = foundTicket.purchaseDate();
+        var startDate = purchaseDate.minusDays(1);
+        var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
+        if (checkDate.isAfter(expirationDate)) {
+            return false;
+        }
+        if (purchaseDate.isEqual(checkDate)) {
+            return true;
+        }
+        return !startDate.isBefore(purchaseDate);
+    }
     private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
         MonthlyTicket foundTicket = null;
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
@@ -306,19 +329,12 @@ public class Subway {
             return false;
         }
         var purchaseDate = foundTicket.purchaseDate();
-        var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
-        if (checkDate.isAfter(expirationDate)) {
-            return false;
-        }
-        if (purchaseDate.isEqual(checkDate)) {
-            return true;
-        }
-//        if (purchaseDate.isBefore(checkDate)) {
-//            return false;
-//        }
-//                checkDate.isBefore(expirationDate)
-//                && foundTicket.purchaseDate().equals(checkDate);
-        return true;
+        var startDate = purchaseDate.minusDays(1);
+//        var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
+        var daysBetween = ChronoUnit.DAYS.between(purchaseDate,checkDate);
+        return daysBetween >= 1 && daysBetween <= VALIDITY_PERIOD_DAYS;
+
+
     }
 
 
