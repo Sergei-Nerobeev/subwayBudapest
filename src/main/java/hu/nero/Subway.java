@@ -307,47 +307,41 @@ public class Subway {
             return false;
         }
         var purchaseDate = foundTicket.purchaseDate();
-        var startDate = purchaseDate.minusDays(1);
         var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
-        if (checkDate.isAfter(expirationDate)) {
-            return false;
+        return checkDate.isAfter(purchaseDate)
+                && checkDate.isEqual(purchaseDate)
+                && checkDate.isBefore(expirationDate);
+
         }
-        if (purchaseDate.isEqual(checkDate)) {
-            return true;
+
+        public String getCityName () {
+            return cityName;
         }
-        return !startDate.isBefore(purchaseDate);
+
+        public void setCityName (String cityName){
+            this.cityName = cityName;
+        }
+
+        @Override
+        public String toString () {
+            return "Subway{" + "cityName='" + cityName + '\'' + ", lines=" + lines.toString() + '}';
+        }
+
+        public void setLines (Set < Line > lines) {
+            this.lines = lines;
+        }
+
+        @Override
+        public boolean equals (Object o){
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Subway subway = (Subway) o;
+            return Objects.equals(cityName, subway.cityName) && Objects.equals(lines, subway.lines);
+        }
+
+        @Override
+        public int hashCode () {
+            return Objects.hash(cityName, lines);
+        }
+
     }
-
-
-
-    public String getCityName() {
-        return cityName;
-    }
-
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
-    }
-
-    @Override
-    public String toString() {
-        return "Subway{" + "cityName='" + cityName + '\'' + ", lines=" + lines.toString() + '}';
-    }
-
-    public void setLines(Set<Line> lines) {
-        this.lines = lines;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Subway subway = (Subway) o;
-        return Objects.equals(cityName, subway.cityName) && Objects.equals(lines, subway.lines);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cityName, lines);
-    }
-
-}
