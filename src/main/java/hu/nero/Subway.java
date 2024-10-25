@@ -295,7 +295,7 @@ public class Subway {
     }
 
     // метод проверки даты
-    private boolean isValidDate2(String ticketNumber, LocalDate checkDate) {
+    private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
         MonthlyTicket foundTicket = null;
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
             if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
@@ -317,39 +317,8 @@ public class Subway {
         }
         return !startDate.isBefore(purchaseDate);
     }
-    private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
-        MonthlyTicket foundTicket = null;
-        for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
-                foundTicket = monthlyTicket;
-                break;
-            }
-        }
-        if (foundTicket == null) {
-            return false;
-        }
-        var purchaseDate = foundTicket.purchaseDate();
-        var startDate = purchaseDate.minusDays(1);
-//        var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
-        var daysBetween = ChronoUnit.DAYS.between(purchaseDate,checkDate);
-        return daysBetween >= 1 && daysBetween <= VALIDITY_PERIOD_DAYS;
 
 
-    }
-
-
-    // метод печати доходов всех касс всех станций метро по дням в которые были продажи
-//    public void printRevenueFromAllTicketOffices(LocalDate purchaseDate) {
-//        for (Line line : lines) {
-//            var station = line.getStations();
-//
-//        }
-//        for (MonthlyTicket soldTicket : monthlyTickets) {
-//            if (soldTicket != null) {
-//                System.out.println(soldTicket.purchaseDate());
-//            }
-//        }
-//    }
 
     public String getCityName() {
         return cityName;
