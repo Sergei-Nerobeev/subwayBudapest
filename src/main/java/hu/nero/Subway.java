@@ -3,7 +3,6 @@ package hu.nero;
 import hu.nero.exception.*;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Subway {
@@ -265,7 +264,7 @@ public class Subway {
     }
 
     // метод для тестирования:
-    public MonthlyTicket createMonthlyTicketTest(LocalDate date) {
+    public MonthlyTicket createMonthlyTickett(LocalDate date) {
         var ticketNumber = generateMonthlyTicketNumber();
         MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, date);
         monthlyTickets.add(monthlyTicket);
@@ -291,11 +290,11 @@ public class Subway {
     public boolean isValidMonthlyTicket(String ticketNumber, LocalDate checkDate) {
         return isValidCountOfNumbers(ticketNumber)
                 && isTicketInSystem(ticketNumber)
-                && isValidDate(ticketNumber, checkDate);
+                && isTicketValid(ticketNumber, checkDate);
     }
 
     // метод проверки даты
-    private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
+    private boolean isTicketValid(String ticketNumber, LocalDate checkDate) {
         MonthlyTicket foundTicket = null;
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
             if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
