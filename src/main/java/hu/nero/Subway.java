@@ -308,40 +308,39 @@ public class Subway {
         }
         var purchaseDate = foundTicket.purchaseDate();
         var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
-        return checkDate.isAfter(purchaseDate)
-                && checkDate.isEqual(purchaseDate)
-                && checkDate.isBefore(expirationDate);
-
-        }
-
-        public String getCityName () {
-            return cityName;
-        }
-
-        public void setCityName (String cityName){
-            this.cityName = cityName;
-        }
-
-        @Override
-        public String toString () {
-            return "Subway{" + "cityName='" + cityName + '\'' + ", lines=" + lines.toString() + '}';
-        }
-
-        public void setLines (Set < Line > lines) {
-            this.lines = lines;
-        }
-
-        @Override
-        public boolean equals (Object o){
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Subway subway = (Subway) o;
-            return Objects.equals(cityName, subway.cityName) && Objects.equals(lines, subway.lines);
-        }
-
-        @Override
-        public int hashCode () {
-            return Objects.hash(cityName, lines);
-        }
+        return checkDate.isEqual(purchaseDate)
+                || checkDate.isBefore(expirationDate);
 
     }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    @Override
+    public String toString() {
+        return "Subway{" + "cityName='" + cityName + '\'' + ", lines=" + lines.toString() + '}';
+    }
+
+    public void setLines(Set<Line> lines) {
+        this.lines = lines;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subway subway = (Subway) o;
+        return Objects.equals(cityName, subway.cityName) && Objects.equals(lines, subway.lines);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cityName, lines);
+    }
+
+}

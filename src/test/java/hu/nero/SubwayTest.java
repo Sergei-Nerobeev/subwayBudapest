@@ -308,7 +308,7 @@ class SubwayTest {
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now();
-        var oneDayBefore = LocalDate.now().minusDays(1);
+        var oneDayBefore = LocalDate.now().minusDays(30);
         var newMonthlyTicket = budapest.createMonthlyTicketTest(oneDayBefore);
         var expectedNumber = newMonthlyTicket.ticketNumber();
 
@@ -316,7 +316,7 @@ class SubwayTest {
         method.setAccessible(true);
         boolean result = (Boolean) method.invoke(budapest, expectedNumber, checkDate);
 
-        assertFalse(result);
+        assertTrue(result);
     }
 
     @Test
