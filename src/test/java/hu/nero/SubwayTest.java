@@ -307,8 +307,8 @@ class SubwayTest {
     void isValidDateTest_NoSuccess_OneDayBeforeCheckDate()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        var checkDate = LocalDate.now();
-        var oneDayBefore = LocalDate.now().minusDays(1);
+        var oneDayBefore = LocalDate.now();
+        var checkDate = LocalDate.now().minusDays(1);
         var newMonthlyTicket = budapest.createMonthlyTicketTest(oneDayBefore);
         var expectedNumber = newMonthlyTicket.ticketNumber();
 
