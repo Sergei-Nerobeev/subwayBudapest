@@ -308,9 +308,12 @@ public class Subway {
         }
         var purchaseDate = foundTicket.purchaseDate();
         var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
-        return checkDate.isEqual(purchaseDate)
-                || checkDate.isBefore(expirationDate);
+        return checkDate.isAfter(purchaseDate) && checkDate.isBefore(expirationDate) || checkDate.isEqual(purchaseDate);
 
+//        if (checkDate.isEqual(purchaseDate) && checkDate.isBefore(expirationDate)) {
+//            return true;
+//        }
+//
     }
 
     public String getCityName() {
