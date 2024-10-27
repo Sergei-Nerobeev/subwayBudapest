@@ -141,7 +141,6 @@ public class Station {
         }
         var dateOfExtension = foundTicket.purchaseDate().plusDays(30);
         ticketOffice.addRevenueMonthlyTicket();
-        new MonthlyTicket(ticketNumber, dateOfExtension);
     }
 
     @Override
