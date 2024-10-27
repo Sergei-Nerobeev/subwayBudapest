@@ -264,7 +264,7 @@ public class Subway {
     }
 
     // метод для тестирования:
-    public MonthlyTicket createMonthlyTickett(LocalDate date) {
+    public MonthlyTicket createMonthlyTicket(LocalDate date) {
         var ticketNumber = generateMonthlyTicketNumber();
         MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, date);
         monthlyTickets.add(monthlyTicket);
@@ -308,11 +308,6 @@ public class Subway {
         var purchaseDate = foundTicket.purchaseDate();
         var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
         return checkDate.isAfter(purchaseDate) && checkDate.isBefore(expirationDate) || checkDate.isEqual(purchaseDate);
-
-//        if (checkDate.isEqual(purchaseDate) && checkDate.isBefore(expirationDate)) {
-//            return true;
-//        }
-//
     }
 
     public String getCityName() {

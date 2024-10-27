@@ -309,7 +309,7 @@ class SubwayTest {
         var budapest = createDataForTestSubway("Budapest");
         var createDate = LocalDate.now();
         var checkDate = LocalDate.now().minusDays(1);
-        var testTicket = budapest.createMonthlyTickett(createDate);
+        var testTicket = budapest.createMonthlyTicket(createDate);
         var testTicketNumber = testTicket.ticketNumber();
 
         Method method = Subway.class.getDeclaredMethod("isTicketValid", String.class, LocalDate.class);
@@ -325,7 +325,7 @@ class SubwayTest {
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(15);
-        var testTicket = budapest.createMonthlyTickett(LocalDate.now());
+        var testTicket = budapest.createMonthlyTicket(LocalDate.now());
         var testTicketNumber = testTicket.ticketNumber();
 
         Method method = Subway.class.getDeclaredMethod("isTicketValid", String.class, LocalDate.class);
@@ -341,7 +341,7 @@ class SubwayTest {
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(30);
-        var testTicket = budapest.createMonthlyTickett(LocalDate.now());
+        var testTicket = budapest.createMonthlyTicket(LocalDate.now());
         var testTicketNumber = testTicket.ticketNumber();
 
         Method method = Subway.class.getDeclaredMethod("isTicketValid", String.class, LocalDate.class);
@@ -357,7 +357,7 @@ class SubwayTest {
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(50);
-        var testTicket = budapest.createMonthlyTickett(LocalDate.now());
+        var testTicket = budapest.createMonthlyTicket(LocalDate.now());
         var testTicketNumber = testTicket.ticketNumber();
 
         Method method = Subway.class.getDeclaredMethod("isTicketValid", String.class, LocalDate.class);
@@ -374,7 +374,7 @@ class SubwayTest {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now();
         var createDate = LocalDate.now();
-        var newMonthlyTicket = budapest.createMonthlyTickett(createDate);
+        var newMonthlyTicket = budapest.createMonthlyTicket(createDate);
         var testTicketNumber = newMonthlyTicket.ticketNumber();
 
         Method method = Subway.class.getDeclaredMethod("isTicketValid", String.class, LocalDate.class);
