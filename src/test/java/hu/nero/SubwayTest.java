@@ -340,7 +340,7 @@ class SubwayTest {
     void isValidDateTest_NoSuccess_PurchaseDateIsTicketNotInValidityPeriod()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        var checkDate = LocalDate.now().plusDays(30);
+        var checkDate = LocalDate.now().plusDays(50);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
         var testTicketNumber = testTicket.ticketNumber();
 
@@ -356,7 +356,7 @@ class SubwayTest {
     void isTicketValidDateTest_NoSuccess_CheckInLastDay()
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         var budapest = createDataForTestSubway("Budapest");
-        var checkDate = LocalDate.now().plusDays(50);
+        var checkDate = LocalDate.now().plusDays(30);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
         var testTicketNumber = testTicket.ticketNumber();
 
