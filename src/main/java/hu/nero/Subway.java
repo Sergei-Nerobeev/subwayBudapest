@@ -290,11 +290,11 @@ public class Subway {
     public boolean isValidMonthlyTicket(String ticketNumber, LocalDate checkDate) {
         return isValidCountOfNumbers(ticketNumber)
                 && isTicketInSystem(ticketNumber)
-                && isTicketValid(ticketNumber, checkDate);
+                && isValidDate(ticketNumber, checkDate);
     }
 
     // метод проверки даты
-    private boolean isTicketValid(String ticketNumber, LocalDate checkDate) {
+    private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
         MonthlyTicket foundTicket = null;
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
             if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
