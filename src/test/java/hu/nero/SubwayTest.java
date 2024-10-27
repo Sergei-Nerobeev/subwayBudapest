@@ -319,8 +319,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Валидна ли дата проездного билета - позитивный сценарий - дата покупки в рамках срока действия #2")
-    void isValidDateDateTest_Success_Purchase_InValidityPeriod()
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void isValidDateDateTest_Success_Purchase_InValidityPeriod() {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(15);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
@@ -333,8 +332,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата покупки за рамками срока действия #3")
-    void isValidDateTest_NoSuccess_PurchaseDateIsTicketNotInValidityPeriod()
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void isValidDateTest_NoSuccess_PurchaseDateIsTicketNotInValidityPeriod() {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(50);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
@@ -347,8 +345,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата проверки в день окончания срока #4")
-    void isValidDateDateTest_NoSuccess_CheckInLastDay()
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void isValidDateDateTest_NoSuccess_CheckInLastDay() {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(30);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
@@ -361,8 +358,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Валидна ли дата проездного билета - позитивный сценарий - дата покупки равна дате начала срока действия #5")
-    void isValidDateDateTest_Success_PurchaseDate_Equals_Check()
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void isValidDateDateTest_Success_PurchaseDate_Equals_Check() {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now();
         var createDate = LocalDate.now();
@@ -371,8 +367,6 @@ class SubwayTest {
 
         boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
-        assertTrue(isTicketValid );
+        assertTrue(isTicketValid);
     }
-
-
 }
