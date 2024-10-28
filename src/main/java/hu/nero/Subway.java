@@ -274,7 +274,7 @@ public class Subway {
     // метод проверки проездного билета в базе проданных билетов
     public boolean isTicketInSystem(String ticketNumber) {
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+            if (monthlyTicket.getTicketNumber().equals(ticketNumber)) {
                 return true;
             }
         }
@@ -297,7 +297,7 @@ public class Subway {
     private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
         MonthlyTicket foundTicket = null;
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+            if (monthlyTicket.getTicketNumber().equals(ticketNumber)) {
                 foundTicket = monthlyTicket;
                 break;
             }
@@ -305,8 +305,8 @@ public class Subway {
         if (foundTicket == null) {
             return false;
         }
-        var purchaseDate = foundTicket.purchaseDate();
-        var expirationDate = foundTicket.purchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
+        var purchaseDate = foundTicket.getPurchaseDate();
+        var expirationDate = foundTicket.getPurchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
         return checkDate.isAfter(purchaseDate) && checkDate.isBefore(expirationDate) || checkDate.isEqual(purchaseDate);
     }
 

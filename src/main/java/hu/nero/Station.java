@@ -128,11 +128,11 @@ public class Station {
     }
 
     // метод продления действия проездного на 30 дней с момента покупки
-    public LocalDate extendMonthlyTicket(String ticketNumber) {
+    public void extendMonthlyTicket(String ticketNumber, LocalDate date) {
         MonthlyTicket foundTicket = null;
         List<MonthlyTicket> monthlyTickets = subway.getMonthlyTickets();
-        for (MonthlyTicket monthlyTicket : monthlyTickets ){
-            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTicket.getTicketNumber().equals(ticketNumber)) {
                 foundTicket = monthlyTicket;
                 break;
             }
@@ -140,9 +140,8 @@ public class Station {
         if (foundTicket == null) {
             throw new RuntimeException("Ticket not found!");
         }
-        var dateOfExtension = foundTicket.purchaseDate().plusDays(30);
+        foundTicket.setPurchaseDate(date);
         ticketOffice.addRevenueMonthlyTicket();
-        return dateOfExtension;
     }
 
     @Override

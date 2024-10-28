@@ -1,7 +1,9 @@
 package hu.nero;
 
 import hu.nero.exception.LineNotEmptyException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -252,7 +254,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Создание проездного билета - билет Not Null - позитивный сценарий")
-    void createMonthlyTickett_NotNull() {
+    void createMonthlyTicket_ForTest_NotNull() {
         var budapest = createDataForTestSubway("Budapest");
 
         var actualMonthlyTicket = budapest.createMonthlyTicket();
@@ -262,7 +264,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Создание проездного билета - сравнение данных билета - позитивный сценарий")
-    void createMonthlyTickett_Success() {
+    void createMonthlyTicket_ForTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
         var testDate = LocalDate.now();
         var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
@@ -274,7 +276,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Создание проездного билета - добавление билетов в список - позитивный сценарий")
-    void createMonthlyTicketTest_AddingMonthlyTicketsToList_Success() {
+    void createMonthlyTicketTest_AddingMonthlyTicketsToList_SuccessForTest() {
         var budapest = createDataForTestSubway("Budapest");
         var testDate = LocalDate.now();
         var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
@@ -304,13 +306,12 @@ class SubwayTest {
 
     @Test
     @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата проверки на один день раньше даты покупки #1")
-    void isValidDateDateTest_NoSuccess_OneDayBeforeCheck()
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void isValidDateDateTest_NoSuccess_OneDayBeforeCheck() {
         var budapest = createDataForTestSubway("Budapest");
         var createDate = LocalDate.now();
         var checkDate = LocalDate.now().minusDays(1);
         var testTicket = budapest.createMonthlyTicket(createDate);
-        var testTicketNumber = testTicket.ticketNumber();
+        var testTicketNumber = testTicket.getTicketNumber();
 
         boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
@@ -323,7 +324,7 @@ class SubwayTest {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(15);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
-        var testTicketNumber = testTicket.ticketNumber();
+        var testTicketNumber = testTicket.getTicketNumber();
 
         boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
@@ -336,7 +337,7 @@ class SubwayTest {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(50);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
-        var testTicketNumber = testTicket.ticketNumber();
+        var testTicketNumber = testTicket.getTicketNumber();
 
         boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
@@ -349,7 +350,7 @@ class SubwayTest {
         var budapest = createDataForTestSubway("Budapest");
         var checkDate = LocalDate.now().plusDays(30);
         var testTicket = budapest.createMonthlyTicket(LocalDate.now());
-        var testTicketNumber = testTicket.ticketNumber();
+        var testTicketNumber = testTicket.getTicketNumber();
 
         boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
@@ -363,7 +364,7 @@ class SubwayTest {
         var checkDate = LocalDate.now();
         var createDate = LocalDate.now();
         var newMonthlyTicket = budapest.createMonthlyTicket(createDate);
-        var testTicketNumber = newMonthlyTicket.ticketNumber();
+        var testTicketNumber = newMonthlyTicket.getTicketNumber();
 
         boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
