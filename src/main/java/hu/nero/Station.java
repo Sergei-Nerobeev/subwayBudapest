@@ -1,5 +1,6 @@
 package hu.nero;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -127,7 +128,7 @@ public class Station {
     }
 
     // метод продления действия проездного на 30 дней с момента покупки
-    public void extendMonthlyTicket(String ticketNumber) {
+    public LocalDate extendMonthlyTicket(String ticketNumber) {
         MonthlyTicket foundTicket = null;
         List<MonthlyTicket> monthlyTickets = subway.getMonthlyTickets();
         for (MonthlyTicket monthlyTicket : monthlyTickets ){
@@ -137,10 +138,11 @@ public class Station {
             }
         }
         if (foundTicket == null) {
-            throw new RuntimeException("Ticket is Null!");
+            throw new RuntimeException("Ticket not found!");
         }
         var dateOfExtension = foundTicket.purchaseDate().plusDays(30);
         ticketOffice.addRevenueMonthlyTicket();
+        return dateOfExtension;
     }
 
     @Override

@@ -114,10 +114,8 @@ class StationTest {
         var astoria = budapest.getLine("Red").getStation("Astoria");
 
         astoria.extendMonthlyTicket(actualTicket.ticketNumber());
+
         assertTrue(budapest.isValidMonthlyTicket(actualTicket.ticketNumber(),LocalDate.now()));
         assertTrue(budapest.isValidMonthlyTicket(actualTicket.ticketNumber(),LocalDate.now().plusDays(28)));
     }
-
-
-
 }
