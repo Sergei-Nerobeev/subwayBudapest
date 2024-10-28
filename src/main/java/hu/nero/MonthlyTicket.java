@@ -16,10 +16,6 @@ public class MonthlyTicket {
         return ticketNumber;
     }
 
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
-    }
-
     public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
@@ -39,6 +35,14 @@ public class MonthlyTicket {
     @Override
     public int hashCode() {
         return Objects.hash(ticketNumber, purchaseDate);
+    }
+
+    @Override
+    public String toString() {
+        return "MonthlyTicket{" +
+                "ticketNumber='" + ticketNumber + '\'' +
+                ", purchaseDate=" + purchaseDate +
+                '}';
     }
 }
 
