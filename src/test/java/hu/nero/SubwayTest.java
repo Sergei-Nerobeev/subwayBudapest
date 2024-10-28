@@ -1,7 +1,9 @@
 package hu.nero;
 
 import hu.nero.exception.LineNotEmptyException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -252,7 +254,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Создание проездного билета - билет Not Null - позитивный сценарий")
-    void createMonthlyTicketTest_NotNull() {
+    void createMonthlyTicket_ForTest_NotNull() {
         var budapest = createDataForTestSubway("Budapest");
 
         var actualMonthlyTicket = budapest.createMonthlyTicket();
@@ -262,7 +264,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Создание проездного билета - сравнение данных билета - позитивный сценарий")
-    void createMonthlyTicketTest_Success() {
+    void createMonthlyTicket_ForTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
         var testDate = LocalDate.now();
         var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
@@ -274,7 +276,7 @@ class SubwayTest {
 
     @Test
     @DisplayName("Создание проездного билета - добавление билетов в список - позитивный сценарий")
-    void createMonthlyTicketTest_AddingMonthlyTicketsToList_Success() {
+    void createMonthlyTicketTest_AddingMonthlyTicketsToList_SuccessForTest() {
         var budapest = createDataForTestSubway("Budapest");
         var testDate = LocalDate.now();
         var expectedMonthlyTicket = new MonthlyTicket("a0000", testDate);
@@ -303,46 +305,69 @@ class SubwayTest {
     }
 
     @Test
-    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий")
-    void isValidDateTest_Success() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата проверки на один день раньше даты покупки #1")
+    void isValidDateDateTest_NoSuccess_OneDayBeforeCheck() {
         var budapest = createDataForTestSubway("Budapest");
-        budapest.createMonthlyTicket();
-        var date = LocalDate.now();
-        var expectedNumber = "a0000";
+        var createDate = LocalDate.now();
+        var checkDate = LocalDate.now().minusDays(1);
+        var testTicket = budapest.createMonthlyTicket(createDate);
+        var testTicketNumber = testTicket.getTicketNumber();
 
-        Method method = Subway.class.getDeclaredMethod("isValidDate", String.class, LocalDate.class);
-        method.setAccessible(true);
-        boolean result = (Boolean) method.invoke(budapest, expectedNumber, date);
+        boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
-        assertTrue(result);
+        assertFalse(isTicketValid);
     }
 
     @Test
-    @DisplayName("Валидна ли дата проездного билета - негативный сценарий")
-    void isValidDateTest_NoSuccess() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий - дата покупки в рамках срока действия #2")
+    void isValidDateDateTest_Success_Purchase_InValidityPeriod() {
         var budapest = createDataForTestSubway("Budapest");
-        budapest.createMonthlyTicket();
-        var date = LocalDate.now().plusDays(31);
-        var expectedNumber = "a0000";
+        var checkDate = LocalDate.now().plusDays(15);
+        var testTicket = budapest.createMonthlyTicket(LocalDate.now());
+        var testTicketNumber = testTicket.getTicketNumber();
 
-        Method method = Subway.class.getDeclaredMethod("isValidDate", String.class, LocalDate.class);
-        method.setAccessible(true);
-        boolean result = (Boolean) method.invoke(budapest, expectedNumber, date);
+        boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
-        assertFalse(result);
+        assertTrue(isTicketValid);
     }
 
     @Test
-    @DisplayName("Проверка проездного билета - позитивный сценарий - даты валидные")
-    void isValidMonthlyTicketTest_Success() {
+    @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата покупки за рамками срока действия #3")
+    void isValidDateTest_NoSuccess_PurchaseDateIsTicketNotInValidityPeriod() {
         var budapest = createDataForTestSubway("Budapest");
-        var testDate = LocalDate.now();
-        budapest.createMonthlyTicket();
-        var expectedNumberOfTicket = "a0000";
-        var expectedBehavior = true;
+        var checkDate = LocalDate.now().plusDays(50);
+        var testTicket = budapest.createMonthlyTicket(LocalDate.now());
+        var testTicketNumber = testTicket.getTicketNumber();
 
-        var actualBehavior = budapest.isValidMonthlyTicket(expectedNumberOfTicket, testDate);
+        boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
 
-        assertEquals(expectedBehavior, actualBehavior);
+        assertFalse(isTicketValid);
+    }
+
+    @Test
+    @DisplayName("Валидна ли дата проездного билета - негативный сценарий - дата проверки в день окончания срока #4")
+    void isValidDateDateTest_NoSuccess_CheckInLastDay() {
+        var budapest = createDataForTestSubway("Budapest");
+        var checkDate = LocalDate.now().plusDays(30);
+        var testTicket = budapest.createMonthlyTicket(LocalDate.now());
+        var testTicketNumber = testTicket.getTicketNumber();
+
+        boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
+
+        assertFalse(isTicketValid);
+    }
+
+    @Test
+    @DisplayName("Валидна ли дата проездного билета - позитивный сценарий - дата покупки равна дате начала срока действия #5")
+    void isValidDateDateTest_Success_PurchaseDate_Equals_Check() {
+        var budapest = createDataForTestSubway("Budapest");
+        var checkDate = LocalDate.now();
+        var createDate = LocalDate.now();
+        var newMonthlyTicket = budapest.createMonthlyTicket(createDate);
+        var testTicketNumber = newMonthlyTicket.getTicketNumber();
+
+        boolean isTicketValid = budapest.isValidMonthlyTicket(testTicketNumber, checkDate);
+
+        assertTrue(isTicketValid);
     }
 }

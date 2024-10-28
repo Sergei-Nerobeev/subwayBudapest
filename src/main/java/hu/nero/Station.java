@@ -128,15 +128,20 @@ public class Station {
     }
 
     // метод продления действия проездного на 30 дней с момента покупки
-    public MonthlyTicket extendMonthlyTicket(String ticketNumber, LocalDate dateOfExtension) {
-        MonthlyTicket monthlyTicket = subway.createMonthlyTicket();
-        if (!dateOfExtension.isAfter(monthlyTicket.purchaseDate())) {
-            throw new RuntimeException("The date must be at least as recent as today.");
+    public void extendMonthlyTicket(String ticketNumber, LocalDate startDate) {
+        MonthlyTicket foundTicket = null;
+        List<MonthlyTicket> monthlyTickets = subway.getMonthlyTickets();
+        for (MonthlyTicket monthlyTicket : monthlyTickets) {
+            if (monthlyTicket.getTicketNumber().equals(ticketNumber)) {
+                foundTicket = monthlyTicket;
+                break;
+            }
         }
-        dateOfExtension = monthlyTicket.purchaseDate().plusDays(30);
+        if (foundTicket == null) {
+            throw new RuntimeException("Ticket not found!");
+        }
+        foundTicket.setPurchaseDate(startDate);
         ticketOffice.addRevenueMonthlyTicket();
-
-        return new MonthlyTicket(ticketNumber, dateOfExtension);
     }
 
     @Override

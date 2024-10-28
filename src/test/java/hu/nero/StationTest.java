@@ -107,36 +107,57 @@ class StationTest {
     }
 
     @Test
-    @DisplayName("Продление проездного билета - возвращает билет плюс 30 дней - корректная дата,позитивный сценарий")
+    @DisplayName("Продление проездного билета - билет плюс 30 дней - корректная дата,позитивный сценарий")
     void extendMonthlyTicketTest_Success() {
         var budapest = createDataForTestSubway("Budapest");
-        var actualTicketNumber = "a0234";
-        var testDateNow = LocalDate.now();
-        var testDateTomorrow = DateUtils.convertStringToLocalDate("20.10.2024");
-        var expectedDate = DateUtils.convertStringToLocalDate("10.11.2024");
-        var stationTest = budapest.getLine("Red").getStation("Astoria");
+        var testDate = LocalDate.now();
+        var actualTicket = budapest.createMonthlyTicket();
+        var astoria = budapest.getLine("Red").getStation("Astoria");
 
-        var extendedMonthlyTicket = stationTest.extendMonthlyTicket(actualTicketNumber, testDateTomorrow);
-        var actualDate = extendedMonthlyTicket.purchaseDate();
+        astoria.extendMonthlyTicket(actualTicket.getTicketNumber(), testDate);
 
-        assertEquals(expectedDate, actualDate);
+        assertTrue(budapest.isValidMonthlyTicket(actualTicket.getTicketNumber(), LocalDate.now()));
+        assertTrue(budapest.isValidMonthlyTicket(actualTicket.getTicketNumber(), LocalDate.now().plusDays(29)));
     }
 
     @Test
-    @DisplayName("Продление проездного билета - возвращает исключение - некорректная дата,негативный сценарий")
-    void extendMonthlyTicketTest_ThrowsException() {
+    @DisplayName("Продление проездного билета - билет плюс 30 дней - некорректная дата,негативный сценарий")
+    void extendMonthlyTicketTest_NoSuccess() {
         var budapest = createDataForTestSubway("Budapest");
-        var actualTicketNumber = "a0234";
-        var expectedTestDate = DateUtils.convertStringToLocalDate("09.11.2024");
-        var wrongTestDate = DateUtils.convertStringToLocalDate("01.10.2024");
-        var stationTest = budapest.getLine("Red").getStation("Astoria");
+        var testDatePlusTwoDays = LocalDate.now().plusDays(2);
+        var actualTicket = budapest.createMonthlyTicket();
+        var astoria = budapest.getLine("Red").getStation("Astoria");
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> {
-                    stationTest.extendMonthlyTicket(actualTicketNumber, wrongTestDate);
-                });
+        astoria.extendMonthlyTicket(actualTicket.getTicketNumber(), testDatePlusTwoDays);
 
-        assertEquals("The date must be at least as recent as today.", exception.getMessage());
+        assertFalse(budapest.isValidMonthlyTicket(actualTicket.getTicketNumber(), LocalDate.now()));
+        assertFalse(budapest.isValidMonthlyTicket(actualTicket.getTicketNumber(), LocalDate.now().plusDays(32)));
     }
 
+    @Test
+    @DisplayName("Продление проездного билета - срок действия билета прошел - некорректная дата,негативный сценарий")
+    void extendMonthlyTicketTest_NoSuccessValidityPeriod() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDateStartNow = LocalDate.now();
+        var dateMinusDays = LocalDate.now().minusDays(1000000000);
+        var actualTicket = budapest.createMonthlyTicket(dateMinusDays);
+        var astoria = budapest.getLine("Red").getStation("Astoria");
+
+        astoria.extendMonthlyTicket(actualTicket.getTicketNumber(), testDateStartNow);
+
+        assertTrue(budapest.isValidMonthlyTicket(actualTicket.getTicketNumber(), testDateStartNow));
+    }
+
+    @Test
+    @DisplayName("Продление проездного билета - тест даты - плюс 2 года,позитивный сценарий")
+    void extendMonthlyTicketTest_Success_StartDate() {
+        var budapest = createDataForTestSubway("Budapest");
+        var testDateStartPlusOneYear = LocalDate.now().plusYears(2);
+        var actualTicket = budapest.createMonthlyTicket();
+        var astoria = budapest.getLine("Red").getStation("Astoria");
+
+        astoria.extendMonthlyTicket(actualTicket.getTicketNumber(), testDateStartPlusOneYear);
+
+        assertTrue(budapest.isValidMonthlyTicket(actualTicket.getTicketNumber(), testDateStartPlusOneYear));
+    }
 }

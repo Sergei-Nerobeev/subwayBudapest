@@ -263,10 +263,18 @@ public class Subway {
         return monthlyTicket;
     }
 
+    // метод для тестирования:
+    public MonthlyTicket createMonthlyTicket(LocalDate date) {
+        var ticketNumber = generateMonthlyTicketNumber();
+        MonthlyTicket monthlyTicket = new MonthlyTicket(ticketNumber, date);
+        monthlyTickets.add(monthlyTicket);
+        return monthlyTicket;
+    }
+
     // метод проверки проездного билета в базе проданных билетов
     public boolean isTicketInSystem(String ticketNumber) {
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+            if (monthlyTicket.getTicketNumber().equals(ticketNumber)) {
                 return true;
             }
         }
@@ -287,32 +295,19 @@ public class Subway {
 
     // метод проверки даты
     private boolean isValidDate(String ticketNumber, LocalDate checkDate) {
-        var date = LocalDate.now();
-        var expirationDate = date.plusDays(VALIDITY_PERIOD_DAYS);
         MonthlyTicket foundTicket = null;
         for (MonthlyTicket monthlyTicket : monthlyTickets) {
-            if (monthlyTicket.ticketNumber().equals(ticketNumber)) {
+            if (monthlyTicket.getTicketNumber().equals(ticketNumber)) {
                 foundTicket = monthlyTicket;
                 break;
             }
         }
-
-        return foundTicket != null
-                && !foundTicket.purchaseDate().isAfter(expirationDate)
-                && !foundTicket.purchaseDate().isBefore(checkDate);
-    }
-
-    // метод печати доходов всех касс всех станций метро по дням в которые были продажи
-    public void printRevenueFromAllTicketOffices(LocalDate purchaseDate) {
-        for (Line line : lines) {
-            var station = line.getStations();
-
+        if (foundTicket == null) {
+            return false;
         }
-        for (MonthlyTicket soldTicket : monthlyTickets) {
-            if (soldTicket != null) {
-                System.out.println(soldTicket.purchaseDate());
-            }
-        }
+        var purchaseDate = foundTicket.getPurchaseDate();
+        var expirationDate = foundTicket.getPurchaseDate().plusDays(VALIDITY_PERIOD_DAYS);
+        return checkDate.isAfter(purchaseDate) && checkDate.isBefore(expirationDate) || checkDate.isEqual(purchaseDate);
     }
 
     public String getCityName() {
