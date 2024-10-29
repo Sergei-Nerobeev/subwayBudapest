@@ -144,6 +144,9 @@ public class Station {
         ticketOffice.addRevenueMonthlyTicket();
     }
 
+    public void getTicketOffice() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

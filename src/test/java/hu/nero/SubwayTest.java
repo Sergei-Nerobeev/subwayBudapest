@@ -370,4 +370,20 @@ class SubwayTest {
 
         assertTrue(isTicketValid);
     }
+
+    @Test
+    @DisplayName("Печатает ли этот метод доходы за день касс со всех станций метро по дням когда были продажи")
+    void isPrintAnything() {
+        var budapest = createDataForTestSubway("Budapest");
+        var saleDate = LocalDate.now();
+        var saleDate2 = LocalDate.now().plusDays(1);
+        var newMonthlyTicket = budapest.createMonthlyTicket(saleDate);
+        var newMonthlyTicket2 = budapest.createMonthlyTicket(saleDate);
+        var newMonthlyTicket3 = budapest.createMonthlyTicket(saleDate);
+        var newMonthlyTicket4 = budapest.createMonthlyTicket(saleDate2);
+        String date = budapest.printDailyRevenueFromAllTicketOffices(saleDate);
+        System.out.println(date);
+
+    }
+
 }

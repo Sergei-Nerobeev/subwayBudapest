@@ -4,6 +4,7 @@ import hu.nero.exception.*;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Subway {
     private String cityName;
@@ -310,6 +311,15 @@ public class Subway {
         return checkDate.isAfter(purchaseDate) && checkDate.isBefore(expirationDate) || checkDate.isEqual(purchaseDate);
     }
 
+    // метод печати доходов всех касс со всех станций по дням в которые были продажи:
+    public String printDailyRevenueFromAllTicketOffices(LocalDate saleDate) {
+        var station = lines.stream()
+                .map(Line::getAllStations)
+                .toList();
+
+        return "Print revenue by date: " + saleDate.toString() + " -- " + ticketCounter + station;
+    }
+
     public String getCityName() {
         return cityName;
     }
@@ -318,13 +328,13 @@ public class Subway {
         this.cityName = cityName;
     }
 
+    public void setLines(Set<Line> lines) {
+        this.lines = lines;
+    }
+
     @Override
     public String toString() {
         return "Subway{" + "cityName='" + cityName + '\'' + ", lines=" + lines.toString() + '}';
-    }
-
-    public void setLines(Set<Line> lines) {
-        this.lines = lines;
     }
 
     @Override
