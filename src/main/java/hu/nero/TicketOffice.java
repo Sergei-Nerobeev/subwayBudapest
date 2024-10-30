@@ -43,7 +43,7 @@ public class TicketOffice {
         }
     }
 
-    public Integer getDailyRevenue(LocalDate date) { // Получить дату и стоимость
+    public Integer getDailyRevenue(LocalDate date) { // Получить дату
         return purchaseDateToDailyRevenue.get(date);
     }
 

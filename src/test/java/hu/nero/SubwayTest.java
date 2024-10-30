@@ -372,17 +372,25 @@ class SubwayTest {
     }
 
     @Test
-    @DisplayName("Печатает ли этот метод доходы за день касс со всех станций метро по дням когда были продажи")
+    @DisplayName("Печать доходов за день касс со всех станций метро по дням когда были продажи")
     void isPrintAnything() {
         var budapest = createDataForTestSubway("Budapest");
         var saleDate = LocalDate.now();
-        var saleDate2 = LocalDate.now().plusDays(1);
-        var newMonthlyTicket = budapest.createMonthlyTicket(saleDate);
-        var newMonthlyTicket2 = budapest.createMonthlyTicket(saleDate);
-        var newMonthlyTicket3 = budapest.createMonthlyTicket(saleDate);
-        var newMonthlyTicket4 = budapest.createMonthlyTicket(saleDate2);
-        String date = budapest.printDailyRevenueFromAllTicketOffices(saleDate);
-        System.out.println(date);
+        var astoria = budapest.getLine("Red").getStation("Astoria");
+        var oktogon = budapest.getLine("Yellow").getStation("Oktogon");
+        astoria.sellMonthlyTicket();
+        astoria.sellMonthlyTicket();
+        oktogon.sellMonthlyTicket();
+        String expectedDailyRevenueReport = "Print revenue by date: " + saleDate + "\n" +
+                astoria.getName() +
+                ": " +
+                6000;
+//        oktogon.sellTicket(astoria, oktogon);
+        String actualDailyRevenueReport = budapest.printDailyRevenueFromAllTicketOffices(saleDate);
+        System.out.println(expectedDailyRevenueReport);
+        System.out.println(actualDailyRevenueReport);
+
+//        assertEquals(expectedDailyRevenueReport, actualDailyRevenueReport);
 
     }
 

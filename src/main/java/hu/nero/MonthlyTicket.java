@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class MonthlyTicket {
-    private String ticketNumber;
+    private final String ticketNumber;
     private LocalDate purchaseDate;
 
     public MonthlyTicket(String ticketNumber, LocalDate purchaseDate) {
