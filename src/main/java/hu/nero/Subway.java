@@ -315,20 +315,22 @@ public class Subway {
     public String printDailyRevenueFromAllTicketOffices(LocalDate saleDate) {
         StringBuilder revenueReport = new StringBuilder();
         revenueReport.append("Print revenue by date: ").append(saleDate).append("\n");
+        Integer totalRevenue = 0;
         for (Line line : lines) {
+
             var stations = line.getStations();
             for (Station station : stations) {
-                Integer totalRevenue = null;
                 var ticketOffice = station.getTicketOffice();
                 var ticketOfficeRevenue = ticketOffice.getDailyRevenue(saleDate);
                 if (ticketOfficeRevenue != null) {
-                    totalRevenue =+ ticketOfficeRevenue; // todo
-                    revenueReport
+                    totalRevenue += ticketOfficeRevenue;revenueReport
                             .append(station.getName())
                             .append(": ")
                             .append(totalRevenue)
                             .append("\n");
+
                 }
+
             }
         }
         return revenueReport.toString();

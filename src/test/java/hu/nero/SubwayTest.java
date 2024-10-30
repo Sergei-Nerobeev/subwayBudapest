@@ -379,15 +379,16 @@ class SubwayTest {
         var astoria = budapest.getLine("Red").getStation("Astoria");
         var oktogon = budapest.getLine("Yellow").getStation("Oktogon");
         astoria.sellMonthlyTicket();
-        astoria.sellMonthlyTicket();
         oktogon.sellMonthlyTicket();
+//        astoria.sellMonthlyTicket();
+//        oktogon.sellMonthlyTicket();
         String expectedDailyRevenueReport = "Print revenue by date: " + saleDate + "\n" +
                 astoria.getName() +
                 ": " +
-                6000;
+                3000;
 //        oktogon.sellTicket(astoria, oktogon);
         String actualDailyRevenueReport = budapest.printDailyRevenueFromAllTicketOffices(saleDate);
-        System.out.println(expectedDailyRevenueReport);
+//        System.out.println(expectedDailyRevenueReport);
         System.out.println(actualDailyRevenueReport);
 
 //        assertEquals(expectedDailyRevenueReport, actualDailyRevenueReport);
