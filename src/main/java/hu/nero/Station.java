@@ -144,7 +144,8 @@ public class Station {
         ticketOffice.addRevenueMonthlyTicket();
     }
 
-    public void getTicketOffice() {
+    public TicketOffice getTicketOffice() {
+        return ticketOffice;
     }
 
     @Override

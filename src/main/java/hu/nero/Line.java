@@ -60,7 +60,7 @@ public class Line {
     public List<String> getAllStations() {
         return stations.stream()
                 .map(Station::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

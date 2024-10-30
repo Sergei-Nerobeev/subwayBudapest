@@ -313,11 +313,12 @@ public class Subway {
 
     // метод печати доходов всех касс со всех станций по дням в которые были продажи:
     public String printDailyRevenueFromAllTicketOffices(LocalDate saleDate) {
-        var station = lines.stream()
-                .map(Line::getAllStations)
-                .toList();
-
-        return "Print revenue by date: " + saleDate.toString() + " -- " + ticketCounter + station;
+//        var stations = lines.stream()
+//                .map(Line::getAllStations)
+        var stations = lines.stream()
+                .map(Line :: getAllStations);
+        var ticketOffices = stations.map(Station :: getTicketOffice)
+        return "Print revenue by date: " + saleDate.toString() + " -- " + ticketCounter + stations;
     }
 
     public String getCityName() {
