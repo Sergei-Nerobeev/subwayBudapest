@@ -317,13 +317,13 @@ public class Subway {
         revenueReport.append("Print revenue by date: ").append(saleDate).append("\n");
         Integer totalRevenue = 0;
         for (Line line : lines) {
-
             var stations = line.getStations();
             for (Station station : stations) {
                 var ticketOffice = station.getTicketOffice();
                 var ticketOfficeRevenue = ticketOffice.getDailyRevenue(saleDate);
                 if (ticketOfficeRevenue != null) {
-                    totalRevenue += ticketOfficeRevenue;revenueReport
+                    totalRevenue += ticketOfficeRevenue;
+                    revenueReport
                             .append(station.getName())
                             .append(": ")
                             .append(totalRevenue)
