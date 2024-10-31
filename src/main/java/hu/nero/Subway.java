@@ -315,7 +315,7 @@ public class Subway {
     public String printDailyRevenueFromAllTicketOffices(LocalDate saleDate) {
         StringBuilder revenueReport = new StringBuilder();
         revenueReport.append("Print revenue by date: ").append(saleDate).append("\n");
-        Integer totalRevenue = 0;
+        int totalRevenue = 0;
         for (Line line : lines) {
             var stations = line.getStations();
             for (Station station : stations) {
@@ -326,13 +326,12 @@ public class Subway {
                     revenueReport
                             .append(station.getName())
                             .append(": ")
-                            .append(totalRevenue)
+                            .append(ticketOfficeRevenue)
                             .append("\n");
-
                 }
-
             }
         }
+        revenueReport.append("Total revenue is: ").append(totalRevenue);
         return revenueReport.toString();
     }
 

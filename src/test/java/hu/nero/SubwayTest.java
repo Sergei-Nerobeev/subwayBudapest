@@ -382,16 +382,17 @@ class SubwayTest {
         oktogon.sellMonthlyTicket();
 //        astoria.sellMonthlyTicket();
 //        oktogon.sellMonthlyTicket();
-        String expectedDailyRevenueReport = "Print revenue by date: " + saleDate + "\n" +
-                astoria.getName() +
-                ": " +
-                3000;
-//        oktogon.sellTicket(astoria, oktogon);
+        String expectedDailyRevenueReport = """
+        Print revenue by date: $DATE
+        Oktogon: 3045
+        Astoria: 3000
+        Total revenue is: 6045""".replace("$DATE", saleDate.toString());
+        oktogon.sellTicket(astoria, oktogon);
         String actualDailyRevenueReport = budapest.printDailyRevenueFromAllTicketOffices(saleDate);
 //        System.out.println(expectedDailyRevenueReport);
         System.out.println(actualDailyRevenueReport);
 
-//        assertEquals(expectedDailyRevenueReport, actualDailyRevenueReport);
+        assertEquals(expectedDailyRevenueReport, actualDailyRevenueReport);
 
     }
 
