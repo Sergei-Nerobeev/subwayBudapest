@@ -3,7 +3,6 @@ package hu.nero;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class Line {
     private String color;
@@ -57,7 +56,7 @@ public class Line {
         return null;
     }
 
-    public List<String> getAllStations() {
+    public List<String> getStationNames() {
         return stations.stream()
                 .map(Station::getName)
                 .toList();

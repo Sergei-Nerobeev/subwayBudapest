@@ -37,15 +37,20 @@ public class Subway {
         return lines.stream().anyMatch(line -> line.getColor().equals(newLineColor));
     }
 
+//    public boolean isStationNameExistsInAnyLine(String nameStation) {
+//        for (Line line : lines) {
+//            for (Station station : line.getStations()) {
+//                if (station.getName().equals(nameStation)) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
     public boolean isStationNameExistsInAnyLine(String nameStation) {
-        for (Line line : lines) {
-            for (Station station : line.getStations()) {
-                if (station.getName().equals(nameStation)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return lines.stream()
+                .flatMap(line -> line.getStations().stream())
+                .map(Station::getName).anyMatch(station -> station.equals(nameStation));
     }
 
     /**
