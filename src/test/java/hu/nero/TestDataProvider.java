@@ -1,6 +1,5 @@
 package hu.nero;
 
-import java.time.LocalDate;
 
 public final class TestDataProvider {
     public static Subway createDataForTestSubway(String cityName) {

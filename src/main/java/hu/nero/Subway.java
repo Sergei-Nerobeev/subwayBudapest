@@ -37,7 +37,7 @@ public class Subway {
         return lines.stream().anyMatch(line -> line.getColor().equals(newLineColor));
     }
 
-//    public boolean isStationNameExistsInAnyLine(String nameStation) {
+    //    public boolean isStationNameExistsInAnyLine(String nameStation) {
 //        for (Line line : lines) {
 //            for (Station station : line.getStations()) {
 //                if (station.getName().equals(nameStation)) {
@@ -50,7 +50,8 @@ public class Subway {
     public boolean isStationNameExistsInAnyLine(String nameStation) {
         return lines.stream()
                 .flatMap(line -> line.getStations().stream())
-                .map(Station::getName).anyMatch(station -> station.equals(nameStation));
+                .map(Station::getName)
+                .anyMatch(station -> station.equals(nameStation));
     }
 
     /**
@@ -346,10 +347,6 @@ public class Subway {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
-    }
-
-    public void setLines(Set<Line> lines) {
-        this.lines = lines;
     }
 
     @Override
