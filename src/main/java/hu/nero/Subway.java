@@ -4,6 +4,7 @@ import hu.nero.exception.*;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Subway {
     private String cityName;
@@ -36,15 +37,21 @@ public class Subway {
         return lines.stream().anyMatch(line -> line.getColor().equals(newLineColor));
     }
 
+    //    public boolean isStationNameExistsInAnyLine(String nameStation) {
+//        for (Line line : lines) {
+//            for (Station station : line.getStations()) {
+//                if (station.getName().equals(nameStation)) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
     public boolean isStationNameExistsInAnyLine(String nameStation) {
-        for (Line line : lines) {
-            for (Station station : line.getStations()) {
-                if (station.getName().equals(nameStation)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return lines.stream()
+                .flatMap(line -> line.getStations().stream())
+                .map(Station::getName)
+                .anyMatch(station -> station.equals(nameStation));
     }
 
     /**
@@ -310,6 +317,30 @@ public class Subway {
         return checkDate.isAfter(purchaseDate) && checkDate.isBefore(expirationDate) || checkDate.isEqual(purchaseDate);
     }
 
+    // метод печати доходов всех касс со всех станций по дням в которые были продажи:
+    public String printDailyRevenueFromAllTicketOffices(LocalDate saleDate) {
+        StringBuilder revenueReport = new StringBuilder();
+        revenueReport.append("Print revenue by date: ").append(saleDate).append("\n");
+        int totalRevenue = 0;
+        for (Line line : lines) {
+            var stations = line.getStations();
+            for (Station station : stations) {
+                var ticketOffice = station.getTicketOffice();
+                var ticketOfficeRevenue = ticketOffice.getDailyRevenue(saleDate);
+                if (ticketOfficeRevenue != null) {
+                    totalRevenue += ticketOfficeRevenue;
+                    revenueReport
+                            .append(station.getName())
+                            .append(": ")
+                            .append(ticketOfficeRevenue)
+                            .append("\n");
+                }
+            }
+        }
+        revenueReport.append("Total revenue is: ").append(totalRevenue);
+        return revenueReport.toString();
+    }
+
     public String getCityName() {
         return cityName;
     }
@@ -321,10 +352,6 @@ public class Subway {
     @Override
     public String toString() {
         return "Subway{" + "cityName='" + cityName + '\'' + ", lines=" + lines.toString() + '}';
-    }
-
-    public void setLines(Set<Line> lines) {
-        this.lines = lines;
     }
 
     @Override

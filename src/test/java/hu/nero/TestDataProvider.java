@@ -1,5 +1,6 @@
 package hu.nero;
 
+
 public final class TestDataProvider {
     public static Subway createDataForTestSubway(String cityName) {
         var yellowLineColor = "Yellow";

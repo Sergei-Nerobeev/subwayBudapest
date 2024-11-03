@@ -370,4 +370,43 @@ class SubwayTest {
 
         assertTrue(isTicketValid);
     }
+
+    @Test
+    @DisplayName("Печать доходов за день касс со всех станций метро по дням когда были продажи")
+    void isPrintAnything() {
+        var budapest = createDataForTestSubway("Budapest");
+        var saleDate = LocalDate.now();
+        var astoria = budapest.getLine("Red").getStation("Astoria");
+        var oktogon = budapest.getLine("Yellow").getStation("Oktogon");
+        astoria.sellMonthlyTicket();
+        oktogon.sellMonthlyTicket();
+        oktogon.sellTicket(astoria, oktogon);
+        String expectedDailyRevenueReport = """
+                Print revenue by date: $DATE
+                Oktogon: 3045
+                Astoria: 3000
+                Total revenue is: 6045""".replace("$DATE", saleDate.toString());
+
+        String actualDailyRevenueReport = budapest.printDailyRevenueFromAllTicketOffices(saleDate);
+        System.out.println(actualDailyRevenueReport);
+
+        assertEquals(expectedDailyRevenueReport, actualDailyRevenueReport);
+    }
+
+    @Test
+    @DisplayName("Печать доходов за день касс со всех станций метро по дням когда нет продаж")
+    void isPrintAnything_WithoutSales() {
+        var budapest = createDataForTestSubway("Budapest");
+        var saleDate = LocalDate.now();
+        String expectedDailyRevenueReport = """
+                Print revenue by date: $DATE
+                Total revenue is: 0""".replace("$DATE", saleDate.toString());
+
+        String actualDailyRevenueReport = budapest.printDailyRevenueFromAllTicketOffices(saleDate);
+        System.out.println(actualDailyRevenueReport);
+
+        assertEquals(expectedDailyRevenueReport, actualDailyRevenueReport);
+
+    }
+
 }

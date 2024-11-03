@@ -56,6 +56,12 @@ public class Line {
         return null;
     }
 
+    public List<String> getStationNames() {
+        return stations.stream()
+                .map(Station::getName)
+                .toList();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

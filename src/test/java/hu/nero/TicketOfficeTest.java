@@ -59,8 +59,8 @@ class TicketOfficeTest {
         var expectedRevenue = 3000;
 
         ticketOffice.addRevenueMonthlyTicket();
-        var actualRevenue2 = ticketOffice.getDailyRevenue(testDate);
+        var actualRevenue = ticketOffice.getDailyRevenue(testDate);
 
-        assertEquals(expectedRevenue, actualRevenue2);
+        assertEquals(expectedRevenue, actualRevenue);
     }
 }
