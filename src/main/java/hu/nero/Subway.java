@@ -1,10 +1,16 @@
 package hu.nero;
 
-import hu.nero.exception.*;
+import hu.nero.exception.ColorLineException;
+import hu.nero.exception.LineNotEmptyException;
+import hu.nero.exception.PreviousAndNextStationException;
+import hu.nero.exception.StationNameException;
 
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class Subway {
     private String cityName;
@@ -49,9 +55,9 @@ public class Subway {
 //    }
     public boolean isStationNameExistsInAnyLine(String nameStation) {
         return lines.stream()
-                .flatMap(line -> line.getStations().stream())
-                .map(Station::getName)
-                .anyMatch(station -> station.equals(nameStation));
+                    .flatMap(line -> line.getStations().stream())
+                    .map(Station::getName)
+                    .anyMatch(station -> station.equals(nameStation));
     }
 
     /**
@@ -62,7 +68,14 @@ public class Subway {
         checkStationNameNotExists(stationName);
         Line line = getLine(lineColor);
         checkLineIsEmpty(line);
-        Station station = new Station(stationName, line, transferStations, this);
+        var station =
+            Station
+                .builder()
+                .name(stationName)
+                .line(line)
+                .transferStations(transferStations)
+                .subway(this)
+                .build();
         line.addStation(station);
         return station;
     }
@@ -101,12 +114,20 @@ public class Subway {
      *
      * @param newNameOfStation terminal station
      */
-    public Station createLastStation(String lineColor, String newNameOfStation, int timeToThePreviousStation, List<Station> transferStations) {
+    public Station createLastStation(
+        String lineColor, String newNameOfStation, int timeToThePreviousStation, List<Station> transferStations) {
         checkStationNameNotExists(newNameOfStation); // проверка станция с таким именем не существует
         var currentLastStation = getLastStationInLine(lineColor); // текущая последняя станция Астория
         isStationLastInLine(currentLastStation);
         checkTimeToTheNextStation(timeToThePreviousStation);// Проверка, что время перегона > 0
-        var newLastStation = new Station(newNameOfStation, getLine(lineColor), transferStations, this);
+        var newLastStation =
+            Station
+                .builder()
+                .name(newNameOfStation)
+                .line(getLine(lineColor))
+                .transferStations(transferStations)
+                .subway(this)
+                .build();
         Line line = getLine(lineColor);
         line.addStation(newLastStation);
         currentLastStation.setNext(newLastStation);
@@ -150,6 +171,9 @@ public class Subway {
         Line startLine = getLine(startColor);
         for (Station station : startLine.getStations()) {
             List<Station> transferStations = station.getTransferStations();
+            if (transferStations == null) {
+                continue;
+            }
             for (Station transferStation : transferStations) {
                 String color = transferStation.getLine().getColor();
                 if (color.equals(endColor)) {
@@ -165,10 +189,14 @@ public class Subway {
      * если конечная stationTwo стоит перед stationOne
      */
     public int getInterval(Station stationOne, Station stationTwo) {
-        if (areStationsNull(stationOne, stationTwo)) return -1;
+        if (areStationsNull(stationOne, stationTwo)) {
+            return -1;
+        }
         var line = stationOne.getLine();
         var sameLine = stationTwo.getLine();
-        if (!line.getColor().equals(sameLine.getColor())) return -1;
+        if (!line.getColor().equals(sameLine.getColor())) {
+            return -1;
+        }
         int interval = 0;
         boolean foundStart = false;
         for (Station station : line.getStations()) {
@@ -190,10 +218,14 @@ public class Subway {
      * к начальной по previous, либо возвращает -1, если конечная stationTwo стоит перед stationOne
      */
     public int getIntervalFromLastStation(Station stationOne, Station stationTwo) {
-        if (areStationsNull(stationOne, stationTwo)) return -1;
+        if (areStationsNull(stationOne, stationTwo)) {
+            return -1;
+        }
         var line = stationOne.getLine();
         var sameLine = stationTwo.getLine();
-        if (!line.getColor().equals(sameLine.getColor())) return -1;
+        if (!line.getColor().equals(sameLine.getColor())) {
+            return -1;
+        }
         int interval = 0;
         Station currentStation = stationTwo;
         while (currentStation != null) {
@@ -296,8 +328,8 @@ public class Subway {
     // метод проверки действительности проездного билета
     public boolean isValidMonthlyTicket(String ticketNumber, LocalDate checkDate) {
         return isValidCountOfNumbers(ticketNumber)
-                && isTicketInSystem(ticketNumber)
-                && isValidDate(ticketNumber, checkDate);
+            && isTicketInSystem(ticketNumber)
+            && isValidDate(ticketNumber, checkDate);
     }
 
     // метод проверки даты
@@ -330,10 +362,10 @@ public class Subway {
                 if (ticketOfficeRevenue != null) {
                     totalRevenue += ticketOfficeRevenue;
                     revenueReport
-                            .append(station.getName())
-                            .append(": ")
-                            .append(ticketOfficeRevenue)
-                            .append("\n");
+                        .append(station.getName())
+                        .append(": ")
+                        .append(ticketOfficeRevenue)
+                        .append("\n");
                 }
             }
         }
@@ -356,8 +388,12 @@ public class Subway {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Subway subway = (Subway) o;
         return Objects.equals(cityName, subway.cityName) && Objects.equals(lines, subway.lines);
     }
