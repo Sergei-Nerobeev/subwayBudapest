@@ -1,5 +1,6 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9645dd03c6f6c6a73d68/maintainability)](https://codeclimate.com/github/Sergei-Nerobeev/subwayBudapest/maintainability)
 [![build and test CI](https://github.com/Sergei-Nerobeev/subwayBudapest/actions/workflows/test.yaml/badge.svg)](https://github.com/Sergei-Nerobeev/subwayBudapest/actions/workflows/test.yaml)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9645dd03c6f6c6a73d68/test_coverage)](https://codeclimate.com/github/Sergei-Nerobeev/subwayBudapest/test_coverage)
 # SubwayBudapest lesson project
 
 Проект метро
