@@ -1,107 +1,34 @@
 package hu.nero;
 
+import hu.nero.exception.TicketNotFoundException;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Builder
+@Getter
 public class Station {
     private final String name;
-    private Station previous;
-    private Station next;
-    private int transitTimeInSeconds; //время перегона только до следующей станции
     private final Line line;
-    private List<Station> transferStations;
+    private final TicketOffice ticketOffice = new TicketOffice();
     private final Subway subway;
-    private final TicketOffice ticketOffice;
-
-    public Station(String name,
-                   Station previous,
-                   Station next,
-                   int transitTimeInSeconds,
-                   Line line,
-                   Subway subway) {
-        this.name = name;
-        this.previous = previous;
-        this.next = next;
-        this.transitTimeInSeconds = transitTimeInSeconds;
-        this.line = line;
-        this.transferStations = new ArrayList<>();
-        this.subway = subway;
-        this.ticketOffice = new TicketOffice();
-
-    }
-
-    public Station(String name,
-                   Line line,
-                   List<Station> transferStations,
-                   Subway subway) {
-        this(name,
-                null,
-                null,
-                0,
-                line,
-                subway);
-    }
-
+    @Setter
+    private Station previous;
+    @Setter
+    private Station next;
+    //замена время перегона только до следующей станции
     /**
-     * Конструктор для создания объекта станции.
-     *
-     * @param name         Имя станции.
-     * @param line         Линия, к которой принадлежит станция.
-     * @param subway       Система метро, к которой относится станция.
-     * @param ticketOffice Касса для продажи билетов на станции.
+     * Время перегона только до следующей станции
      */
-    public Station(String name,
-                   Line line,
-                   Subway subway,
-                   TicketOffice ticketOffice) {
-        this.name = name;
-        this.line = line;
-        this.subway = subway;
-        this.ticketOffice = ticketOffice;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Station getPrevious() {
-        return previous;
-    }
-
-    public void setPrevious(Station previous) {
-        this.previous = previous;
-    }
-
-    public Station getNext() {
-        return next;
-    }
-
-    public void setNext(Station next) {
-        this.next = next;
-    }
-
-    public int getTransitTimeInSeconds() { //получение время перегона только до следующей станции
-        return transitTimeInSeconds;
-    }
-
-    public void setTransitTimeInSeconds(int transitTimeInSeconds) { //замена время перегона только до следующей станции
-        this.transitTimeInSeconds = transitTimeInSeconds;
-    }
-
-    public List<Station> getTransferStations() {
-        return transferStations;
-    }
-
-    public Line getLine() {
-        return line;
-    }
-
-
-    public Subway getSubway() {
-        return subway;
-    }
+    @Setter
+    private int transitTimeInSeconds;
+    private List<Station> transferStations = new ArrayList<>();
 
     public void addTransferStation(Station station) {
         if (transferStations == null) {
@@ -110,24 +37,39 @@ public class Station {
         transferStations.add(station);
     }
 
-    public String sellTicket(Station start, Station finish) { // Метод продажи билетов
+    /**
+     * Метод продажи билетов (добавляет стоимость билета в кассу)
+     * 
+     * @param start начальная станция
+     * @param finish конечная станция
+     * @return сообщение о билете - поездка с одной станции на другую, интервал
+     */
+    public String sellTicket(Station start, Station finish) {
         if (start == null || finish == null) {
-            throw new IllegalArgumentException("Stations cannot be null.");
+            throw new IllegalArgumentException("Stations can not be null.");
         }
         if (start.equals(finish)) {
-            throw new IllegalArgumentException("Start station cannot be the same as finish station.");
+            throw new IllegalArgumentException("Start station can not be the same as finish station.");
         }
-        var interval = getSubway().getIntervalFromDifferentLines(start, finish); // Получаем интервал между станциями
+        var interval = getSubway().getIntervalFromDifferentLines(start, finish);
         ticketOffice.addRevenue(interval);
         return "Ticket: " + start.getName() + " " + finish.getName() + " " + "interval: " + interval;
     }
 
-    public MonthlyTicket sellMonthlyTicket() { // метод продажи проездных билетов
+    /**
+     * Метод продажи проездных билетов
+     * 
+     * @return созданный месячный билет
+     */
+    public MonthlyTicket sellMonthlyTicket() { 
         ticketOffice.addRevenueMonthlyTicket();
         return subway.createMonthlyTicket();
     }
 
-    // метод продления действия проездного на 30 дней с момента покупки
+    /**
+     * Метод продления действия проездного на 30 дней с момента покупки
+     *
+     */
     public void extendMonthlyTicket(String ticketNumber, LocalDate startDate) {
         MonthlyTicket foundTicket = null;
         List<MonthlyTicket> monthlyTickets = subway.getMonthlyTickets();
@@ -138,14 +80,10 @@ public class Station {
             }
         }
         if (foundTicket == null) {
-            throw new RuntimeException("Ticket not found!");
+            throw new TicketNotFoundException("Ticket not found!");
         }
         foundTicket.setPurchaseDate(startDate);
         ticketOffice.addRevenueMonthlyTicket();
-    }
-
-    public TicketOffice getTicketOffice() {
-        return ticketOffice;
     }
 
     @Override

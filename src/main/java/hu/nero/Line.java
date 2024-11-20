@@ -1,13 +1,16 @@
 package hu.nero;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 public class Line {
-    private String color;
     private final List<Station> stations;
-    private Subway subway;
+    private final String color;
+    private final Subway subway;
 
     public Line(String color, Subway subway) {
         this.color = color;
@@ -20,31 +23,11 @@ public class Line {
 
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public Subway getSubway() {
-        return subway;
-    }
-
-    public void setSubway(Subway subway) {
-        this.subway = subway;
-    }
-
-    public List<Station> getStations() {
-        return stations;
-    }
-
     public Station getLastStation() {
         if (stations.isEmpty()) {
             return null;
         }
-        return stations.get(stations.size() - 1);
+        return stations.getLast();
     }
 
     public Station getStation(String searchStation) {
@@ -56,7 +39,7 @@ public class Line {
         return null;
     }
 
-    public List<String> getStationNames() {
+    private List<String> getStationNames() {
         return stations.stream()
                 .map(Station::getName)
                 .toList();
@@ -79,7 +62,7 @@ public class Line {
     public String toString() {
         return "Line{" +
                 "color='" + color + '\'' +
-                ", stations=" + stations.size() +
+                ", stations=" + getStationNames() +
                 ", subway name=" + subway.getCityName() +
                 '}';
     }

@@ -35,7 +35,7 @@ class SubwayTest {
         var stationName = "Astoria";
         var budapest = createDataForTestSubway("Budapest");
         var greenLine = budapest.createNewLine("Green");
-        var station = new Station(stationName, greenLine, new ArrayList<>(), budapest);
+        var station = Station.builder().name(stationName).line(greenLine).subway(budapest).build();
         greenLine.addStation(station);
 
         boolean actual = budapest.isStationNameExistsInAnyLine(stationName);
@@ -58,7 +58,7 @@ class SubwayTest {
     void checkLineIsEmptyTest() throws NoSuchMethodException {
         Subway budapest = createDataForTestSubway("Budapest");
         Line line = budapest.createNewLine("Green");
-        var station = new Station("Roma", null, null, 120, line, budapest);
+        var station = Station.builder().name("Roma").line(line).subway(budapest).build();
         line.addStation(station);
         Method checkLineIsEmptyMethod = Subway.class.getDeclaredMethod("checkLineIsEmpty", Line.class);
         checkLineIsEmptyMethod.setAccessible(true);

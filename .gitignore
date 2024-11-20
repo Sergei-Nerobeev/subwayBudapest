@@ -48,12 +48,6 @@ lib/
 .DS_Store
 Thumbs.db
 
-# Файлы конфигурации, содержащие секреты или ключи
-*.properties
-*.yaml
-*.yml
-*.env
-
 # SonarLint
 .sonarlint/
 

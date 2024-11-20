@@ -1,26 +1,20 @@
 package hu.nero;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Getter
 public class MonthlyTicket {
     private final String ticketNumber;
+    @Setter(value = AccessLevel.PACKAGE)
     private LocalDate purchaseDate;
 
     public MonthlyTicket(String ticketNumber, LocalDate purchaseDate) {
         this.ticketNumber = ticketNumber;
-        this.purchaseDate = purchaseDate;
-    }
-
-    public String getTicketNumber() {
-        return ticketNumber;
-    }
-
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 

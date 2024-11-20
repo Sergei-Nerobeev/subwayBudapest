@@ -14,11 +14,10 @@ class LineTest {
     void testAddStationToStationsList() {
         var subway = new Subway("Budapest");
         var yellowLine = new Line("Red", subway);
-        List<Station> transferStations = new ArrayList<>();
-        var stationExpected = new Station("Oktogon", yellowLine, transferStations, subway);
-        var stationActual = new Station("Oktogon", yellowLine, transferStations, subway);
+        var stationExpected = Station.builder().name("Oktogon").line(yellowLine).subway(subway).build();
 
         yellowLine.addStation(stationExpected);
+        var stationActual = yellowLine.getStation("Oktogon");
 
         Assertions.assertEquals(stationExpected, stationActual);
     }
@@ -27,8 +26,7 @@ class LineTest {
     void testAddStation_DoesNotAddDuplicates() {
         var subway = new Subway("Budapest");
         var yellowLine = new Line("Red", subway);
-        List<Station> transferStations = new ArrayList<>();
-        var stationExpected = new Station("Oktogon", yellowLine, transferStations, subway);
+        var stationExpected = Station.builder().name("Oktogon").line(yellowLine).subway(subway).build();
 
         yellowLine.addStation(stationExpected);
 
@@ -40,13 +38,12 @@ class LineTest {
     void testAddStation_HandlesNullPreviousStation() {
         var subway = new Subway("Budapest");
         var yellowLine = new Line("Red", subway);
-        List<Station> transferStations = new ArrayList<>();
-        var stationExpected = new Station("Oktogon", yellowLine, transferStations, subway);
-        stationExpected.setPrevious(null);
-        var stationActual = new Station("Nyugati", yellowLine, transferStations, subway);
+        var station1 = Station.builder().name("Oktogon").line(yellowLine).subway(subway).build();
+        station1.setPrevious(null);
+        var station2 = Station.builder().name("Nyugati").line(yellowLine).subway(subway).build();
 
-        yellowLine.addStation(stationExpected);
-        yellowLine.addStation(stationActual);
+        yellowLine.addStation(station1);
+        yellowLine.addStation(station2);
 
         Assertions.assertEquals(2, yellowLine.getStations().size());
 

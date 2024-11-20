@@ -1,0 +1,24 @@
+name: build and test CI
+
+on:
+  - push
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.16.0
+        with:
+          java-version: '21'
+      - run: mvn install
+      - name: Publish code coverage
+        uses: paambaati/codeclimate-action@v9.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+          JACOCO_SOURCE_PATH: ${{github.workspace}}/src/main/java
+        with:
+          coverageCommand: mvn verify
+          coverageLocations: ${{github.workspace}}/target/site/jacoco/jacoco.xml:jacoco

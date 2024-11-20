@@ -62,7 +62,7 @@ class StationTest {
                     stationDataTest.sellTicket(startNull, finish);
                 });
 
-        assertEquals("Stations cannot be null.", exception.getMessage());
+        assertEquals("Stations can not be null.", exception.getMessage());
     }
 
     @Test
@@ -79,7 +79,7 @@ class StationTest {
                     stationDataTest.sellTicket(start, finish);
                 });
 
-        assertEquals("Start station cannot be the same as finish station.", exception.getMessage());
+        assertEquals("Start station can not be the same as finish station.", exception.getMessage());
     }
 
     @Test
