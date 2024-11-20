@@ -1,3 +1,4 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/9645dd03c6f6c6a73d68/maintainability)](https://codeclimate.com/github/Sergei-Nerobeev/subwayBudapest/maintainability)
 # SubwayBudapest lesson project
 
 Проект метро
